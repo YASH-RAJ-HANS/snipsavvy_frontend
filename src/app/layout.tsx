@@ -17,9 +17,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <html>
       <body>
-    <Navbar />
-    <div className="flex justify-center items-center min-h-screen bg-black">
-      <div className="w-4/5">
+    {/* <Navbar /> */}
+    <div className=" min-h-screen bg-black">
+      <div className="">
         {children}
       </div>
     </div>
