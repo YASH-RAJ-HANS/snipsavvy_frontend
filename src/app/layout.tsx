@@ -1,6 +1,5 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/header/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +17,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <html>
       <body>
     {/* <Navbar /> */}
+
     <div className=" min-h-screen bg-black">
       <div className="">
+
+    <div className="flex justify-center items-center min-h-screen bg-black">
+      <div>
+
         {children}
       </div>
     </div>
