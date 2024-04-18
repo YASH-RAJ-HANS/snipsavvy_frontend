@@ -2,6 +2,8 @@
 import React from "react";
 import { useState } from "react";
 import SnippetCard from "../Utils/Snippet_Card/Card";
+import Link from 'next/link';
+import Collection from "../workspace/Collection";
 
 interface SnippetSectionProps {
   
@@ -18,10 +20,10 @@ const SnippetSection: React.FC<SnippetSectionProps> = ({  setIsOpen}) =>{
     setIsOpenSnippet(true)
   }
   const cardData = [
-    { title: "LeetCode", content: "Coding platform with alg" },
-    { title: "Snippet", content: "Reusable code snippet rep" },
-    { title: "LeetCode", content: "Improve coding skills by s" },
-    { title: "Snippet", content: "Store and share useful co" },
+    { title: "LeetCode", content: "Coding platform with alg", snippetId: '1' },
+    { title: "Snippet", content: "Reusable code snippet rep", snippetId: '2' },
+    { title: "LeetCode", content: "Improve coding skills by s", snippetId: '3' },
+    { title: "Snippet", content: "Store and share useful co", snippetId: '4' },
   ];
   return (
     <div style={{ minHeight: "100vh" }} className="h-screen-full">
