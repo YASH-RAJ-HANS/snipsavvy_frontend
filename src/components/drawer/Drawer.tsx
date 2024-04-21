@@ -4,11 +4,14 @@ import { useState } from "react";
 import CodeBlock from "./CodeBlock";
 import SnippetSection from "../snippet/snippet";
 
-const RightDrawer = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface RightDrawerProps {
+  isOpen : boolean,
+  setIsOpen : any
+}
+
+const RightDrawer = ({isOpen, setIsOpen}: RightDrawerProps) => {
 
   const toggleDrawer = () => {
-    // setIsOpen(!isOpen);
     setIsOpen(true);
   };
 
@@ -18,7 +21,7 @@ const RightDrawer = () => {
         className=" bg-black text-white rounded-xl hover:bg-black hover:text-white hover:duration-300 p-2 transition-all duration-300 ease-in-out border-2 border-black hover:border-white"
       >
        
-        <SnippetSection  setIsOpen={setIsOpen}  />
+        <SnippetSection  setIsOpen={setIsOpen} />
         
       </div>
       {isOpen && (

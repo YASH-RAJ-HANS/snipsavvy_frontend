@@ -19,6 +19,8 @@ const SnippetSection: React.FC<SnippetSectionProps> = ({  setIsOpen}) =>{
     
     setIsOpenSnippet(true)
   }
+  const workspaceName = localStorage.getItem("workspaceName")
+  const collectionId = localStorage.getItem("collectionId")
   const cardData = [
     { title: "LeetCode", content: "Coding platform with alg", snippetId: '1' },
     { title: "Snippet", content: "Reusable code snippet rep", snippetId: '2' },
@@ -36,7 +38,9 @@ const SnippetSection: React.FC<SnippetSectionProps> = ({  setIsOpen}) =>{
           >
             {cardData.map((card, index) => (
               <button onClick={() => handleSnippet()}>
+              <Link href={`/dashboard/${workspaceName}/${collectionId}/${card.snippetId}`}>
                 <SnippetCard key={index} {...card} />
+              </Link>
               </button>
             ))}
           </div>

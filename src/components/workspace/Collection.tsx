@@ -60,19 +60,21 @@ const Collection = () => {
 
   const searchParams = useSearchParams();
   const router = useRouter();
+  const workspaceName = localStorage.getItem('workspaceName');
 
   const workspace = searchParams.get("workspace")
     ? searchParams.get("workspace")
     : "";
   const currentSearchParams = useSearchParams();
 
-  const updateUrl = (name: string) => {
-    const workspace = currentSearchParams.get("workspace") || "";
-    const query: Record<string, string> = { workspace };
-    if (name) {
-      query.collection = name;
-    }
-    router.push(`?${new URLSearchParams(query).toString()}`);
+  const updateUrl = (collectionId: string) => {
+    // const workspace = currentSearchParams.get("workspace") || "";
+    // const query: Record<string, string> = { workspace };
+    // if (name) {
+    //   query.collection = name;
+    // }
+    // router.push(`?${new URLSearchParams(query).toString()}`);
+    localStorage.setItem("collectionId", collectionId);
   };
 
   return (
@@ -90,9 +92,9 @@ const Collection = () => {
         <div className="-mt-5 ml-5">
           {Collections.map((collection, index) => (
             <div key={index} className="h-14 w-14  m-auto ml-7 rounded-lg ">
-              {/* <Link href={`/workspace/${collection.collectionId}`}> */}
+              <Link href={`/dashboard/${workspaceName}/${collection.collectionId}`}>
               <button
-                onClick={() => updateUrl(collection.name)}
+                onClick={() => updateUrl(collection.collectionId)}
                 className="text-slate-400 flex text-sm hover:border-2"
               >
                 <span
@@ -106,7 +108,7 @@ const Collection = () => {
                 </span>{" "}
                 {collection.name}
               </button>
-              {/* </Link> */}
+              </Link> 
             </div>
           ))}
         </div>

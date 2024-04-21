@@ -1,4 +1,5 @@
-import React from 'react'
+"use client"
+import React, {useState} from 'react'
 import RightDrawer from '@/components/drawer/Drawer';
 
 type LayoutProps = {
@@ -6,10 +7,10 @@ type LayoutProps = {
 }
 
 const CollectionLayout: React.FC<LayoutProps> = ({ children }) => {
+  const [isOpen, setIsOpen ] = useState(false)
   return (
     <div>
-        <RightDrawer />
-
+        <RightDrawer isOpen={isOpen} setIsOpen={setIsOpen}/>
         {children}
     </div>
   )

@@ -2,16 +2,19 @@
 import React from "react";
 import { CiSettings } from "react-icons/ci";
 import { RxAvatar } from "react-icons/rx";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import  Link  from "next/link"
 
 const Sidebar = () => {
   const router = useRouter();
 
   const updateUrl = (name: string) => {
-    const query = { workspace: name };
-    router.push(`?${new URLSearchParams(query).toString()}`);
+    // const query = { workspace: name };
+    // router.push(`?${new URLSearchParams(query).toString()}`);
+    localStorage.setItem('workspaceName', name);
   };
-
+  const routes = useRouter();
+  
   const workspaces = [
     { name: "Wo", color: "#2E135D" },
     { name: "Br", color: "#164D41" },
@@ -19,7 +22,7 @@ const Sidebar = () => {
   ];
   return (
     <>
-      <div className="h-screen w-[6vw]  bg-[#1E1F21] pt-6">
+      <div className="h-screen w-[6vw]  bg-[#1E1F21] pt-6 ">
         <div className="">
           {workspaces.map((workspace, index) => (
             <div
@@ -28,12 +31,15 @@ const Sidebar = () => {
               className="h-14 w-14  m-auto mt-7 rounded-lg "
               style={{ backgroundColor: `${workspace.color}` }}
             >
+              <Link href={`/dashboard/${workspace.name}`}>
               <p className="text-white pt-6 pl-6 font-bold text-lg">
                 {" "}
                 {workspace.name}
               </p>
+              </Link>
             </div>
           ))}
+
           <div className="border h-10 w-10 rounded-full m-auto mt-7 ">
             <p className="pt-0.5 pl-2.5 font-bold text-2xl">+</p>
           </div>
