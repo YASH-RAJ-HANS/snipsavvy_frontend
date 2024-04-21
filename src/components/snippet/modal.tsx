@@ -32,8 +32,8 @@ export default function Modal() {
   }
 
   return (
-    <div className="bg-gray-700 rounded-2xl text-white">
-      <Button onClick={handleOpen}>Create Workspace </Button>
+    <div className="  text-white font-bold text-4xl ">
+      <Button onClick={handleOpen}>+ </Button>
       <SnippetModal
         open={open}
         onClose={() => handleClose()}

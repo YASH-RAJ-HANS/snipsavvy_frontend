@@ -2,6 +2,7 @@ import React from 'react'
 import Collection from "@/components/workspace/Collection";
 import Sidebar from "@/components/workspace/Sidebar";
 import Drawer from "@/components/drawer/Drawer";
+import SnippetSection from '@/components/snippet/snippet';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -13,6 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {/* Sidebar content goes here */}
         <Sidebar/>
         <Collection/>
+        
       </div>
       {children}
     </div>
