@@ -3,6 +3,7 @@ import React from "react";
 import { CiSettings } from "react-icons/ci";
 import { RxAvatar } from "react-icons/rx";
 import { useRouter } from "next/navigation";
+import Modal from "../snippet/modal";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -25,7 +26,7 @@ const Sidebar = () => {
             <div
               onClick={() => updateUrl(workspace.name)}
               key={index}
-              className="h-14 w-14  m-auto mt-7 rounded-lg "
+              className="h-14 w-14  m-auto mt-7 rounded-lg cursor-pointer "
               style={{ backgroundColor: `${workspace.color}` }}
             >
               <p className="text-white pt-6 pl-6 font-bold text-lg">
@@ -34,8 +35,8 @@ const Sidebar = () => {
               </p>
             </div>
           ))}
-          <div className="border h-10 w-10 rounded-full m-auto mt-7 ">
-            <p className="pt-0.5 pl-2.5 font-bold text-2xl">+</p>
+          <div className="  m-auto mt-7 ">
+            <Modal/>
           </div>
         </div>
         <div

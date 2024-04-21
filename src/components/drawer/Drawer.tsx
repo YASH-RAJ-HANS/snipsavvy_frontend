@@ -1,11 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import CodeBlock from "./CodeBlock";
 import SnippetSection from "../snippet/snippet";
+import { useSearchParams } from "next/navigation";
 
 const RightDrawer = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
+  
+  const searchParams = useSearchParams();
+
+  const snippet = searchParams.get("snippet")
+    ? searchParams.get("snippet")
+    : "";
+  
+
 
   const toggleDrawer = () => {
     // setIsOpen(!isOpen);
@@ -13,18 +22,18 @@ const RightDrawer = () => {
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <div
+    snippet && 
+    (
+      <div className="flex items-center justify-center">
+      {/* <div
         className=" bg-black text-white rounded-xl hover:bg-black hover:text-white hover:duration-300 p-2 transition-all duration-300 ease-in-out border-2 border-black hover:border-white"
       >
        
-        <SnippetSection  setIsOpen={setIsOpen}  />
-        
-      </div>
+      </div> */}
       {isOpen && (
-        <div className="fixed top-0 right-0 h-full w-1/2 bg-zinc-800 transition-all duration-300">
+        <div className="fixed top-0 right-0 h-full w-1/2 bg-black transition-all duration-300">
           <div className="p-4">
-            Drawer content goes here
+            Drawer content goes here snippet id-  {snippet}
             <h2 className="text-xl font-bold text-white">
               Sub Category Heading
             </h2>
@@ -34,6 +43,7 @@ const RightDrawer = () => {
         </div>
       )}
     </div>
+    )
   );
 };
 
