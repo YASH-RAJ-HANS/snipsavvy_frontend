@@ -20,13 +20,13 @@ const Sidebar = () => {
   ];
   return (
     <>
-      <div className="h-screen w-[6vw]  bg-[#1E1F21] pt-6">
+      <div className="h- w-[6vw]  bg-[#1E1F21] pt- flex-col overflow-none">
         <div className="">
           {workspaces.map((workspace, index) => (
             <div
               onClick={() => updateUrl(workspace.name)}
               key={index}
-              className="h-14 w-14  m-auto mt-7 rounded-lg cursor-pointer "
+              className="h-14 w-14  m-auto mt-7 rounded-lg cursor-pointer hover:border-2 "
               style={{ backgroundColor: `${workspace.color}` }}
             >
               <p className="text-white pt-6 pl-6 font-bold text-lg">
@@ -35,19 +35,23 @@ const Sidebar = () => {
               </p>
             </div>
           ))}
-          <div className="  m-auto mt-7 ">
+          <div className="  h-14 w-14  m-auto mt-7 rounded-full   ">
             <Modal/>
           </div>
         </div>
-        <div
-          style={{ marginTop: "200px", marginLeft: "25px", fontSize: "30px" }}
-        >
-          <CiSettings />
-        </div>
-        <div
-          style={{ marginTop: "20px", marginLeft: "25px", fontSize: "30px" }}
-        >
-          <RxAvatar />
+        <div className="items-center justify-center pb-5">
+          <ul>
+          <li className="cursor-pointer"
+            style={{ marginTop: "100px", marginLeft: "25px", fontSize: "30px" }}
+          >
+            <CiSettings />
+          </li>
+          <li className="cursor-pointer"
+            style={{ marginTop: "20px", marginLeft: "25px", fontSize: "30px" }}
+          >
+            <RxAvatar />
+          </li>
+          </ul>
         </div>
       </div>
       {/* <div className='h-screen min-w- '>
