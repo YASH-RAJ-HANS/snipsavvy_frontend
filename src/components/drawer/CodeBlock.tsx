@@ -2,30 +2,26 @@
 import React, {useState, useEffect} from 'react'
 import 'prismjs';
 import dummyCodeData from '@/dummydata';
-import 'prismjs/themes/prism-okaidia.css'; 
+import 'prismjs/themes/prism-twilight.css'; 
 import { LuCopyPlus } from "react-icons/lu";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'prismjs/components/prism-python';
 import 'prismjs/components/prism-java';
 import 'prismjs/components/prism-javascript';
-import { FaPlus } from "react-icons/fa";
-import { FaMinus } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
+import { TbPencilCancel } from "react-icons/tb";
+import { CiShare2 } from "react-icons/ci";
+import SnippetModal  from './snippetModal'
 
 function CodeBlock() {
     const [isEditable, setIsEditable] = useState(false);
-    const [expandedBlocks, setExpandedBlocks] = useState(Array(dummyCodeData.length).fill(false));
+    const [showBox, setShowBox] = useState(false);
 
-    const toggleBlockExpand = (index: number) => {
-      const newExpandedBlocks = [...expandedBlocks];
-      newExpandedBlocks[index] = !newExpandedBlocks[index];
-      setExpandedBlocks(newExpandedBlocks);
-
-      setTimeout(()=> {
+    useEffect (() => {
         window.Prism.highlightAll();
-      }, 0);
-  };
-
+    }, []);
+   
   const toggleEditable = () => {
     setIsEditable(!isEditable);
     const codeElement = document.getElementById('editable-code');
@@ -47,31 +43,33 @@ function CodeBlock() {
       });
   };
 
+  const toggleBox = () => {
+    setShowBox(true);
+  }
+    
       return (
         <div>
-      <button onClick={toggleEditable} className='bg-white text-black rounded-xl hover:bg-black hover:text-white hover:duration-300 p-1 transition-all duration-300 ease-in-out border-2 border-black hover:border-white'>
-        {isEditable ? 'Disable Editing' : 'Enable Editing'}
-      </button>
+      
       <div>
-        {dummyCodeData.map((item, index) => (
-            <div key={index} className='py-2'>
-                <h2 className='text-md font-bold text-white'>{item.title}</h2>
+            <div className='py-2'>
+                <h2 className='text-md text-white bg-zinc-900 p-2 font-semibold'>{dummyCodeData[0].title}</h2>
                 <div className="relative">
-                <button className="absolute top-0 right-0 text-zinc-100 font-bold bg-blue-500 hover:bg-blue-400 duration-300 rounded-3xl p-2" onClick={() => copyToClipboard(item.code)}><LuCopyPlus /></button>
+                <button className="absolute -top-10 right-0 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2" onClick={() => copyToClipboard(dummyCodeData[0].code)}><LuCopyPlus /></button>
                 <ToastContainer />
-                <button onClick={() => toggleBlockExpand(index)} className='absolute top-0 right-8 text-zinc-100 bg-blue-500 hover:bg-blue-400 duration-300 rounded-3xl p-2 mx-2'>
-                  {expandedBlocks[index] ? <FaMinus /> : <FaPlus />}
+                <button onClick={toggleEditable} className='absolute -top-10 right-6 text-zinc-100 bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2 mx-2'>
+                  {isEditable ? <MdEdit /> : <TbPencilCancel />}
                 </button>
-                {expandedBlocks[index] && (
-                        <pre className='py-4'>
-                            <code id="editable-code" className={`language-${item.language} ${isEditable ? 'text-black' : 'text-white'}`} contentEditable={isEditable}>
-                                {item.code}
+                <button className="absolute -top-10 right-16 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2" onClick={toggleBox}><CiShare2 /></button>
+                {showBox && <SnippetModal onClose={() => setShowBox(false)}/>}
+                <div className='pt-1 rounded-b-md border-zinc-900 bg-zinc-900'>
+                        <pre className='p-4'>
+                            <code id="editable-code" className={`language-${dummyCodeData[0].language} ${isEditable ? 'text-black' : 'text-white'}`} contentEditable={isEditable}>
+                                {dummyCodeData[0].code}
                             </code>
                         </pre>
-                    )}
+                </div>
                 </div>
             </div>
-        ))}
       </div>  
     </div>
       );
