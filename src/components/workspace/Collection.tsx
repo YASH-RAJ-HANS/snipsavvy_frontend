@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React,{useState} from "react";
 import { FaFolderOpen } from "react-icons/fa";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -36,28 +36,32 @@ const Collection = () => {
       color: "#" + Math.floor(Math.random() * 16777215).toString(16),
       collectionId: "6",
     },
-    {
-      name: "RandomCode7",
-      color: "#" + Math.floor(Math.random() * 16777215).toString(16),
-      collectionId: "7",
-    },
-    {
-      name: "RandomCode8",
-      color: "#" + Math.floor(Math.random() * 16777215).toString(16),
-      collectionId: "8",
-    },
-    {
-      name: "RandomCode9",
-      color: "#" + Math.floor(Math.random() * 16777215).toString(16),
-      collectionId: "9",
-    },
-    {
-      name: "RandomCode10",
-      color: "#" + Math.floor(Math.random() * 16777215).toString(16),
-      collectionId: "10",
-    },
+    // {
+    //   name: "RandomCode7",
+    //   color: "#" + Math.floor(Math.random() * 16777215).toString(16),
+    //   collectionId: "7",
+    // },
+    // {
+    //   name: "RandomCode8",
+    //   color: "#" + Math.floor(Math.random() * 16777215).toString(16),
+    //   collectionId: "8",
+    // },
+    // {
+    //   name: "RandomCode9",
+    //   color: "#" + Math.floor(Math.random() * 16777215).toString(16),
+    //   collectionId: "9",
+    // },
+    // {
+    //   name: "RandomCode10",
+    //   color: "#" + Math.floor(Math.random() * 16777215).toString(16),
+    //   collectionId: "10",
+    // },
   ];
+  const [showInput, setShowInput] = useState(false);
 
+  const handleAddClick = () => {
+    setShowInput(!showInput);
+  };
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -76,16 +80,16 @@ const Collection = () => {
   };
 
   return (
-    <div className="h-screen w-25vw border-l-2 border-slate-700  bg-[#1E1F21]">
+    <div className="h-  border-l-2 border-slate-700  bg-[#1E1F21] overflow-none">
       <div>
-        <div className="flex m-10 ">
-          <div className="mr-3   ">
+        <div className="flex m-8 items-center justify-center ">
+          <div className="mr-3 text-gray-400  ">
             <FaFolderOpen />
           </div>
-          <p className="pr-10 text-sm text-slate-200 font-bold">
-            {workspace} COLLECTIONS
+          <p className="pr- text-sm text-gray-400 font-bold">
+            {workspace} Collections
           </p>
-          <button className="font-extrabold -mt-1.5 text-lg">+</button>
+          <button className="font-extrabold rounded-full pb-4 h-6 w-6 -mt-1 text-lg ml-2 text-gray-400 hover:text-white hover:" >+</button>
         </div>
         <div className="-mt-5 ml-5">
           {Collections.map((collection, index) => (
@@ -93,7 +97,7 @@ const Collection = () => {
               {/* <Link href={`/workspace/${collection.collectionId}`}> */}
               <button
                 onClick={() => updateUrl(collection.name)}
-                className="text-slate-400 flex text-sm hover:border-2"
+                className="text-gray-400 flex text-sm hover:text-white hover:bg-black rounded-md px-4  py-1" 
               >
                 <span
                   style={{

@@ -32,8 +32,8 @@ export default function Modal() {
   }
 
   return (
-    <div className="  text-white font-bold text-4xl ">
-      <Button onClick={handleOpen}>+ </Button>
+    <div className="   ">
+      <Button onClick={handleOpen} className='text-white font-bold text-3xl'>+ </Button>
       <SnippetModal
         open={open}
         onClose={() => handleClose()}
