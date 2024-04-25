@@ -35,7 +35,7 @@ const ShareSnippet = ({ onClose } : ModalProps) => {
         <ToastContainer />
         <div className='border border-gray-500'></div>
         <div className='flex justify-center items-center flex-col'>
-          <h1 className='text-white text-xl font-semibold py-2'>Don't want to send the email?</h1>
+          <h1 className='text-white text-xl font-semibold py-2'>Do not want to send the email?</h1>
           <h1 className='text-white py-2 font-semibold'>Copy the URL</h1>
           <button onClick={copyLink} className='rounded-3xl text-xl border p-2 justify-center items-center my-1'><LuCopyPlus /></button>
         </div>

@@ -52,7 +52,7 @@ function CodeBlock() {
       
       <div>
             <div className='py-2'>
-                <h2 className='text-md text-white bg-zinc-900 p-2 font-semibold'>{dummyCodeData[0].title}</h2>
+                <h2 className='text-md text-white bg-["#131415"] p-2 font-semibold'>{dummyCodeData[0].title}</h2>
                 <div className="relative">
                 <button className="absolute -top-10 right-0 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2" onClick={() => copyToClipboard(dummyCodeData[0].code)}><LuCopyPlus /></button>
                 <ToastContainer />

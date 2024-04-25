@@ -92,11 +92,13 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
   ];
 
   return (
-    collection && (
+    <div>
+    {collection && (
       <div style={{ minHeight: "100vh" }} className="h-screen-full mt-16">
         <div
           className={`${snippet ? "w-1/3 " : "w-full"} flex flex-col justify-around items-center `}
         >
+          
           <div className="text-xl pl-4 mb-4">
             Get Started with {collection} Snippets
           </div>
@@ -115,13 +117,10 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
           </div>
         </div>
       </div>
-    )
+    )}
+    </div>
 
-    // (
-    //   <div>
-    //     <p >Click to view snippets</p>
-    //   </div>
-    // )
+    
   );
 };
 export default SnippetSection;
