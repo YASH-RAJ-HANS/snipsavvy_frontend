@@ -2,7 +2,6 @@
 
 import { useState,useEffect } from "react";
 import CodeBlock from "./CodeBlock";
-import SnippetSection from "../snippet/snippet";
 import { useSearchParams } from "next/navigation";
 
 const RightDrawer = () => {
