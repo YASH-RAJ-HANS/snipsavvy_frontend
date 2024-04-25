@@ -8,7 +8,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import SearchIcon from '@mui/icons-material/Search';
 const WorkspacePage: React.FC = () => {
   return (
-    <div className=" h-screen text-white flex flex-col">
+    <div className=" h-screen text-white text- bg-[#27272A]">
       {/* <h1>Create a New Collection</h1>
       <h1>Explore Through more collections</h1> */}
       <div style={{width:"75vw"}} className="fixed top-0  py-1 pr-3 flex justify-between items-center bg-gray-800 py-4">

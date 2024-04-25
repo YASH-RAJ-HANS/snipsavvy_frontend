@@ -13,7 +13,6 @@ const RightDrawer = () => {
   const snippet = searchParams.get("snippet")
     ? searchParams.get("snippet")
     : "";
-  
 
 
   const toggleDrawer = () => {
@@ -34,10 +33,10 @@ const RightDrawer = () => {
         <div className="fixed top-16 right-0 h-full w-1/2 bg-black transition-all duration-300">
           <div className="p-4">
             Drawer content goes here snippet id-  {snippet}
-            <h2 className="text-xl font-bold text-white">
+            <h2 className="text-xl font-semibold leading-2 text-white">
               Sub Category Heading
             </h2>
-            <h2 className="text-zinc-100/70 text-sm py-2 mb-2">File Count</h2>
+              <input placeholder="Snippet Description..." className="text-black bg-zinc-800 rounded-lg px-3 py-1 my-4 w-[90%]"></input>
             <CodeBlock />
           </div>
         </div>
