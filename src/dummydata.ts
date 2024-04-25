@@ -1,10 +1,8 @@
 const dummyCodeData = [
     {
-      title: 'Example 1',
+      title: 'Hello World',
       language: 'javascript',
-      code: `function greet() {
-    console.log('Hello, World!');
-  }`
+      code: `\nimport { addSnippet } from \"../controllers/snippet.controller\";\nimport express, { Router } from \"express\";\nconst snippet: Router = express.Router();\n\nsnippet.post(\"/\", addSnippet);\n// snippet.get(\"/\" , fetchWorkspaces)\n\nmodule.exports = snippet;\n`
     },
     {
       title: 'Example 2',
