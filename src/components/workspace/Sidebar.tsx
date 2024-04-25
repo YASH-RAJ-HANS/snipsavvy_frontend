@@ -4,6 +4,14 @@ import { CiSettings } from "react-icons/ci";
 import { RxAvatar } from "react-icons/rx";
 import { useRouter } from "next/navigation";
 import Modal from "../snippet/modal";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -35,7 +43,22 @@ const Sidebar = () => {
               </p>
             </div>
           ))}
+
           <div className="  m-auto mt-7 ">
+            {/* <Dialog>
+              <DialogTrigger>
+                <div className="text-2xl text-white">+</div>
+                </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Are you absolutely sure?</DialogTitle>
+                  <DialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    your account and remove your data from our servers.
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog> */}
             <Modal/>
           </div>
         </div>

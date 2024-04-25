@@ -31,7 +31,7 @@ const RightDrawer = () => {
        
       </div> */}
       {isOpen && (
-        <div className="fixed top-0 right-0 h-full w-1/2 bg-black transition-all duration-300">
+        <div className="fixed top-16 right-0 h-full w-1/2 bg-black transition-all duration-300">
           <div className="p-4">
             Drawer content goes here snippet id-  {snippet}
             <h2 className="text-xl font-bold text-white">

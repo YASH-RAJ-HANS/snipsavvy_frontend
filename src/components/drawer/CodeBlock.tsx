@@ -48,7 +48,7 @@ function CodeBlock() {
   };
 
       return (
-        <div>
+        <div className='z-10'>
       <button onClick={toggleEditable} className='bg-white text-black rounded-xl hover:bg-black hover:text-white hover:duration-300 p-1 transition-all duration-300 ease-in-out border-2 border-black hover:border-white'>
         {isEditable ? 'Disable Editing' : 'Enable Editing'}
       </button>

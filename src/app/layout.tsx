@@ -1,7 +1,10 @@
-import { Inter } from "next/font/google";
+import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import { cn } from "@/lib/utils"
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 
 interface Metadata {
   title: "Create Next App";
@@ -15,7 +18,10 @@ type LayoutProps = {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <html>
-      <body>
+      <body  className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          fontSans.variable
+        )}>
         {/* <Navbar /> */}
 
         <div className=" min-h-screen bg-black">
