@@ -3,6 +3,7 @@ import React,{useState} from "react";
 import { FaFolderOpen } from "react-icons/fa";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
+import { Suspense } from 'react'
 
 const Collection = () => {
   const Collections = [
@@ -91,6 +92,7 @@ const Collection = () => {
           </p>
           <button className="font-extrabold rounded-full pb-4 h-6 w-6 -mt-1 text-lg ml-2 text-gray-400 hover:text-white hover:" >+</button>
         </div>
+        <Suspense>
         <div className="-mt-5 ml-5">
           {Collections.map((collection, index) => (
             <div key={index} className="h-14 w-14  m-auto ml-7 rounded-lg ">
@@ -114,6 +116,7 @@ const Collection = () => {
             </div>
           ))}
         </div>
+        </Suspense>
       </div>
     </div>
   );

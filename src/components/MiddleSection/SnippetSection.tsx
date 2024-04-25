@@ -5,6 +5,7 @@ import SnippetCard from "./SnippetCard/Card";
 import Link from "next/link";
 // import Collection from "../workspace/Collection";
 import { useSearchParams, useRouter } from "next/navigation";
+import { Suspense } from "react";
 
 interface SnippetSectionProps {
   // setIsOpen: any;
@@ -84,43 +85,41 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
         "Store and share useful co Coding platform with alg Coding platform with algCoding platform with alg",
       snippetId: "4",
     },
-    
-
-    
-    
-    
   ];
 
   return (
     <div>
-    {collection && (
-      <div style={{ minHeight: "100vh" }} className="h-screen-full mt-16">
-        <div
-          className={`${snippet ? "w-1/3 " : "w-full"} flex flex-col justify-around items-center `}
-        >
-          
-          <div className="text-xl pl-4 mb-4">
-            Get Started with {collection} Snippets
-          </div>
-          <hr />
-
-          <div className="flex mt-2">
-            <div className="flex flex-wrap   overflow-hidden ">
-              <div className={`${snippet ? "items-center justify-center h-5/6  " : " justify-center  h-fullitems-center"} overflow-y-scroll flex flex-wrap   h-full scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-blue-200 scrollbar-thumb-rounded`}>
-                {cardData.map((card, index) => (
-                  <button onClick={() => updateUrl(card.snippetId)} key={index}>
-                    <SnippetCard {...card} />
-                  </button>
-                ))}
-              </div>
+      {collection && (
+        <div style={{ minHeight: "100vh" }} className="h-screen-full mt-16">
+          <div
+            className={`${snippet ? "w-1/3 " : "w-full"} flex flex-col justify-around items-center `}
+          >
+            <div className="text-xl pl-4 mb-4">
+              Get Started with {collection} Snippets
             </div>
+            <hr />
+            <Suspense>
+              <div className="flex mt-2">
+                <div className="flex flex-wrap   overflow-hidden ">
+                  <div
+                    className={`${snippet ? "items-center justify-center h-5/6  " : " justify-center  h-fullitems-center"} overflow-y-scroll flex flex-wrap   h-full scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-blue-200 scrollbar-thumb-rounded`}
+                  >
+                    {cardData.map((card, index) => (
+                      <button
+                        onClick={() => updateUrl(card.snippetId)}
+                        key={index}
+                      >
+                        <SnippetCard {...card} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </Suspense>
           </div>
         </div>
-      </div>
-    )}
+      )}
     </div>
-
-    
   );
 };
 export default SnippetSection;
