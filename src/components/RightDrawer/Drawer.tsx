@@ -20,6 +20,7 @@ const RightDrawer = () => {
   };
 
   return (
+    <Suspense>
     snippet && 
     (
       <div className="flex items-center justify-center">
@@ -42,6 +43,7 @@ const RightDrawer = () => {
       )}
     </div>
     )
+    </Suspense>
   );
 };
 

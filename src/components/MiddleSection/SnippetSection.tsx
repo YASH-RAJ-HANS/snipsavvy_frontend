@@ -88,6 +88,7 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
   ];
 
   return (
+    <Suspense>
     <div>
       {collection && (
         <div style={{ minHeight: "100vh" }} className="h-screen-full mt-16">
@@ -120,6 +121,7 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
         </div>
       )}
     </div>
+    </Suspense>
   );
 };
 export default SnippetSection;

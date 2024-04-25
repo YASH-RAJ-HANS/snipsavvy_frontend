@@ -81,7 +81,9 @@ const Collection = () => {
   };
 
   return (
+    <Suspense>
     <div className="h-  border-l-2 border-slate-700  bg-[#1E1F21] overflow-none">
+      
       <div>
         <div className="flex m-8 items-center justify-center ">
           <div className="mr-3 text-gray-400  ">
@@ -119,6 +121,7 @@ const Collection = () => {
         </Suspense>
       </div>
     </div>
+    </Suspense>
   );
 };
 
