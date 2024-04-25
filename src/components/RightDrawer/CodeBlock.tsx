@@ -12,7 +12,7 @@ import 'prismjs/components/prism-javascript';
 import { MdEdit } from "react-icons/md";
 import { TbPencilCancel } from "react-icons/tb";
 import { CiShare2 } from "react-icons/ci";
-import SnippetModal  from './snippetModal'
+import ShareSnippet  from './ShareSnippet';
 
 function CodeBlock() {
     const [isEditable, setIsEditable] = useState(false);
@@ -60,7 +60,7 @@ function CodeBlock() {
                   {isEditable ? <MdEdit /> : <TbPencilCancel />}
                 </button>
                 <button className="absolute -top-10 right-16 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2" onClick={toggleBox}><CiShare2 /></button>
-                {showBox && <SnippetModal onClose={() => setShowBox(false)}/>}
+                {showBox && <ShareSnippet onClose={() => setShowBox(false)}/>}
                 <div className='pt-1 rounded-b-md border-zinc-900 bg-zinc-900'>
                         <pre className='p-4'>
                             <code id="editable-code" className={`language-${dummyCodeData[0].language} ${isEditable ? 'text-black' : 'text-white'}`} contentEditable={isEditable}>

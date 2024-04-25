@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-import SnippetCard from "../Utils/Snippet_Card/Card";
+import SnippetCard from "./SnippetCard/Card";
 import Link from "next/link";
 // import Collection from "../workspace/Collection";
 import { useSearchParams, useRouter } from "next/navigation";

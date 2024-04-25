@@ -1,7 +1,7 @@
 import React from 'react'
-import Collection from "@/components/workspace/Collection";
-import Sidebar from "@/components/workspace/Sidebar";
-import Drawer from "@/components/drawer/Drawer";
+import Collection from "@/components/LeftPanel/Collection";
+import Sidebar from "@/components/LeftPanel/Sidebar";
+import Drawer from "@/components/RightDrawer/Drawer";
 import SnippetSection from '@/components/snippet/snippet';
 
 type LayoutProps = {

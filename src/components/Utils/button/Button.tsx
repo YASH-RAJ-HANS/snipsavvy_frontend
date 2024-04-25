@@ -10,7 +10,7 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import Modal from "../snippet/modal";
+import Modal from "../../LeftPanel/Modal";
 
 
 const options = ["+"];

@@ -10,7 +10,7 @@ interface ModalProps {
     onClose: () => void;
 }
 
-const SnippetModal = ({ onClose } : ModalProps) => {
+const ShareSnippet = ({ onClose } : ModalProps) => {
 
   const sendEmail = () => {
     toast.success('Email sent successfully!');
@@ -44,4 +44,4 @@ const SnippetModal = ({ onClose } : ModalProps) => {
   );
 };
 
-export default SnippetModal;
+export default ShareSnippet;
