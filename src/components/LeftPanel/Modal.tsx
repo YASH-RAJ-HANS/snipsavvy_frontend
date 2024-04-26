@@ -8,6 +8,8 @@ import { TextField } from "@mui/material";
 import Image from "next/image";
 import Workspace from "../../../public/workspace.jpg";
 import axios from 'axios';
+import { POST_WORKSPACE } from "../../../config/config";
+
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -32,7 +34,6 @@ export default function Modal() {
   })
   const handleSubmit = () => {
     setOpen(false);
-
     alert("Works space created!");
   };
   const handleCreateWorkspace = async () => {
@@ -41,16 +42,17 @@ export default function Modal() {
       description: data.description,
       owner: "65f72cd38cfe34c5f0c2648b"
     }
-    await axios.post('https://snipsavvy.onrender.com/v1/api/workspace', body)
-    .then((response) => {
-      console.log(response);
-      alert("Workspace created successfully");
-      setOpen(false);
-    }, (error) => {
-      console.log(error);
-      setOpen(false);
-    });
+    
+    await axios.post('https://snipsavvy.onrender.com/v1/api/workspace' ,body)
+      .then((response) => {
+          console.log(response);
+          
+        }, (error) => {
+          console.log(error);
+          
+        });
   }
+  
 
   return (
     <div className="  text-white font-bold text-4xl ">

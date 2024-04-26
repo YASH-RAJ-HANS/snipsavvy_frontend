@@ -4,7 +4,7 @@ import { FaFolderOpen } from "react-icons/fa";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from 'react'
-import axios from "axios";
+import axios from 'axios';
 
 const Collection = () => {
   // const Collections = [
@@ -71,7 +71,10 @@ const Collection = () => {
     ? searchParams.get("workspace")
     : "";
   const currentSearchParams = useSearchParams();
-  // console.log(workspace);
+
+  const [data, setData] = React.useState("");
+
+
   const updateUrl = (name: string) => {
     const workspace = currentSearchParams.get("workspace") || "";
     const query: Record<string, string> = { workspace };
@@ -81,6 +84,23 @@ const Collection = () => {
     }
     router.push(`?${new URLSearchParams(query).toString()}`);
   };
+
+  const handleCreateCollection= async () =>{
+    const body = {
+      id: workspace,
+      name:data,
+      description:"SnipSavvy Project Snippets"
+    }
+    await axios.post('https://snipsavvy.onrender.com/vi/api/category', body)
+      .then((response) =>{
+        console.log(response)
+        alert("Collection created successfully")
+      })
+      .catch((error) =>{
+          console.log(error)
+      })
+  }
+
   const [collection, setCollection] = useState<any>([]); //[FIX ME ] 
   useEffect(()=> {
     axios.get('https://snipsavvy.onrender.com/vi/api/category/' + `${workspace}`)
@@ -97,6 +117,7 @@ interface Collection{
   description :string;
 }
 
+
   return (
     <Suspense>
     <div className="h-  border-l-2 border-slate-700  bg-[#1E1F21] overflow-none">
@@ -109,9 +130,18 @@ interface Collection{
           <p className="pr- text-sm text-gray-400 font-bold">
             {workspace} Collections
           </p>
-          <button className="font-extrabold rounded-full pb-4 h-6 w-6 -mt-1 text-lg ml-2 text-gray-400 hover:text-white hover:" >+</button>
+          <button 
+            className="font-extrabold rounded-full pb-4 h-6 w-6 -mt-1 text-lg ml-2 text-gray-400 hover:text-white hover:" 
+            onClick={handleAddClick}>+</button>
         </div>
+        
         <Suspense>
+        {showInput && (
+          <div>
+            <input value={data } type="text" className="mb-8 ml-16 w-28 rounded p-1 text-black" placeholder="Add Collection" onChange={(e) => setData(e.target.value)}/>
+            <button onClick={handleCreateCollection}>✅</button>
+          </div>
+        )}
         <div className="-mt-5 ml-5">
           {collection.map((collection:Collection) => (
             <div key={collection._id} className="h-14 w-14  m-auto ml-7 rounded-lg ">
