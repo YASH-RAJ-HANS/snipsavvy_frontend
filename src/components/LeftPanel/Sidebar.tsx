@@ -1,9 +1,9 @@
 "use client";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { CiSettings } from "react-icons/ci";
 import { RxAvatar } from "react-icons/rx";
 import { useRouter } from "next/navigation";
-
+import axios from "axios";
 import Modal from "./Modal";
 import {
   Dialog,
@@ -15,28 +15,43 @@ import {
 } from "@/components/ui/dialog";
 
 const Sidebar = () => {
+  const [workspace, setWorkspace] = useState<any>([]); //[FIX ME ] 
   const router = useRouter();
+
+  useEffect(()=> {
+    axios.get('https://snipsavvy.onrender.com/v1/api/workspace?user_id=' + '65f72cd38cfe34c5f0c2648b')
+   .then(response => {
+    setWorkspace(response.data.data)
+    // console.log(response.data.data)
+   }).catch(error => {
+    console.log(error)
+   })
+}, [])
 
   const updateUrl = (name: string) => {
     const query = { workspace: name };
     router.push(`?${new URLSearchParams(query).toString()}`);
   };
 
-  const workspaces = [
-    { name: "Wo", color: "#2E135D" },
-    { name: "Br", color: "#164D41" },
-    { name: "Sr", color: "#4A173E" },
-  ];
+  // const workspaces = [
+  //   { name: "Wo", color: "#2E135D" },
+  //   { name: "Br", color: "#164D41" },
+  //   { name: "Sr", color: "#4A173E" },
+  // ];
+  interface Workspace {
+    _id: string;
+    name: string;
+    description :string;
+  }
   return (
     <>
       <div className="h- w-[6vw]  bg-[#1E1F21] pt- flex-col overflow-none">
         <div className="">
-          {workspaces.map((workspace, index) => (
+          {workspace.map((workspace:Workspace) => (
             <div
-              onClick={() => updateUrl(workspace.name)}
-              key={index}
+              onClick={() => updateUrl(workspace._id)}
+              key={workspace._id}
               className="h-14 w-14  m-auto mt-7 rounded-lg cursor-pointer hover:border-2 "
-              style={{ backgroundColor: `${workspace.color}` }}
             >
               <p className="text-white pt-6 pl-6 font-bold text-lg">
                 {" "}
