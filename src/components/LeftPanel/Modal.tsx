@@ -7,6 +7,7 @@ import SnippetModal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import Image from "next/image";
 import Workspace from "../../../public/workspace.jpg";
+import axios from 'axios';
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -25,11 +26,31 @@ export default function Modal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [data, setData] = React.useState({
+    name:"",
+    description:""
+  })
   const handleSubmit = () => {
     setOpen(false);
 
     alert("Works space created!");
   };
+  const handleCreateWorkspace = async () => {
+    const body = {
+      name: data.name,
+      description: data.description,
+      owner: "65f72cd38cfe34c5f0c2648b"
+    }
+    await axios.post('https://snipsavvy.onrender.com/v1/api/workspace', body)
+    .then((response) => {
+      console.log(response);
+      alert("Workspace created successfully");
+      setOpen(false);
+    }, (error) => {
+      console.log(error);
+      setOpen(false);
+    });
+  }
 
   return (
     <div className="  text-white font-bold text-4xl ">
@@ -63,11 +84,12 @@ export default function Modal() {
                   type="text"
                   className="bg-black text-white border border-white rounded-md px-4 py-2 focus:outline-none focus:border-gray-400"
                   placeholder="Name workspace"
+                  onChange={(e)=> setData({...data, name:e.target.value})}
                 ></input>
 
                 <Button
                   style={{ height: "3rem" }}
-                  onClick={() => handleSubmit()}
+                  onClick={() => handleCreateWorkspace()}
                   variant="contained"
                 >
                   Create
@@ -76,6 +98,7 @@ export default function Modal() {
               <textarea
                 className="bg-black text-white border border-white rounded-md px-4 py-2 focus:outline-none focus:border-gray-400 resize-none h-20 w-11/12"
                 placeholder="Describe your workspace"
+                onChange={(e) => setData({...data, description:e.target.value})}
               ></textarea>
             </div>
             <div className="flex items-center bg-gray-900">
