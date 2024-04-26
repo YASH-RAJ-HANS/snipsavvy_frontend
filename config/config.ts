@@ -1,9 +1,3 @@
 require('dotenv').config();
 
-
-
-module.exports = {
-    POST_WORKSPACE : process.env.POST_WORKSPACE,
-    
-
-}
+export const POST_WORKSPACE = process.env.POST_WORKSPACE
