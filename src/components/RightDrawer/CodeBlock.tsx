@@ -13,14 +13,36 @@ import { MdEdit } from "react-icons/md";
 import { TbPencilCancel } from "react-icons/tb";
 import { CiShare2 } from "react-icons/ci";
 import ShareSnippet  from './ShareSnippet';
+import axios from 'axios'
+import { useSearchParams } from 'next/navigation';
 
 function CodeBlock() {
     const [isEditable, setIsEditable] = useState(false);
     const [showBox, setShowBox] = useState(false);
-
+    const [codeData, setCodeData] = useState<any>({})
+    const searchParams = useSearchParams()
+    const snippet = searchParams.get('snippet') ? searchParams.get('snippet') : ''
     useEffect (() => {
+      window.Prism.highlightAll()
+    }, [])
+    useEffect (() => {
+        const fetchCode = async() => {
+          await axios.get('https://snipsavvy.onrender.com/v1/api/snippet?snippet_id=' + `${snippet}`)
+          .then(response => {
+            console.log(response.data.data[0])
+            setCodeData(response.data.data[0])
+          }).catch(error => {
+            console.log(error)
+          })
+        }
+        snippet && fetchCode()
+
         window.Prism.highlightAll();
-    }, []);
+
+        return() => {
+
+        }
+    }, [snippet]);
    
   const toggleEditable = () => {
     setIsEditable(!isEditable);
@@ -51,10 +73,13 @@ function CodeBlock() {
         <div>
       
       <div>
-            <div className='py-2'>
-                <h2 className='text-md text-white bg-["#131415"] p-2 font-semibold'>{dummyCodeData[0].title}</h2>
+            <div className='py-2 flex flex-wrap'>
+              <div className='px-3 py-1 border border-white'>
+                {codeData.tags}
+              </div>
+                <h2 className='text-md text-white bg-["#131415"] p-2 font-semibold'>{codeData.title}</h2>
                 <div className="relative">
-                <button className="absolute -top-10 right-0 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2" onClick={() => copyToClipboard(dummyCodeData[0].code)}><LuCopyPlus /></button>
+                <button className="absolute -top-10 right-0 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2" onClick={() => copyToClipboard(codeData.code)}><LuCopyPlus /></button>
                 <ToastContainer />
                 <button onClick={toggleEditable} className='absolute -top-10 right-6 text-zinc-100 bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2 mx-2'>
                   {isEditable ? <MdEdit /> : <TbPencilCancel />}
@@ -63,8 +88,8 @@ function CodeBlock() {
                 {showBox && <ShareSnippet onClose={() => setShowBox(false)}/>}
                 <div className='pt-1 rounded-b-md border-zinc-900 bg-zinc-900'>
                         <pre className='p-4'>
-                            <code id="editable-code" className={`language-${dummyCodeData[0].language} ${isEditable ? 'text-black' : 'text-white'}`} contentEditable={isEditable}>
-                                {dummyCodeData[0].code}
+                            <code id="editable-code" className={`language-javascript ${isEditable ? 'text-black' : 'text-white'}`} contentEditable={isEditable}>
+                                {codeData.code}
                             </code>
                         </pre>
                 </div>
