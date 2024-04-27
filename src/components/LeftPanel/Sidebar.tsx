@@ -43,19 +43,26 @@ const Sidebar = () => {
     name: string;
     description :string;
   }
+  const getRandomColor = () => {
+    // Generate random color in hexadecimal format
+    return "#" + Math.floor(Math.random() * 16777215).toString(16);
+  };
   return (
     <>
-      <div className="h- w-[6vw]  bg-[#1E1F21] pt- flex-col overflow-none">
+      <div className=" w-[8vw]  bg-[#1E1F21]  flex-col overflow-none">
         <div className="">
           {workspace.map((workspace:Workspace) => (
             <div
               onClick={() => updateUrl(workspace._id)}
               key={workspace._id}
               className="h-14 w-14  m-auto mt-7 rounded-lg cursor-pointer hover:border-2 "
+              style={{ backgroundColor: getRandomColor() }}
+
             >
               <p className="text-white pt-6 pl-6 font-bold text-lg">
                 {" "}
-                {workspace.name}
+                {workspace.name.substring(0, 2)}
+
               </p>
             </div>
           ))}

@@ -3,7 +3,7 @@
 import { useState,useEffect } from "react";
 import CodeBlock from "./CodeBlock";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from 'react'
+// import { Suspense } from 'react'
 const RightDrawer = () => {
   const [isOpen, setIsOpen] = useState(true);
   
@@ -20,7 +20,7 @@ const RightDrawer = () => {
   };
 
   return (
-    <Suspense>
+    
     snippet && 
     (
       <div className="flex items-center justify-center">
@@ -43,7 +43,7 @@ const RightDrawer = () => {
       )}
     </div>
     )
-    </Suspense>
+    
   );
 };
 

@@ -3,7 +3,7 @@ import React,{useState , useEffect} from "react";
 import { FaFolderOpen } from "react-icons/fa";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Suspense } from 'react'
+// import { Suspense } from 'react'
 import axios from 'axios';
 
 const Collection = () => {
@@ -119,15 +119,15 @@ interface Collection{
 
 
   return (
-    <Suspense>
-    <div className="h-  border-l-2 border-slate-700  bg-[#1E1F21] overflow-none">
+    
+    <div className="w-[17vw]  border-l-2 border-slate-700  bg-[#1E1F21] overflow-none">
       
       <div>
         <div className="flex m-8 items-center justify-center ">
           <div className="mr-3 text-gray-400  ">
             <FaFolderOpen />
           </div>
-          <p className="pr- text-sm text-gray-400 font-bold">
+          <p className=" text-sm text-gray-400 font-bold">
             {workspace} Collections
           </p>
           <button 
@@ -135,7 +135,7 @@ interface Collection{
             onClick={handleAddClick}>+</button>
         </div>
         
-        <Suspense>
+        
         {showInput && (
           <div>
             <input value={data } type="text" className="mb-8 ml-16 w-28 rounded p-1 text-black" placeholder="Add Collection" onChange={(e) => setData(e.target.value)}/>
@@ -165,10 +165,10 @@ interface Collection{
             </div>
           ))}
         </div>
-        </Suspense>
+        
       </div>
     </div>
-    </Suspense>
+    
   );
 };
 
