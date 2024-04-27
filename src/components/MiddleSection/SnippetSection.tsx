@@ -5,7 +5,7 @@ import SnippetCard from "./SnippetCard/Card";
 import Link from "next/link";
 // import Collection from "../workspace/Collection";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Suspense } from "react";
+// import { Suspense } from "react";
 import axios from "axios";
 
 interface SnippetSectionProps {
@@ -43,59 +43,21 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
 
     setIsOpenSnippet(true);
   };
-  // const cardData = [
-  //   {
-  //     title: "LeetCode",
-  //     content:
-  //       "Coding platform with alg Coding platform with algCoding platform with alg",
-  //     snippetId: "1",
-  //   },
-  //   {
-  //     title: "Snippet",
-  //     content:
-  //       "Reusable code snippet rep Coding platform with alg Coding platform with algCoding platform with alg",
-  //     snippetId: "2",
-  //   },
-  //   {
-  //     title: "LeetCode",
-  //     content:
-  //       "Improve coding skills by s Coding platform with alg Coding platform with algCoding platform with alg",
-  //     snippetId: "3",
-  //   },
-  //   {
-  //     title: "Snippet",
-  //     content:
-  //       "Store and share useful co Coding platform with alg Coding platform with algCoding platform with alg",
-  //     snippetId: "4",
-  //   },
-  //   {
-  //     title: "Snippet",
-  //     content:
-  //       "Store and share useful co Coding platform with alg Coding platform with algCoding platform with alg",
-  //     snippetId: "4",
-  //   },
-  //   {
-  //     title: "Snippet",
-  //     content:
-  //       "Store and share useful co Coding platform with alg Coding platform with algCoding platform with alg",
-  //     snippetId: "4",
-  //   },
-  //   {
-  //     title: "Snippet",
-  //     content:
-  //       "Store and share useful co Coding platform with alg Coding platform with algCoding platform with alg",
-  //     snippetId: "4",
-  //   },
-  // ];
+ 
+  
   const [isSnippet, setIsSnippet] = useState<any>([]); //[FIX ME ] 
+  
   useEffect(()=> {
-    axios.get('https://snipsavvy.onrender.com/v1/api/snippet?cat_id=' + `${collection}`)
-   .then(response => {
-    setIsSnippet(response.data.data)
-    console.log(response.data.data)
-   }).catch(error => {
-    console.log(error)
-   })
+    const fetchSnippets = async () => {
+      axios.get('https://snipsavvy.onrender.com/v1/api/snippet?cat_id=' + `${collection}`)
+      .then(response => {
+        setIsSnippet(response.data.data)
+        console.log(response.data.data)
+      }).catch(error => {
+        console.log(error)
+      })
+    }
+    collection && fetchSnippets()
 }, [collection])
 interface Snip{
   _id: string;
@@ -103,7 +65,7 @@ interface Snip{
   description :string;
 }
   return (
-    <Suspense>
+    
     <div>
       {collection && (
         <div style={{ minHeight: "100vh" }} className="h-screen-full mt-16">
@@ -114,7 +76,7 @@ interface Snip{
               Get Started with {collection} Snippets
             </div>
             <hr />
-            <Suspense>
+            
               <div className="flex mt-2">
                 <div className="flex flex-wrap   overflow-hidden ">
                   <div
@@ -131,12 +93,12 @@ interface Snip{
                   </div>
                 </div>
               </div>
-            </Suspense>
+            
           </div>
         </div>
       )}
     </div>
-    </Suspense>
+    
   );
 };
 export default SnippetSection;
