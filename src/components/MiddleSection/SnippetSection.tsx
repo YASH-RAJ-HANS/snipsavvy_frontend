@@ -63,24 +63,26 @@ interface Snip{
   _id: string;
   title: string;
   description :string;
+  code :string;
 }
   return (
     
     <div>
       {collection && (
-        <div style={{ minHeight: "100vh" }} className="h-screen-full mt-16">
+        <div style={{ minHeight: "100vh" }} className="h-screen-full w-full">
           <div
-            className={`${snippet ? "w-1/3 " : "w-full"} flex flex-col justify-around items-center `}
+            className={`${snippet ? "w-1/3 " : "vw-75"} flex flex-col `}
           >
             <div className="text-xl pl-4 mb-4">
-              Get Started with {collection} Snippets
+              Get Started with Code Snippets...
             </div>
-            <hr />
+            {/* <hr className="h-2 text-gray-800 w-full mb-2" /> */}
             
-              <div className="flex mt-2">
-                <div className="flex flex-wrap   overflow-hidden ">
+              <div className="w-full flex mt-2">
+                <div className="w-full flex flex-wrap   overflow-hidden ">
                   <div
-                    className={`${snippet ? "items-center justify-center h-5/6  " : " justify-center  h-fullitems-center"} overflow-y-scroll flex flex-wrap   h-full scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-blue-200 scrollbar-thumb-rounded`}
+                  className="flex flex-wrap "
+                    // className={`${snippet} ? "items-center justify-center h-5/6  " : " justify-center  h-fullitems-center"} overflow-y-scroll flex flex-wrap   h-full   `}
                   >
                     {isSnippet.map((snip:Snip) => (
                       <button

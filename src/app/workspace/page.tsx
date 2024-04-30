@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import React from "react";
+import SnippetModal from "@/components/MiddleSection/SnippetModal";
 
 const style = {
   position: "absolute" as "absolute",
@@ -23,6 +24,7 @@ const style = {
 };
 const WorkspacePage: React.FC = () => {
   const [open, setOpen] = React.useState(false);
+  const [openSnippet, setOpenSnippet] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -30,11 +32,11 @@ const WorkspacePage: React.FC = () => {
     <div style={{ width: "75vw" }} className="fixed top-0 right-0 h-screen text-white bg-zinc-900">
       <div
         style={{ width: "75vw" }}
-        className="fixed top-0  py-1 pr-3 flex flex-col justify-between items-center bg-zinc-900  py-4"
+        className="fixed top-0  py-1 pr-3 flex flex-col justify-between  bg-zinc-900  py-4"
       >
-        <div className="flex w-full justify-between">
+        <div className="flex w-full justify-end">
           <div className="flex w-1/3">
-            <div className="border-2 ml-6 px-2 border-gray-400 h-10 flex items-center rounded-l">
+            <div className="border-2 ml-6 px-2 border-zinc-700 h-10 flex items-center rounded-l">
               <SearchIcon />
             </div>
             {open && (
@@ -73,17 +75,24 @@ const WorkspacePage: React.FC = () => {
             )}
             <input
               type="text"
-              className="w-full h-10 vh-5 bg-gray-800 text-white  px-4 border-2 border-gray-400 hover:shadow-outline focus:outline-none  border-l-0 rounded-r"
+              className="w-full h-10 vh-5 bg-zinc-900 text-white  px-4 border-2 border-zinc-700 hover:shadow-outline focus:outline-none  border-l-0 rounded-r"
               placeholder="Enter text..."
               onClick={handleOpen}
             />
           </div>
           <div className="w-2/12 vh-6 flex justify-between pl-6 items-center">
             <NotificationsIcon className="text-gray-600 mr-3" />
-            <SplitButton />
+            {/* <button className="fixed right-0" onClick={() => setOpenSnippet(!openSnippet)}> */}
+              
+            {/* <SplitButton /> */}
+            <SnippetModal/>
+            
+            {/* </button> */}
+            {/* {openSnippet && <SnippetModal />} */}
+            
           </div>
         </div>
-        <div className="mt-4 overflow-hidden">
+        <div className="mt-4 overflow-hidden vw-75 p-4">
           <SnippetSection />
           <Drawer />
         </div>
