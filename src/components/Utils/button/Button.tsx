@@ -11,9 +11,10 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Modal from "../../LeftPanel/Modal";
+import SnippetModal from "@/components/MiddleSection/SnippetModal";
 
 
-const options = ["+"];
+const options = [''];
 
 export default function SplitButton() {
   const [open, setOpen] = React.useState(false);
@@ -59,11 +60,12 @@ export default function SplitButton() {
       >
         <Button onClick={()=>setModalOpen(true)}>
          
-          <div className="border-2 border-white rounded-full font-semibold px-2">
-            {options[selectedIndex]}
-          </div>
+          {/* <div className="border-2 border-white rounded-full font-semibold px-2"> */}
+            {/* {options[selectedIndex]} */}
+            {/* <SnippetModal/> */}
+          {/* </div> */}
         </Button>
-        <Button
+        {/* <Button
           className="bg-blue-700"
           size="small"
           aria-controls={open ? "split-button-menu" : undefined}
@@ -73,9 +75,9 @@ export default function SplitButton() {
           onClick={handleToggle}
         >
           <ArrowDropDownIcon />
-        </Button>
+        </Button> */}
       </ButtonGroup>
-      <Popper
+      {/* <Popper
         sx={{
           zIndex: 10000,
         }}
@@ -111,7 +113,7 @@ export default function SplitButton() {
             </Paper>
           </Grow>
         )}
-      </Popper>
+      </Popper> */}
     </React.Fragment>
   );
 }
