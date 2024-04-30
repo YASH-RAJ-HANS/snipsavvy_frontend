@@ -25,9 +25,15 @@ const RightDrawer = () => {
     (
       <div className="flex items-center justify-center">
       {isOpen && (
+
         <div className="fixed top-16 right-0 min-h-full w-1/2 bg-zinc-900 shadow-lg shadow-zinc-700 border-l-1 border-black transition-all duration-300" style={{ maxHeight: '600px', overflow: 'auto' }}>
           <div className="p-4 overflow-auto">
             {/* Drawer content goes here
+
+        <div className="fixed top-16 right-0 h-full w-1/2 bg-black transition-all duration-300 z-10">
+          <div className="p-4">
+            Drawer content goes here snippet id-  {snippet}
+
             <h2 className="text-xl font-semibold leading-2 text-white">
               Sub Category Heading
             </h2>
