@@ -10,8 +10,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="vw-25  flex">
         {/* Sidebar content goes here */}
         <Sidebar/>
-        <Collection/>
         
+        {/* <Collection/> */}
+          
       </div>
       
       {children}
