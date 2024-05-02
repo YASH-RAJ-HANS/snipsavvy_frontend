@@ -3,6 +3,8 @@ import { FaFolderOpen } from "react-icons/fa";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { useSearchParams, useRouter } from "next/navigation";
+import { BsDot } from "react-icons/bs";
+
 import {
   ContextMenu,
   ContextMenuContent,
@@ -18,12 +20,14 @@ const Collection = ({ Workspace }: { Workspace: string }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const workspace = searchParams.get("workspace") || "";
+  const collectionid = searchParams.get("collection") || "";
 
   useEffect(() => {
     axios
       .get(`https://snipsavvy.onrender.com/vi/api/category/${workspace}`)
       .then((response) => {
         setCollection(response.data.data);
+        console.log("collections=>", response.data.data);
       })
       .catch((error) => {
         console.log(error);
@@ -67,6 +71,21 @@ const Collection = ({ Workspace }: { Workspace: string }) => {
     router.push(`?${new URLSearchParams(query).toString()}`);
   };
 
+  const colorOptions = [
+    "#5AC341",
+    "#ACA035",
+    "#A33B3A",
+    "#3C50A6",
+    "#A73C5F",
+    "#3CA686",
+  ];
+
+  interface collectionItem {
+    name: string;
+    description: string;
+    _id: string;
+  }
+
   return (
     <div className="w-[17vw] border-l-2 border-slate-700 bg-[#1E1F21] overflow-none">
       <div>
@@ -102,13 +121,21 @@ const Collection = ({ Workspace }: { Workspace: string }) => {
         )}
         <ContextMenu>
           <div className="-mt-4">
-            {collection.map(({ _id, name }: any) => (
+            {collection?.map((item: collectionItem, index: number) => (
               <div
-                key={_id}
-                onClick={() => updateUrl(_id)}
-                className="h-10 w-44 m-auto ml-6 pl-2 pt-1 text-lg mt-4 text-slate-300 hover:text-white cursor-pointer"
+                key={item._id}
+                style={{
+                  backgroundColor:
+                    collectionid === item?._id ? "rgb(24 24 27)" : "",
+                  color: collectionid === item?._id ? "white" : "",
+                }}
+                onClick={() => updateUrl(item._id)}
+                className="hover:bg-zinc-900 h-10 w-60 rounded-xl m-auto ml-4 pt-1 text-lg mt-4 text-slate-300 hover:text-white cursor-pointer flex"
               >
-                {name}
+                <span className="-mt-3.5">
+                  <BsDot size={60} color={colorOptions[index % 6]} />
+                </span>
+                {item?.name}
               </div>
             ))}
           </div>
