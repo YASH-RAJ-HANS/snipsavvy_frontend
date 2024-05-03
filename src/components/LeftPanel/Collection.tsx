@@ -4,6 +4,7 @@ import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { useSearchParams, useRouter } from "next/navigation";
 import { BsDot } from "react-icons/bs";
+import { FiMinus } from "react-icons/fi";
 
 import {
   ContextMenu,
@@ -12,7 +13,7 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 
-const Collection = ({ Workspace }: { Workspace: string }) => {
+const Collection = () => {
   const [showInput, setShowInput] = useState(false);
   const [collection, setCollection] = useState<any>([]);
   const [data, setData] = useState("");
@@ -22,7 +23,7 @@ const Collection = ({ Workspace }: { Workspace: string }) => {
   const workspace = searchParams.get("workspace") || "";
   const collectionid = searchParams.get("collection") || "";
 
-  useEffect(() => {
+  const fetchCategories = () => {
     axios
       .get(`https://snipsavvy.onrender.com/vi/api/category/${workspace}`)
       .then((response) => {
@@ -32,6 +33,10 @@ const Collection = ({ Workspace }: { Workspace: string }) => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  useEffect(() => {
+    workspace && fetchCategories();
   }, [workspace]);
 
   const handleAddClick = () => {
@@ -48,12 +53,9 @@ const Collection = ({ Workspace }: { Workspace: string }) => {
       .post("https://snipsavvy.onrender.com/vi/api/category", body)
       .then((response) => {
         console.log(response);
-        alert("Collection created successfully");
-        window.location.reload();
-        setCollection((prevCollection: any) => [
-          ...prevCollection,
-          response.data,
-        ]);
+        alert("Collection created successfully"); // [FIX ME] at a toast here, instead of alert
+        fetchCategories();
+        setShowInput(false);
       })
       .catch((error) => {
         console.log(error);
@@ -87,41 +89,42 @@ const Collection = ({ Workspace }: { Workspace: string }) => {
   }
 
   return (
-    <div className="w-[17vw] border-l-2 border-slate-700 bg-[#1E1F21] overflow-none">
+    <div className="w-[20vw] border-l-2 border-slate-700 bg-[#1E1F21] overflow-none">
       <div>
         <div className="flex m-8 items-center justify- ">
           <div className="mr-3 text-gray-400  ">
-            <FaFolderOpen />
+            <FaFolderOpen size={20} />
           </div>
-          <div className="flex">
-            <p className="text-sm text-gray-400 font-bold mr-8">Collections</p>
+          <div className="flex justify-between w-full">
+            <p className="text-md text-gray-400 font-bold">COLLECTIONS</p>
             <button
-              className="font-extrabold rounded-full pb-4 h-6 w-6 -mt-1 text-lg ml-2 text-gray-400 hover:text-white hover:"
+              className="font-extrabold rounded-full text-2xl -mt-1.5  text-gray-400 hover:text-white"
               onClick={handleAddClick}
             >
-              +
+              {showInput ? <FiMinus /> : "+"}
             </button>
           </div>
+          <hr />
         </div>
         {showInput && (
           <div className="flex items-center ">
             <Input
               value={data}
               type="text"
-              className="mb-8 ml-16 w-28 h-8 rounded p-1 text-white"
+              className="mb-8 ml-4 w-64 h-8 rounded p-1 text-white"
               placeholder="Add Collection"
               onChange={(e) => setData(e.target.value)}
               onKeyDown={handleKeyPress}
             />
-            <button onClick={handleCreateCollection} className="mb-8">
+            <button onClick={handleCreateCollection} className="mb-8 size-10">
               {" "}
               ☑️{" "}
             </button>
           </div>
         )}
-        <ContextMenu>
-          <div className="-mt-4">
-            {collection?.map((item: collectionItem, index: number) => (
+        <div className="-mt-4">
+          {workspace ? (
+            collection?.map((item: collectionItem, index: number) => (
               <div
                 key={item._id}
                 style={{
@@ -130,20 +133,20 @@ const Collection = ({ Workspace }: { Workspace: string }) => {
                   color: collectionid === item?._id ? "white" : "",
                 }}
                 onClick={() => updateUrl(item._id)}
-                className="hover:bg-zinc-900 h-10 w-60 rounded-xl m-auto ml-4 pt-1 text-lg mt-4 text-slate-300 hover:text-white cursor-pointer flex"
+                className="hover:bg-zinc-900 h-10 w-64 rounded-xl m-auto ml-4 pt-1 text-lg mt-1 text-slate-300 hover:text-white cursor-pointer flex"
               >
-                <span className="-mt-3.5">
-                  <BsDot size={60} color={colorOptions[index % 6]} />
+                <span className="-mt-2.5">
+                  <BsDot size={50} color={colorOptions[index % 6]} />
                 </span>
                 {item?.name}
               </div>
-            ))}
-          </div>
-          <ContextMenuContent>
-            <ContextMenuItem>Edit</ContextMenuItem>
-            <ContextMenuItem>Delete</ContextMenuItem>
-          </ContextMenuContent>
-        </ContextMenu>
+            ))
+          ) : (
+            <h1 className="font-bold text-2xl opacity-50 text-center mt-20">
+              Select a workspace to get started
+            </h1>
+          )}
+        </div>
       </div>
     </div>
   );
