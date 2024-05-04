@@ -12,6 +12,7 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import { baseURL } from "@/config";
 
 const Sidebar = () => {
   const [workspace, setWorkspace] = useState<any>([]);
@@ -23,10 +24,7 @@ const Sidebar = () => {
   const router = useRouter();
   useEffect(() => {
     axios
-      .get(
-        "https://snipsavvy.onrender.com/v1/api/workspace?user_id=" +
-          "65f72cd38cfe34c5f0c2648b"
-      )
+      .get(`${baseURL}/v1/api/workspace?user_id=${"65f72cd38cfe34c5f0c2648b"}`)
       .then((response) => {
         setWorkspace(response.data.data);
       })
@@ -71,7 +69,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="w-[8vw] flex flex-col items-center bg-[#1F1F20] rounded">
+      <div className=" flex flex-col items-center bg-[#1F1F20] rounded">
         <div className="flex-col flex-wrap justify-center">
           <ContextMenu>
             {workspace.map((workspace: Workspace, i: number) => {
@@ -114,9 +112,7 @@ const Sidebar = () => {
           </ul>
         </div>
       </div>
-      {isCollectionVisible && selectedWorkspace && (
-        <Collection Workspace={selectedWorkspace} />
-      )}
+      {isCollectionVisible && <Collection />}
     </>
   );
 };
