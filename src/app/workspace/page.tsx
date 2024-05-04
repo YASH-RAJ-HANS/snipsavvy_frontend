@@ -33,8 +33,6 @@ const WorkspacePage: React.FC = () => {
       <div
         style={{ width: "75vw" }}
         className="fixed top-0   pr-3 flex flex-col justify-between items-center bg-zinc-900  py-4"
-      //  className="fixed top-0  py-1 pr-3 flex flex-col justify-between  bg-zinc-900  py-4"
- 
       >
         <div className="flex w-full justify-end">
           <div className="flex w-1/3">

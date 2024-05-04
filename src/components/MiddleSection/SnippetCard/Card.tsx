@@ -17,34 +17,52 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
   description,
   tags,
 }) => {
-  const languageIcon = "https://img.icons8.com/?size=50&id=22181&format=png";
+  const languageIcon =
+    "https://img.icons8.com/?size=50&id=22183&format=png&color=808080";
 
   return (
     <div
-      className="flex items-start border-zinc-800 rounded-lg hover:bg-zinc-950 hover:border-zinc-100 hover:border-4 overflow-hidden mb-6 mr-4 p-2"
+      className="flex items-start border-zinc-800 rounded-lg hover:bg-zinc-950 hover:border-zinc-300 hover:border-2 shadow-lg overflow-hidden mb-6 mr-4 p-2"
       style={{
         width: "23vw",
-        height: "14vh",
+        minHeight: "16vh",
         borderRadius: "0.6rem",
+        gap: "10px",
+        // transition: "border-width 100s",
       }}
     >
-      <div className="flex items-center mr-2">
-        <Image src={languageIcon} alt="Icon" width={40} height={40} />
+      <div className="flex items-center mr-2 text-gray-200">
+        <Image
+          src={languageIcon}
+          alt="Icon"
+          className="mt-1"
+          width={25}
+          height={25}
+        />
       </div>
-
-      <div className="flex flex-col justify-start">
-        <div className="text-xl font-semibold font-sans text-gray-300 mb-2 pl-2">
+      <div className="flex flex-col justify-start w-full">
+        <div className="text-2xl text-start font-semibold font-mono text-gray-100 mb-2">
           {title}
         </div>
-        <div className="text-md font-semibold text-gray-500 h-20 overflow-hidden pl-2">
-          {code.substring(0, 60)}
+        <div className="text-md text-start font-semibold leading-7 text-gray-400 pt-2 pb-2 ">
+          { code.substring(0, 60)}
         </div>
       </div>
-      <div className="flex items-center justify-center ml-auto">
+      <div className="ml-auto flex items-center justify-center">
         <div className="rounded-full h-10 w-10 flex items-center justify-center border-zinc-700 hover:border-zinc-400">
           <MoreVertIcon />
         </div>
       </div>
+      {/* <div className="flex flex-wrap mt-2">
+        {tags.map((tag, index) => (
+          <div
+            key={index}
+            className="bg-blue-100 text-blue-800 rounded-full py-1 px-3 text-xs font-medium mr-2 mb-2"
+          >
+            {tag}
+          </div>
+        ))}
+      </div> */}
     </div>
   );
 };

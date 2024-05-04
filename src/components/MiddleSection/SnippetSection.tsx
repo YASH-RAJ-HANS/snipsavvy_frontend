@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { useState, useEffect } from "react";
 import SnippetCard from "./SnippetCard/Card";
 import Link from "next/link";
@@ -46,7 +46,7 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
 
   const [isSnippet, setIsSnippet] = useState<any>([]); //[FIX ME ]
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const fetchSnippets = async () => {
       axios
         .get(
@@ -76,9 +76,9 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
       {collection && (
         <div style={{ minHeight: "100vh" }} className="h-screen-full w-full">
           <div className={`${snippet ? "w-1/3 " : "vw-75"} flex flex-col `}>
-            <div className="text-xl pl-4 mb-4">
+            {/* <div className="text-xl pl-4 mb-4">
               Get Started with Code Snippets...
-            </div>
+            </div> */}
             {/* <hr className="h-2 text-gray-800 w-full mb-2" /> */}
 
             <div className="w-full flex mt-2">
