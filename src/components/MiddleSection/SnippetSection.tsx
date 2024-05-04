@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 // import { Suspense } from "react";
 import axios from "axios";
+import Welcome from "./Welcome";
 
 interface SnippetSectionProps {
   // setIsOpen: any;
@@ -19,6 +20,9 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
   const Router = useRouter();
   const collection = searchParams.get("collection")
     ? searchParams.get("collection")
+    : "";
+    const workspace = searchParams.get("workspace")
+    ? searchParams.get("workspace")
     : "";
   const snippet = searchParams.get("snippet")
     ? searchParams.get("snippet")
@@ -71,7 +75,7 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
   }
   return (
     <div>
-      {collection && (
+      {collection? (
         <div style={{ minHeight: "100vh" }} className="h-screen-full w-full">
           <div className={`${snippet ? "w-1/3 " : "vw-75"} flex flex-col `}>
             <div className="text-xl pl-4 mb-4">
@@ -95,7 +99,7 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
             </div>
           </div>
         </div>
-      )}
+      ): (collection==""  ?<div><Welcome/></div>: <div></div> )}
     </div>
   );
 };
