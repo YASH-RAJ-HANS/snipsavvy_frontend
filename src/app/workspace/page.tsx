@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import React from "react";
 import SnippetModal from "@/components/MiddleSection/SnippetModal";
+import Welcome from "@/components/MiddleSection/Welcome";
 
 const style = {
   position: "absolute" as "absolute",
@@ -95,6 +96,7 @@ const WorkspacePage: React.FC = () => {
         <div className="mt-4 overflow-hidden vw-75 p-4">
           <SnippetSection />
           <Drawer />
+         
         </div>
       </div>
     </div>
