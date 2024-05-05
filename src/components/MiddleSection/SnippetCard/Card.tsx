@@ -1,38 +1,77 @@
 import React from "react";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditNoteIcon from '@mui/icons-material/EditNote';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+
 interface SnippetCardProps {
   title: string;
   code: string;
+  description: string;
+  tags: string[];
+  _id: string;
 }
 
-const SnippetCard: React.FC<SnippetCardProps> = ({ title, code }) => {
+const SnippetCard: React.FC<SnippetCardProps> = ({
+  title,
+  code,
+  description,
+  tags,
+  _id,
+}) => {
+  const languageIcon =
+    "https://img.icons8.com/?size=50&id=22183&format=png&color=808080";
+  const searchParams = useSearchParams();
+  const snippet_id = searchParams.get("snippet") || "";
+  console.log("snippet_id=>", snippet_id);
+  console.log("id=>", _id);
+
   return (
     <div
-      style={{ width: "23vw", height: "14vh",borderRadius:"0.6rem" }}
-      className="mb-6 mr-4 rounded-lg flex justify-center items-center  border-zinc-800 rounded justify-between hover:bg-zinc-950 rounded-lg hover:border-zinc-400 hover:border-2 overflow-hidden"
+      className={`flex items-start border-zinc-800 rounded-lg ${snippet_id == _id ? "bg-zinc-950 border-zinc-300" : "hover:bg-zinc-950 hover:border-zinc-300"} border-transparent  shadow-xl overflow-hidden mb-6 mr-4 p-3 transition-border duration-500`}
+      style={{
+        width: "21vw",
+        minHeight: "20vh",
+        borderRadius: "0.6rem",
+        gap: "10px",
+        // transition: "border-width 100s",
+      }}
     >
-      {/* <div className="w-2/12 flex flex-col items-center pt-3">LO</div> */}
-      <div className="w-8/12 flex flex-col h-full pt-2 ">
-        <div className="text-xl font-bold text-gray-300 flex justify-start pl-4">{title}</div>
-        <div className="text-md font-semibold mb-2 text-gray-500 h-20 ">
+      <div className="flex items-center mr-2 text-gray-200">
+        <Image
+          src={languageIcon}
+          alt="Icon"
+          className="mt-1"
+          width={25}
+          height={25}
+        />
+      </div>
+      <div className="flex flex-col justify-start w-full">
+        <div className="text-2xl text-start font-semibold font-mono text-gray-100 mb-2">
+          {title}
+        </div>
+        <div className="text-md text-start font-semibold leading-7 text-gray-400 pt-2 pb-2 ">
           {code.substring(0, 60)}
         </div>
-      </div>
-      <div className="w-4/12 flex flex-col  justify-between items-center h-[90%]">
-        <div className="flex h-10">
-          {/* <div className="rounded full h-10 w-8  border-zinc-700 hover:border-zinc-400"><DeleteIcon/></div>
-          <div className=" rounded full h-10 w-8 border-zinc-700 hover:border-zinc-400"><EditNoteIcon/></div> */}
-          <div className="rounded full h-10 w-8  border-zinc-700 hover:border-zinc-400"><MoreVertIcon/></div>
+        <div className="flex  flex-wrap mt-2">
+          {tags.map((tag, index) => (
+            <div
+              key={index}
+              className="bg-blue-100 text-blue-800 rounded-full py-1 px-3 text-sm font-medium mr-2 mb-2"
+            >
+              {tag}
+            </div>
+          ))}
         </div>
-       
-        <div className="flex items-center justify-center">
-          {/* <div className="border-2 rounded-lg h-8 w-8 mb-2 mr-2"></div> */}
-          {/* <div>2min</div> */}
+      </div>
+      <div className="ml-auto">
+        <div className="rounded-full h-10 w-10 flex items-center justify-center border-zinc-700 hover:border-zinc-400">
+          <MoreVertIcon />
         </div>
       </div>
     </div>
   );
 };
+
 export default SnippetCard;
