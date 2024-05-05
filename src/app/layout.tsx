@@ -1,10 +1,11 @@
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
+import Head from "next/head";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-})
+});
 
 interface Metadata {
   title: "Create Next App";
@@ -18,10 +19,15 @@ type LayoutProps = {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <html>
-      <body  className={cn(
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <body
+        className={cn(
           "min-h-screen bg-background font-sans antialiased",
           fontSans.variable
-        )}>
+        )}
+      >
         {/* <Navbar /> */}
 
         <div className=" min-h-screen bg-black">

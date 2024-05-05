@@ -52,11 +52,11 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
 
   return (
     <div>
-      {collection && (
+      {collection ? (
         <div
           style={{ height: "100vh" }}
-          className="h-screen-full w-full overflow-y-auto">
-
+          className="h-screen-full w-full overflow-y-auto"
+        >
           <div className={`${snippet ? "w-1/3 " : "vw-75"} flex flex-col `}>
             <div className="w-full flex mt-2">
               <div className="w-full flex flex-wrap overflow-hidden">
@@ -71,7 +71,13 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
             </div>
           </div>
         </div>
-      ): (collection==""  ?<div><Welcome/></div>: <div></div> )}
+      ) : collection == "" ? (
+        <div>
+          <Welcome />
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 };

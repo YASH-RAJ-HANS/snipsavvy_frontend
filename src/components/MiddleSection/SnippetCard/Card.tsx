@@ -48,7 +48,7 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
         />
       </div>
       <div className="flex flex-col justify-start w-full">
-        <div className="text-2xl text-start font-semibold font-mono text-gray-100 mb-2">
+        <div className="text-2xl text-start font-semibold font-mono text-gray-300 mb-2">
           {title}
         </div>
         <div className="text-md text-start font-semibold leading-7 text-gray-400 pt-2 pb-2 ">
