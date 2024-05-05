@@ -5,13 +5,9 @@ import { Input } from "@/components/ui/input";
 import { useSearchParams, useRouter } from "next/navigation";
 import { BsDot } from "react-icons/bs";
 import { FiMinus } from "react-icons/fi";
-
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
+import { Button } from "@/components/ui/button";
+import CircularProgress from "@mui/material/CircularProgress";
+import Skeleton from "@mui/material/Skeleton";
 
 const Collection = () => {
   const [showInput, setShowInput] = useState(false);
@@ -22,6 +18,8 @@ const Collection = () => {
   const router = useRouter();
   const workspace = searchParams.get("workspace") || "";
   const collectionid = searchParams.get("collection") || "";
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(false);
 
   const fetchCategories = () => {
     axios
@@ -29,6 +27,7 @@ const Collection = () => {
       .then((response) => {
         setCollection(response.data.data);
         console.log("collections=>", response.data.data);
+        setIsDataLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -36,6 +35,7 @@ const Collection = () => {
   };
 
   useEffect(() => {
+    setIsDataLoading(true);
     workspace && fetchCategories();
   }, [workspace]);
 
@@ -44,6 +44,7 @@ const Collection = () => {
   };
 
   const handleCreateCollection = async () => {
+    setIsLoading(true);
     const body = {
       id: workspace,
       name: data,
@@ -53,12 +54,14 @@ const Collection = () => {
       .post("https://snipsavvy.onrender.com/vi/api/category", body)
       .then((response) => {
         console.log(response);
-        alert("Collection created successfully"); // [FIX ME] at a toast here, instead of alert
+        // [FIX ME] at a toast here, instead of alert
         fetchCategories();
         setShowInput(false);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setIsLoading(false);
       });
   };
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -111,36 +114,73 @@ const Collection = () => {
             <Input
               value={data}
               type="text"
-              className="mb-8 ml-4 w-64 h-8 rounded p-1 text-white"
-              placeholder="Add Collection"
+              className="mb-8 ml-4 w-64 h-10 rounded p-1 pl-4 text-white"
+              placeholder="Collection name .."
               onChange={(e) => setData(e.target.value)}
               onKeyDown={handleKeyPress}
             />
-            <button onClick={handleCreateCollection} className="mb-8 size-10">
-              {" "}
-              ☑️{" "}
-            </button>
+
+            {!isLoading ? (
+              <Button
+                variant="outline"
+                className="mb-8 w-16 ml-2 mr-2 rounded h-8 bg-gray-600"
+                onClick={handleCreateCollection}
+              >
+                Save
+              </Button>
+            ) : (
+              <CircularProgress
+                color="success"
+                className="mb-10 ml-2"
+                size={25}
+              />
+            )}
           </div>
         )}
         <div className="-mt-4">
           {workspace ? (
-            collection?.map((item: collectionItem, index: number) => (
-              <div
-                key={item._id}
-                style={{
-                  backgroundColor:
-                    collectionid === item?._id ? "rgb(24 24 27)" : "",
-                  color: collectionid === item?._id ? "white" : "",
-                }}
-                onClick={() => updateUrl(item._id)}
-                className="hover:bg-zinc-900 h-10 w-64 rounded-xl m-auto ml-4 pt-1 text-lg mt-1 text-slate-300 hover:text-white cursor-pointer flex"
-              >
-                <span className="-mt-2.5">
-                  <BsDot size={50} color={colorOptions[index % 6]} />
-                </span>
-                {item?.name}
+            !isDataLoading ? (
+              collection?.map((item: collectionItem, index: number) => (
+                <div
+                  key={item._id}
+                  style={{
+                    backgroundColor:
+                      collectionid === item?._id ? "rgb(24 24 27)" : "",
+                    color: collectionid === item?._id ? "white" : "",
+                  }}
+                  onClick={() => updateUrl(item._id)}
+                  className="hover:bg-zinc-900 h-10 w-64 rounded-xl m-auto ml-4 pt-1 text-lg mt-1 text-slate-300 hover:text-white cursor-pointer flex"
+                >
+                  <span className="-mt-2.5">
+                    <BsDot size={50} color={colorOptions[index % 6]} />
+                  </span>
+                  {item?.name}
+                </div>
+              ))
+            ) : (
+              <div className="w-60 ml-8 mt-10 flex flex-col gap-4">
+                <Skeleton
+                  sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
+                  height={30}
+                  variant="rectangular"
+                />
+                <Skeleton
+                  sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
+                  height={30}
+                  variant="rectangular"
+                />
+                <Skeleton
+                  sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
+                  height={30}
+                  variant="rectangular"
+                />
+                <Skeleton
+                  sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
+                  height={30}
+                  variant="rectangular"
+                />
               </div>
-            ))
+            )
           ) : (
             <h1 className="font-bold text-2xl opacity-50 text-center mt-20">
               Select a workspace to get started
