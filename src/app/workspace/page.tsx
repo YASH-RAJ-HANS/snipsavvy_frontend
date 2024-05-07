@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import React from "react";
 import SnippetModal from "@/components/MiddleSection/SnippetModal";
+import { useEffect } from "react";
 import Welcome from "@/components/MiddleSection/Welcome";
 
 const style = {
@@ -28,6 +29,21 @@ const WorkspacePage: React.FC = () => {
   const [openSnippet, setOpenSnippet] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "k") {
+        event.preventDefault(); 
+        handleOpen(); 
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <div style={{ width: "75vw" }} className="fixed top-0 right-0 h-screen text-white bg-zinc-900">
