@@ -205,6 +205,7 @@ const Sidebar = () => {
             backgroundColor: "#131211c4",
             borderRadius: "4px",
             boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+            backdropFilter: "blur(3px)",
             zIndex: 9999,
           }}
           onBlur={() => closeDropdown()}
