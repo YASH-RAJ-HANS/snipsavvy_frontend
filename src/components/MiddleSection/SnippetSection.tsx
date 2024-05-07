@@ -4,6 +4,7 @@ import SnippetCard from "./SnippetCard/Card";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import axios from "axios";
+import Welcome from "./Welcome";
 
 interface SnippetSectionProps {}
 
@@ -12,6 +13,7 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
   const searchParams = useSearchParams();
 
   const Router = useRouter();
+
   const collection = searchParams.get("collection") || "";
   const snippet = searchParams.get("snippet") || "";
 
@@ -50,7 +52,7 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
 
   return (
     <div>
-      {collection && (
+      {collection ? (
         <div
           style={{ height: "100vh" }}
           className="h-screen-full w-full overflow-y-auto"
@@ -69,6 +71,12 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
             </div>
           </div>
         </div>
+      ) : collection == "" ? (
+        <div>
+          <Welcome />
+        </div>
+      ) : (
+        <div></div>
       )}
     </div>
   );

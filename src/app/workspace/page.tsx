@@ -11,6 +11,8 @@ import Modal from "@mui/material/Modal";
 import React from "react";
 import SnippetModal from "@/components/MiddleSection/SnippetModal";
 import { useEffect } from "react";
+import Welcome from "@/components/MiddleSection/Welcome";
+
 const style = {
   position: "absolute" as "absolute",
   top: "20%",
@@ -110,6 +112,7 @@ const WorkspacePage: React.FC = () => {
         <div className="mt-4 overflow-hidden vw-75 p-4">
           <SnippetSection />
           <Drawer />
+         
         </div>
       </div>
     </div>
