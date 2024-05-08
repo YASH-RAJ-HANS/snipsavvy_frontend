@@ -118,7 +118,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className=" w-[5vw] flex flex-col items-center bg-[#1F1F20] rounded">
+      <div className=" w-[5vw] flex flex-col items-center bg-[#141415] rounded">
         <Image
           src="/logo.png"
           width={40}
@@ -193,7 +193,7 @@ const Sidebar = () => {
           </ul>
         </div>
       </div>
-      {isCollectionVisible && <Collection />}
+      <Collection />
       {isDropdownOpen && (
         <div
           ref={dropdownRef}
@@ -205,6 +205,7 @@ const Sidebar = () => {
             backgroundColor: "#131211c4",
             borderRadius: "4px",
             boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+            backdropFilter: "blur(3px)",
             zIndex: 9999,
           }}
           onBlur={() => closeDropdown()}

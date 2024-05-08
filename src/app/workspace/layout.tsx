@@ -7,7 +7,7 @@ type LayoutProps = {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="bg-zinc-800 min-h-screen w-screen flex">
+    <div className="bg-[#18181B] min-h-screen w-screen flex">
       <div className="w-[25vw] flex">
         {/* Sidebar content goes here */}
         <Sidebar />

@@ -21,6 +21,8 @@ const Collection = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
 
+  console.log("w_id=>", workspace);
+
   const fetchCategories = () => {
     axios
       .get(`https://snipsavvy.onrender.com/vi/api/category/${workspace}`)
@@ -92,7 +94,7 @@ const Collection = () => {
   }
 
   return (
-    <div className="w-[20vw] border-l-2 border-slate-700 bg-[#1E1F21] overflow-none">
+    <div className="w-[20vw] bg-[#1a1b1c] overflow-none">
       <div>
         <div className="flex m-8 items-center justify- ">
           <div className="mr-3 text-gray-400  ">
