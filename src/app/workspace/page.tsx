@@ -11,6 +11,9 @@ import Modal from "@mui/material/Modal";
 import React from "react";
 import SnippetModal from "@/components/MiddleSection/SnippetModal";
 import Welcome from "@/components/MiddleSection/Welcome";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const style = {
   position: "absolute" as "absolute",
@@ -26,8 +29,22 @@ const style = {
 const WorkspacePage: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const [openSnippet, setOpenSnippet] = React.useState(false);
+  const [openDrawer, setOpenDrawer] = React.useState(false)
+  const [isEditable, setIsEditable] = React.useState(false)
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const snippet = searchParams.get("snippet") ? searchParams.get("snippet") : ""
+  const collection = searchParams.get("collection") ? searchParams.get("collection") : ""
+  const pathName = usePathname()
+  const handleAdd = () =>{
+    setOpenDrawer(true)
+    const nextSearchParams = new URLSearchParams(searchParams.toString());
+    nextSearchParams.delete("snippet");
+    router.push(`${pathName}?${nextSearchParams.toString()}`);
+  }
 
   return (
     <div style={{ width: "75vw" }} className="fixed top-0 right-0 h-screen text-white bg-zinc-900">
@@ -86,8 +103,9 @@ const WorkspacePage: React.FC = () => {
             {/* <button className="fixed right-0" onClick={() => setOpenSnippet(!openSnippet)}> */}
               
             {/* <SplitButton /> */}
-            <SnippetModal/>
-            
+            {/* <SnippetModal/> */}
+            <button className='bg-blue-600 rounded-xl text-xl p-2 text-white' onClick={handleAdd}>Add Snippet</button>
+            <Drawer isOpen={openDrawer} setIsOpen={setOpenDrawer} isEditable={true} setIsEditable={setIsEditable}/>
             {/* </button> */}
             {/* {openSnippet && <SnippetModal />} */}
             
@@ -95,8 +113,7 @@ const WorkspacePage: React.FC = () => {
         </div>
         <div className="mt-4 overflow-hidden vw-75 p-4">
           <SnippetSection />
-          <Drawer />
-         
+          {snippet && <Drawer isOpen={true} setIsOpen={setOpenDrawer} isEditable={isEditable} setIsEditable={setIsEditable}/>}
         </div>
       </div>
     </div>
