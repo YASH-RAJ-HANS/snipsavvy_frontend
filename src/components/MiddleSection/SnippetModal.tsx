@@ -1,8 +1,10 @@
 "use client";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { styled } from '@mui/material/styles';
 import { useSearchParams } from "next/navigation";
 import Button from "@mui/material/Button";
+import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import axios from "axios";
 import {
   Sheet,
@@ -33,6 +35,20 @@ const SnippetModal = () => {
       setTagInput("");
     }
   };
+
+  const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: theme.palette.common.black,
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.black,
+      padding: '0.6rem',
+      fontSize: '1rem',
+    },
+  }));
+
   const handleCreateSnippet = async () => {
     const body = {
       title: data.title,
@@ -61,11 +77,13 @@ const SnippetModal = () => {
       <Sheet>
         <SheetTrigger>
           <div className="relative">
+          <BootstrapTooltip title="Add a Snippet">
             <div
               className="text-2xl rounded-full bg-blue-800 h-10 w-10 items-center flex self-center justify-center hover:bg-blue-900 transition-colors duration-300"
             >
               <span className="text-white">+</span>
             </div>
+            </BootstrapTooltip>
             {/* {tooltip && (
               <div className="absolute w-100 text-sm  text-white top-8   px-5 py-1 rounded-lg shadow-lg bg-zinc-800">
                 Add a snippet

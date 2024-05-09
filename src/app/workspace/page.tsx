@@ -102,10 +102,10 @@ const WorkspacePage: React.FC = () => {
             <input
               type="text"
               className="w-full h-10 vh-5 bg-zinc-900 px-4 hover:shadow-outline focus:outline-none rounded-r text-gray-600 placeholder-gray-700"
-              placeholder="Find by Code, Tag, title..."
+              placeholder="Find by Tag, Description , title..."
               onClick={handleOpen}
             />
-            <div className="px-4 py-1 rounded-xl flex   items-center text-xs text-gray-600 border-2 border-gray-600 shadow-lg   w-fit">
+            <div className="px-4 py-1 rounded-xl flex   items-center text-base text-gray-600 border-2 border-gray-600 shadow-lg   w-fit">
               <span>CTRL+K</span>
             </div>
           </div>
