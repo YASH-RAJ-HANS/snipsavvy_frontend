@@ -68,7 +68,7 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
             </div>
           </div>
         </div>
-      ) : collection == "" ? (
+      ) : collection == ""||snippet==""? (
         <div>
           <Welcome />
         </div>
