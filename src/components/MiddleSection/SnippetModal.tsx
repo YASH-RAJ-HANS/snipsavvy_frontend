@@ -62,8 +62,17 @@ const SnippetModal = () => {
     <div className="w-5/6 ">
       <Sheet>
         <SheetTrigger>
-          <div className="text-xl rounded-md bg-blue-800 px-3 h-10 items-center flex justify-center">
-            Add Snippet
+          <div className="relative">
+            <div
+              className="text-2xl rounded-full bg-blue-800 h-10 w-10 items-center flex self-center justify-center hover:bg-blue-900 transition-colors duration-300"
+            >
+              <span className="text-white">+</span>
+            </div>
+            {/* {tooltip && (
+              <div className="absolute w-100 text-sm  text-white top-8   px-5 py-1 rounded-lg shadow-lg bg-zinc-800">
+                Add a snippet
+              </div>
+            )} */}
           </div>
         </SheetTrigger>
         <SheetContent>
