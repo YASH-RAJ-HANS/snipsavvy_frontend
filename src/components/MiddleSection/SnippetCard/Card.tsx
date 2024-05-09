@@ -31,10 +31,12 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
     <div
       className={`flex items-start border-zinc-800 rounded-lg ${snippet_id == _id ? "bg-zinc-950 border-zinc-300" : "hover:bg-zinc-950 hover:border-zinc-300"} border-transparent  shadow-xl overflow-hidden mb-6 mr-4 p-3 transition-border duration-500`}
       style={{
-        width: "21vw",
-        minHeight: "20vh",
+        width: "22vw",
+        minHeight: "25vh",
+        // maxHeight: "30vh",
         borderRadius: "0.6rem",
-        gap: "10px",
+        gap: "11px",
+        marginLeft:"2px"
         // transition: "border-width 100s",
       }}
     >
