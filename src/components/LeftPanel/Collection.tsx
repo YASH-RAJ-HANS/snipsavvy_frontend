@@ -8,6 +8,7 @@ import { FiMinus } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
+import { DataFetch } from "@/network/DataFetch";
 
 const Collection = () => {
   const [showInput, setShowInput] = useState(false);
@@ -24,21 +25,18 @@ const Collection = () => {
   console.log("w_id=>", workspace);
 
   const fetchCategories = () => {
-    axios
-      .get(`https://snipsavvy.onrender.com/vi/api/category/${workspace}`)
-      .then((response) => {
-        setCollection(response.data.data);
-        console.log("collections=>", response.data.data);
-        setIsDataLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    DataFetch({
+      url: `https://snipsavvy.onrender.com/vi/api/category/${workspace}`,
+      setState: setCollection,
+    });
   };
 
   useEffect(() => {
     setIsDataLoading(true);
     workspace && fetchCategories();
+    setTimeout(() => {
+      setIsDataLoading(false);
+    }, 1000);
   }, [workspace]);
 
   const handleAddClick = () => {
@@ -147,11 +145,11 @@ const Collection = () => {
                   key={item._id}
                   style={{
                     backgroundColor:
-                      collectionid === item?._id ? "rgb(24 24 27)" : "",
+                      collectionid === item?._id ? "#131212" : "",
                     color: collectionid === item?._id ? "white" : "",
                   }}
                   onClick={() => updateUrl(item._id)}
-                  className="hover:bg-zinc-900 h-10 w-64 rounded-xl m-auto ml-4 pt-1 text-lg mt-1 text-slate-300 hover:text-white cursor-pointer flex"
+                  className="hover:bg-[#131212] h-10 w-64 rounded-xl m-auto ml-4 pt-1 text-lg mt-1 text-slate-300 hover:text-white cursor-pointer flex"
                 >
                   <span className="-mt-2.5">
                     <BsDot size={50} color={colorOptions[index % 6]} />
