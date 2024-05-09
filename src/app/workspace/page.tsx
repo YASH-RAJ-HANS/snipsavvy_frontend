@@ -33,8 +33,8 @@ const WorkspacePage: React.FC = () => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "k") {
-        event.preventDefault(); 
-        handleOpen(); 
+        event.preventDefault();
+        handleOpen();
       }
     };
 
@@ -46,26 +46,32 @@ const WorkspacePage: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ width: "75vw" }} className="fixed top-0 right-0 h-screen text-white bg-zinc-900">
+    <div
+      style={{ width: "75vw" }}
+      className="fixed top-0 right-0 h-screen text-white bg-zinc-900"
+    >
       <div
         style={{ width: "75vw" }}
-        className="fixed top-0   pr-3 flex flex-col justify-between items-center bg-zinc-900  py-4"
+        className="fixed top-0 pr-3 flex flex-col justify-between bg-zinc-900 py-4"
       >
-        <div className="flex w-full justify-end">
-          <div className="flex w-1/3">
-            <div className="border-2 ml-6 px-2 border-zinc-700 h-10 flex items-center rounded-l">
+        <div className="flex w-full justify-end border-b-3 pb-3 border-zinc-700 shadow-lg font-mono">
+          <div className="flex " style={{ width: "100vw" }}>
+            <div className="ml-6 px-1 h-6 w-6 mt-2 flex items-center rounded-l text-gray-700">
               <SearchIcon />
             </div>
             {open && (
-              <div >
+              <div>
                 <Modal
-                 className="backdrop-blur-sm"
+                  className="backdrop-blur-sm"
                   open={open}
                   onClose={handleClose}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 >
-                  <Box sx={style} className="bg-zinc-950 border-2 border-gray-200 rounded-xl">
+                  <Box
+                    sx={style}
+                    className="bg-zinc-950 border-2 border-gray-200 rounded-xl"
+                  >
                     <Typography
                       id="modal-modal-title"
                       variant="h6"
@@ -74,17 +80,20 @@ const WorkspacePage: React.FC = () => {
                       Search Snippet
                       {/* <hr className="my-4"/> */}
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 ,display:"flex" }}>
+                    <Typography
+                      id="modal-modal-description"
+                      sx={{ mt: 2, display: "flex" }}
+                    >
                       <div className="border-2 ml-6 px-2 border-gray-400 h-10 flex items-center rounded-l">
                         <SearchIcon />
                       </div>
                       <input
                         type="text"
-                        className="w-full h-10 vh-5 bg-gray-800 text-white  px-4 border-2 border-gray-400 hover:shadow-outline focus:outline-none  border-l-0 rounded-r mb-4"
+                        className="w-full h-10 vh-5 bg-gray-800 text-white px-4 border-2 border-gray-400 hover:shadow-outline focus:outline-none border-l-0 rounded-r mb-4"
                         placeholder="Enter text..."
                       />
                     </Typography>
-                    
+
                     <div className="fixed bottom-2 right-4">SnipSavvy</div>
                   </Box>
                 </Modal>
@@ -92,27 +101,22 @@ const WorkspacePage: React.FC = () => {
             )}
             <input
               type="text"
-              className="w-full h-10 vh-5 bg-zinc-900 text-white  px-4 border-2 border-zinc-700 hover:shadow-outline focus:outline-none  border-l-0 rounded-r"
-              placeholder="Enter text..."
+              className="w-full h-10 vh-5 bg-zinc-900 px-4 hover:shadow-outline focus:outline-none rounded-r text-gray-600 placeholder-gray-700"
+              placeholder="Find by Code, Tag, title..."
               onClick={handleOpen}
             />
+            <div className="px-4 py-1 rounded-xl flex   items-center text-xs text-gray-600 border-2 border-gray-600 shadow-lg   w-fit">
+              <span>CTRL+K</span>
+            </div>
           </div>
-          <div className="w-2/12 vh-6 flex justify-between pl-6 items-center">
-            <NotificationsIcon className="text-gray-600 mr-3" />
-            {/* <button className="fixed right-0" onClick={() => setOpenSnippet(!openSnippet)}> */}
-              
-            {/* <SplitButton /> */}
-            <SnippetModal/>
-            
-            {/* </button> */}
-            {/* {openSnippet && <SnippetModal />} */}
-            
+          <div className="w-2/12   flex justify-between pl-6 items-center">
+            {/* <NotificationsIcon className="text-gray-600 mr-3" /> */}
+            <SnippetModal />
           </div>
         </div>
-        <div className="mt-4 overflow-hidden vw-75 p-4">
+        <div className="mt-4 overflow-hidden p-4">
           <SnippetSection />
           <Drawer />
-         
         </div>
       </div>
     </div>
