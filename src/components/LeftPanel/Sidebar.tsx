@@ -10,6 +10,8 @@ import Skeleton from "@mui/material/Skeleton";
 import { MdEdit, MdDelete } from "react-icons/md";
 
 import { baseURL } from "@/config";
+import SettingsModal from "../Settings/SettingsModal";
+import { DataFetch } from "@/network/DataFetch";
 
 const Sidebar = () => {
   const [workspace, setWorkspace] = useState<any>([]);
@@ -24,27 +26,21 @@ const Sidebar = () => {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const [isCollectionVisible, setIsCollectionVisible] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
   const router = useRouter();
   useEffect(() => {
     setIsDataLoading(true);
-    axios
-      .get(`${baseURL}/v1/api/workspace?user_id=${"65f72cd38cfe34c5f0c2648b"}`)
-      .then((response) => {
-        setWorkspace(response.data.data);
-        setIsDataLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsDataLoading(false);
-      });
+    DataFetch({
+      url: `${baseURL}/v1/api/workspace?user_id=${"65f72cd38cfe34c5f0c2648b"}`,
+      setState: setWorkspace,
+    });
+    setIsDataLoading(false);
   }, []);
 
   const updateUrl = (name: string) => {
     setSelectedWorkspace(name);
-    setIsCollectionVisible(true);
     localStorage.setItem("selectedWorkspace", name);
 
     const query = { workspace: name };
@@ -185,7 +181,10 @@ const Sidebar = () => {
         <div className="fixed bottom-0 left-2 w-full p-4 text-center">
           <ul className="flex-col">
             <li className="mb-4">
-              <CiSettings className="text-white text-3xl cursor-pointer" />
+              <CiSettings
+                onClick={() => setIsSettingsModalOpen(true)}
+                className="text-white text-3xl cursor-pointer"
+              />
             </li>
             <li>
               <CiLogout className="text-white text-3xl cursor-pointer" />
@@ -226,6 +225,10 @@ const Sidebar = () => {
           </ul>
         </div>
       )}
+      <SettingsModal
+        open={isSettingsModalOpen}
+        setOpen={setIsSettingsModalOpen}
+      />
     </>
   );
 };
