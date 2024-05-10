@@ -8,7 +8,7 @@ import { FiMinus } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
-import { DataFetch } from "@/network/DataFetch";
+import useFetch from "@/network/useFetch";
 import { FaShareAlt } from "react-icons/fa";
 import { MdEdit, MdDelete } from "react-icons/md";
 
@@ -89,18 +89,21 @@ const Collection = () => {
   console.log("w_id=>", workspace);
 
   const fetchCategories = () => {
-    DataFetch({
-      url: `https://snipsavvy.onrender.com/vi/api/category/${workspace}`,
-      setState: setCollection,
-    });
+    axios
+      .get(`https://snipsavvy.onrender.com/vi/api/category/${workspace}`)
+      .then((response) => {
+        setCollection(response.data);
+        console.log("collections=>", response.data);
+        setIsDataLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
     setIsDataLoading(true);
     workspace && fetchCategories();
-    setTimeout(() => {
-      setIsDataLoading(false);
-    }, 1000);
   }, [workspace]);
 
   const handleAddClick = () => {

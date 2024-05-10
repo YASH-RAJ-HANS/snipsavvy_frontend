@@ -13,7 +13,6 @@ import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 import { useSearchParams, useRouter } from "next/navigation";
 import { baseURL } from "@/config";
-import { DataFetch } from "@/network/DataFetch";
 
 const style = {
   position: "absolute" as "absolute",
@@ -51,10 +50,11 @@ const WorkspacePage: React.FC = () => {
 
   useEffect(() => {
     const globalSearch = async () => {
-      await DataFetch({
-        url: `${baseURL}/v1/api/snippet/global?text=${inpText}`,
-        setState: setSearchData,
-      });
+      await axios
+        .get(`${baseURL}/v1/api/snippet/global?text=${inpText}`)
+        .then((response) => {
+          setSearchData(response.data);
+        });
     };
     inpText ? globalSearch() : setSearchData([]);
   }, [inpText]);
@@ -107,7 +107,6 @@ const WorkspacePage: React.FC = () => {
                       height: 500,
                     }}
                     className="bg-zinc-950  rounded-xl"
-
                   >
                     <Typography
                       id="modal-modal-title"
@@ -172,7 +171,6 @@ const WorkspacePage: React.FC = () => {
                           ))}
                       </div>
                     )}
-
                   </Box>
                 </Modal>
               </div>
@@ -196,7 +194,6 @@ const WorkspacePage: React.FC = () => {
 
             {/* </button> */}
             {/* {openSnippet && <SnippetModal />} */}
-
           </div>
         </div>
         <div className="mt-4 overflow-hidden p-4">
