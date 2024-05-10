@@ -34,7 +34,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         <div className=" bg-black">
           <div className="">
-            <div className="flex justify-center items-center min-h-screen bg-black">
+            <div className=" items-center min-h-screen bg-black">
               <div>
                 <AuthProvider>{children}</AuthProvider>
               </div>
