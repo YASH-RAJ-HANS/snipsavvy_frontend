@@ -11,10 +11,9 @@ import { MdEdit, MdDelete } from "react-icons/md";
 import Avatar from "@mui/material/Avatar";
 import { baseURL } from "@/config";
 import SettingsModal from "../Settings/SettingsModal";
-import useFetch from "@/network/useFetch";
-import { signOut, useSession } from "next-auth/react"
-import { redirect } from 'next/navigation'
-
+import { signOut, useSession } from "next-auth/react";
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
 
 const Sidebar = () => {
   const [workspace, setWorkspace] = useState<any>([]);
@@ -26,6 +25,21 @@ const Sidebar = () => {
   const [activeWorkspaceIndex, setActiveWorkspaceIndex] = useState<
     number | null
   >(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+
+  const handleClick = (event: any) => {
+    console.log("in here")
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +47,7 @@ const Sidebar = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
   const router = useRouter();
-  const session = useSession()
+  const session = useSession();
   useEffect(() => {
     setIsDataLoading(true);
     axios
@@ -49,8 +63,8 @@ const Sidebar = () => {
   }, []);
 
   const handleLogOut = () => {
-    signOut({ callbackUrl: 'http://localhost:3000/' });
-  }
+    signOut({ callbackUrl: "http://localhost:3000/" });
+  };
 
   const updateUrl = (name: string) => {
     setSelectedWorkspace(name);
@@ -199,13 +213,33 @@ const Sidebar = () => {
                 className="text-white text-3xl cursor-pointer"
               />
             </li>
-            {session.status == 'authenticated' ? (
-              <Avatar className=" cursor-pointer" onClick={()=>handleLogOut()} sx={{ width: 30, height: 30 }} alt="Cindy Baker" src={session.data.user?.image?.toString() || "https://www.pngmart.com/files/22/User-Avatar-Profile-PNG-Isolated-Transparent-HD-Photo.png"} />
-            ) : (
-              <li>
-                <CiLogout onClick={()=>handleLogOut()} className="text-white text-3xl cursor-pointer" />
-              </li>
-            )}
+            <Avatar
+              className=" cursor-pointer"
+              aria-describedby={id}
+              onClick={(e) => handleClick(e)}
+              sx={{ width: 30, height: 30 }}
+              alt="Cindy Baker"
+              src={
+                session?.data?.user?.image?.toString() ||
+                "https://www.pngmart.com/files/22/User-Avatar-Profile-PNG-Isolated-Transparent-HD-Photo.png"
+              }
+            />
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              className="ml-2"
+            >
+              <CiLogout
+                onClick={() => handleLogOut()}
+                className="ml-2 text-4xl cursor-pointer"
+              />
+            </Popover>
           </ul>
         </div>
       </div>
