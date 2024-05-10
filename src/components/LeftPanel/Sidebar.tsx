@@ -13,6 +13,7 @@ import { MdEdit, MdDelete } from "react-icons/md";
 
 import { baseURL } from "@/config";
 import SettingsModal from "../Settings/SettingsModal";
+import DeleteModal from "./DeleteModal"
 import useFetch from "@/network/useFetch";
 
 const Sidebar = () => {
@@ -110,11 +111,35 @@ const Sidebar = () => {
     setIsDropdownOpen(true);
     setSingleWorkspace(workspace);
   };
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const handleOptionClick = (option: string) => {
     console.log("Option clicked:", option);
     setIsDropdownOpen(false);
+
+    switch (option) {
+      case "edit":
+        console.log("Edit clicked");
+        break;
+        case "delete":
+          console.log("Delete clicked");
+          setDeleteModalOpen(true);
+          break;
+        
+      case "share":
+        console.log("Share clicked");
+        
+        break;
+      default:
+        break;
+    }
   };
+  const handleDelete = () => {
+    // Perform the delete operation here
+    console.log("Deleting...");
+    setDeleteModalOpen(false); // Close the delete modal after deletion
+  };
+  
 
   const closeDropdown = () => {
     setIsDropdownOpen(false);
@@ -220,20 +245,20 @@ const Sidebar = () => {
           <ul className="w-20">
           <li
               className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
-              onClick={() => handleOptionClick("Option 3")}
+              onClick={() => handleOptionClick("share")}
             >
               Share <FaShareAlt  className="mt-1"/>
 
             </li>
             <li
               className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
-              onClick={() => handleOptionClick("Option 1")}
+              onClick={() => handleOptionClick("edit")}
             >
               Edit <MdEdit className="mt-1" />
             </li>
             <li
               className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
-              onClick={() => handleOptionClick("Option 2")}
+              onClick={() => handleOptionClick("delete")}
             >
               Delete <MdDelete className="mt-1" />
             </li>
@@ -245,6 +270,8 @@ const Sidebar = () => {
         open={isSettingsModalOpen}
         setOpen={setIsSettingsModalOpen}
       />
+      <DeleteModal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)} onDelete={() => handleDelete()} />
+
     </>
   );
 };

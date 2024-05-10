@@ -76,6 +76,7 @@ export default function Access() {
           {workspace ? (
             workspace?.map((workspace: any, index: any) => (
               <div
+                key={index}
                 onClick={() => getAccessList(workspace)}
                 style={{
                   background:
@@ -105,7 +106,7 @@ export default function Access() {
 
           <div className="mt-8 overflow-auto">
             {accessList?.map((access: any) => (
-              <div className="border-b-2 border-slate-600 pb-1 flex justify-between w-[70%] mb-6">
+              <div  key={access._id} className="border-b-2 border-slate-600 pb-1 flex justify-between w-[70%] mb-6">
                 <p> {access.email} </p>
                 <Tooltip title="Remove Access">
                   <MdDelete
