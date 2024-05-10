@@ -11,7 +11,7 @@ import { MdEdit, MdDelete } from "react-icons/md";
 
 import { baseURL } from "@/config";
 import SettingsModal from "../Settings/SettingsModal";
-import { DataFetch } from "@/network/DataFetch";
+import useFetch from "@/network/useFetch";
 
 const Sidebar = () => {
   const [workspace, setWorkspace] = useState<any>([]);
@@ -30,13 +30,19 @@ const Sidebar = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
   const router = useRouter();
+
   useEffect(() => {
     setIsDataLoading(true);
-    DataFetch({
-      url: `${baseURL}/v1/api/workspace?user_id=${"65f72cd38cfe34c5f0c2648b"}`,
-      setState: setWorkspace,
-    });
-    setIsDataLoading(false);
+    axios
+      .get(`${baseURL}/v1/api/workspace?user_id=${"65f72cd38cfe34c5f0c2648b"}`)
+      .then((response) => {
+        setWorkspace(response.data);
+        setIsDataLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsDataLoading(false);
+      });
   }, []);
 
   const updateUrl = (name: string) => {

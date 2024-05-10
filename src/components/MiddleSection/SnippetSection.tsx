@@ -1,11 +1,11 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { useState } from "react";
 import SnippetCard from "./SnippetCard/Card";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import axios from "axios";
 import Welcome from "./Welcome";
-import { DataFetch } from "@/network/DataFetch";
+import useFetch from "@/network/useFetch";
 
 interface SnippetSectionProps {}
 
@@ -33,13 +33,17 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
   };
 
   const [isSnippet, setIsSnippet] = useState<any>([]);
-
   useLayoutEffect(() => {
     const fetchSnippets = async () => {
-      DataFetch({
-        url: `https://snipsavvy.onrender.com/v1/api/snippet?cat_id=${collection}`,
-        setState: setIsSnippet,
-      });
+      try {
+        const response = await axios.get(
+          `https://snipsavvy.onrender.com/v1/api/snippet?cat_id=${collection}`
+        );
+        setIsSnippet(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
     if (collection) {
       fetchSnippets();
@@ -58,7 +62,6 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
               <div className="w-full flex flex-wrap overflow-hidden">
                 <div className="flex flex-wrap justify-around pb-20">
                   {isSnippet?.map((snip: any) => (
-
                     <button onClick={() => updateUrl(snip._id)} key={snip._id}>
                       <SnippetCard {...snip} />
                     </button>
