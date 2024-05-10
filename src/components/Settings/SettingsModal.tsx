@@ -15,6 +15,7 @@ const style = {
   height: 750,
   bgcolor: "#141415",
   p: 4,
+  outline: "none", // Remove the border on focus
 };
 
 interface SettingsModalProps {
