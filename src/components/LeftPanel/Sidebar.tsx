@@ -8,7 +8,7 @@ import Collection from "./Collection";
 import Image from "next/image";
 import Skeleton from "@mui/material/Skeleton";
 import { MdEdit, MdDelete } from "react-icons/md";
-
+import Avatar from "@mui/material/Avatar";
 import { baseURL } from "@/config";
 
 const Sidebar = () => {
@@ -27,8 +27,12 @@ const Sidebar = () => {
   const [isCollectionVisible, setIsCollectionVisible] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
+  const [userProfile, setUserProfile] = useState<String>("");
   const router = useRouter();
   useEffect(() => {
+    if (localStorage.getItem("User Profile Url")) {
+      setUserProfile(localStorage.getItem("User Profile Url") || "");
+    }
     setIsDataLoading(true);
     axios
       .get(`${baseURL}/v1/api/workspace?user_id=${"65f72cd38cfe34c5f0c2648b"}`)
@@ -118,7 +122,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className=" w-[5vw] flex flex-col items-center bg-[#1F1F20] rounded">
+      <div className=" w-[5vw] flex flex-col items-center bg-[#141415] rounded">
         <Image
           src="/logo.png"
           width={40}
@@ -187,13 +191,17 @@ const Sidebar = () => {
             <li className="mb-4">
               <CiSettings className="text-white text-3xl cursor-pointer" />
             </li>
-            <li>
-              <CiLogout className="text-white text-3xl cursor-pointer" />
-            </li>
+            {userProfile ? (
+              <Avatar sx={{ width: 30, height: 30 }} alt="Cindy Baker" src={userProfile.toString()} />
+            ) : (
+              <li>
+                <CiLogout className="text-white text-3xl cursor-pointer" />
+              </li>
+            )}
           </ul>
         </div>
       </div>
-      {isCollectionVisible && <Collection />}
+      <Collection />
       {isDropdownOpen && (
         <div
           ref={dropdownRef}
@@ -205,6 +213,7 @@ const Sidebar = () => {
             backgroundColor: "#131211c4",
             borderRadius: "4px",
             boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+            backdropFilter: "blur(3px)",
             zIndex: 9999,
           }}
           onBlur={() => closeDropdown()}

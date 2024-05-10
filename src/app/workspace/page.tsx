@@ -12,7 +12,7 @@ import React from "react";
 import SnippetModal from "@/components/MiddleSection/SnippetModal";
 import { useEffect } from "react";
 import Welcome from "@/components/MiddleSection/Welcome";
-
+import { signIn, useSession } from "next-auth/react";
 const style = {
   position: "absolute" as "absolute",
   top: "20%",
@@ -29,7 +29,9 @@ const WorkspacePage: React.FC = () => {
   const [openSnippet, setOpenSnippet] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const session = useSession();
+  // console.log(session);
+  console.log("session=>", session);
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "k") {
@@ -44,6 +46,13 @@ const WorkspacePage: React.FC = () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+  const handleSignIn = () => {
+    signIn("github");
+    if (session.status == "authenticated") {
+      localStorage.setItem("User Name", `${session.data.user?.name}`);
+      localStorage.setItem("User Profile Url", `${session.data.user?.image}`);
+    }
+  };
 
   return (
     <div
@@ -101,7 +110,7 @@ const WorkspacePage: React.FC = () => {
             )}
             <input
               type="text"
-              className="w-full h-10 vh-5 bg-zinc-900 px-4 hover:shadow-outline focus:outline-none rounded-r text-gray-600 placeholder-gray-700"
+              className="w-full h-10 vh-5 bg-zinc-900 px-4 hover:shadow-outline focus:outline-none rounded-r text-lg text-gray-600 placeholder-gray-500"
               placeholder="Find by Tag, Description , title..."
               onClick={handleOpen}
             />

@@ -1,10 +1,18 @@
-import React from "react";
+'use client';
+import React, { useEffect, useState } from "react";
 
 const Welcome = () => {
+const [userName, setUserName] = useState<String>("");
+  useEffect(() => {
+    if(localStorage.getItem("User Name")){
+      setUserName(localStorage.getItem("User Name") || "")
+    }
+  },[])
+
   return (
     <div className="flex flex-col justify-around items-center h-[80vh]">
       <h2 className="text-4xl font-semibold flex justify-start">
-        Welcome to SnipSavvy
+        Welcome  {userName && <span className=" mx-2">{userName}</span>}  to SnipSavvy
       </h2>
       <div className="flex justify-around w-full">
         <div>
