@@ -13,7 +13,6 @@ import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 import { useSearchParams, useRouter } from "next/navigation";
 import { baseURL } from "@/config";
-import { DataFetch } from "@/network/useFetch";
 
 const style = {
   position: "absolute" as "absolute",
@@ -51,10 +50,11 @@ const WorkspacePage: React.FC = () => {
 
   useEffect(() => {
     const globalSearch = async () => {
-      await DataFetch({
-        url: `${baseURL}/v1/api/snippet/global?text=${inpText}`,
-        setState: setSearchData,
-      });
+      await axios
+        .get(`${baseURL}/v1/api/snippet/global?text=${inpText}`)
+        .then((response) => {
+          setSearchData(response.data);
+        });
     };
     inpText ? globalSearch() : setSearchData([]);
   }, [inpText]);

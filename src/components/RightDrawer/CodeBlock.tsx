@@ -16,7 +16,6 @@ import ShareSnippet from "./ShareSnippet";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
-import { DataFetch } from "@/network/useFetch";
 
 function CodeBlock() {
   const [isEditable, setIsEditable] = useState(false);
@@ -30,13 +29,15 @@ function CodeBlock() {
     window.Prism.highlightAll();
   }, []);
   useEffect(() => {
-    const fetchCode = () => {
-      DataFetch({
-        url:
+    const fetchCode = async () => {
+      await axios
+        .get(
           "https://snipsavvy.onrender.com/v1/api/snippet?snippet_id=" +
-          `${snippet}`,
-        setState: setCodeData,
-      });
+            `${snippet}`
+        )
+        .then((response) => {
+          setCodeData(response.data);
+        });
     };
     snippet && fetchCode();
 
