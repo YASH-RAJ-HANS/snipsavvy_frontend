@@ -14,6 +14,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { IoIosAdd } from "react-icons/io";
 import { useEffect } from "react";
+// import Welcome from "@/components/MiddleSection/Welcome";
+import { signIn, useSession } from "next-auth/react";
 import axios from "axios";
 import { baseURL } from "@/config";
 
@@ -34,6 +36,8 @@ const WorkspacePage: React.FC = () => {
   const [isEditable, setIsEditable] = React.useState(false)
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const session = useSession();
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -46,7 +50,6 @@ const WorkspacePage: React.FC = () => {
     nextSearchParams.delete("snippet");
     router.push(`${pathName}?${nextSearchParams.toString()}`);
   }
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "k") {
@@ -61,6 +64,13 @@ const WorkspacePage: React.FC = () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+  const handleSignIn = () => {
+    signIn("github");
+    if (session.status == "authenticated") {
+      localStorage.setItem("User Name", `${session.data.user?.name}`);
+      localStorage.setItem("User Profile Url", `${session.data.user?.image}`);
+    }
+  };
 
   const [inpText, setInpText] = useState("");
   const [searchData, setSearchData] = useState([]);
@@ -188,11 +198,11 @@ const WorkspacePage: React.FC = () => {
             )}
             <input
               type="text"
-              className="w-full h-10 vh-5 bg-zinc-900 px-4 hover:shadow-outline focus:outline-none rounded-r text-gray-600 placeholder-gray-700"
-              placeholder="Find by Code, Tag, title..."
+              className="w-full h-10 vh-5 bg-zinc-900 px-4 hover:shadow-outline focus:outline-none rounded-r text-lg text-gray-600 placeholder-gray-500"
+              placeholder="Find by Tag, Description , title..."
               onClick={handleOpen}
             />
-            <div className="px-4 py-1 rounded-xl flex   items-center text-xs text-gray-600 border-2 border-gray-600 shadow-lg   w-fit">
+            <div className="px-4 py-1 rounded-xl flex   items-center text-base text-gray-600 border-2 border-gray-600 shadow-lg   w-fit">
               <span>CTRL+K</span>
             </div>
           </div>
