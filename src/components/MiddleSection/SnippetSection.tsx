@@ -1,10 +1,11 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { useState } from "react";
 import SnippetCard from "./SnippetCard/Card";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import axios from "axios";
 import Welcome from "./Welcome";
+import useFetch from "@/network/useFetch";
 
 interface SnippetSectionProps {}
 
@@ -32,15 +33,14 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
   };
 
   const [isSnippet, setIsSnippet] = useState<any>([]);
-
   useLayoutEffect(() => {
     const fetchSnippets = async () => {
       try {
         const response = await axios.get(
           `https://snipsavvy.onrender.com/v1/api/snippet?cat_id=${collection}`
         );
-        setIsSnippet(response.data.data);
-        console.log(response.data.data);
+        setIsSnippet(response.data);
+        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -60,8 +60,8 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
           <div className={`${snippet ? "w-1/3 " : "vw-75"} flex flex-col `}>
             <div className="w-full flex mt-2">
               <div className="w-full flex flex-wrap overflow-hidden">
-                <div className="flex flex-wrap justify-start pb-20">
-                  {isSnippet.map((snip: any) => (
+                <div className="flex flex-wrap justify-around pb-20">
+                  {isSnippet?.map((snip: any) => (
                     <button onClick={() => updateUrl(snip._id)} key={snip._id}>
                       <SnippetCard {...snip} />
                     </button>
@@ -71,7 +71,7 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
             </div>
           </div>
         </div>
-      ) : collection == "" ? (
+      ) : collection == ""||snippet==""? (
         <div>
           <Welcome />
         </div>

@@ -10,6 +10,11 @@ import Skeleton from "@mui/material/Skeleton";
 import { MdEdit, MdDelete } from "react-icons/md";
 import Avatar from "@mui/material/Avatar";
 import { baseURL } from "@/config";
+import SettingsModal from "../Settings/SettingsModal";
+import useFetch from "@/network/useFetch";
+import { signOut, useSession } from "next-auth/react"
+import { redirect } from 'next/navigation'
+
 
 const Sidebar = () => {
   const [workspace, setWorkspace] = useState<any>([]);
@@ -24,20 +29,17 @@ const Sidebar = () => {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const [isCollectionVisible, setIsCollectionVisible] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
-  const [userProfile, setUserProfile] = useState<String>("");
   const router = useRouter();
+  const session = useSession()
   useEffect(() => {
-    if (localStorage.getItem("User Profile Url")) {
-      setUserProfile(localStorage.getItem("User Profile Url") || "");
-    }
     setIsDataLoading(true);
     axios
       .get(`${baseURL}/v1/api/workspace?user_id=${"65f72cd38cfe34c5f0c2648b"}`)
       .then((response) => {
-        setWorkspace(response.data.data);
+        setWorkspace(response.data);
         setIsDataLoading(false);
       })
       .catch((error) => {
@@ -46,9 +48,12 @@ const Sidebar = () => {
       });
   }, []);
 
+  const handleLogOut = () => {
+    signOut({ callbackUrl: 'http://localhost:3000/' });
+  }
+
   const updateUrl = (name: string) => {
     setSelectedWorkspace(name);
-    setIsCollectionVisible(true);
     localStorage.setItem("selectedWorkspace", name);
 
     const query = { workspace: name };
@@ -189,13 +194,16 @@ const Sidebar = () => {
         <div className="fixed bottom-0 left-2 w-full p-4 text-center">
           <ul className="flex-col">
             <li className="mb-4">
-              <CiSettings className="text-white text-3xl cursor-pointer" />
+              <CiSettings
+                onClick={() => setIsSettingsModalOpen(true)}
+                className="text-white text-3xl cursor-pointer"
+              />
             </li>
-            {userProfile ? (
-              <Avatar sx={{ width: 30, height: 30 }} alt="Cindy Baker" src={userProfile.toString()} />
+            {session.status == 'authenticated' ? (
+              <Avatar className=" cursor-pointer" onClick={()=>handleLogOut()} sx={{ width: 30, height: 30 }} alt="Cindy Baker" src={session.data.user?.image?.toString() || "https://www.pngmart.com/files/22/User-Avatar-Profile-PNG-Isolated-Transparent-HD-Photo.png"} />
             ) : (
               <li>
-                <CiLogout className="text-white text-3xl cursor-pointer" />
+                <CiLogout onClick={()=>handleLogOut()} className="text-white text-3xl cursor-pointer" />
               </li>
             )}
           </ul>
@@ -234,6 +242,10 @@ const Sidebar = () => {
           </ul>
         </div>
       )}
+      <SettingsModal
+        open={isSettingsModalOpen}
+        setOpen={setIsSettingsModalOpen}
+      />
     </>
   );
 };

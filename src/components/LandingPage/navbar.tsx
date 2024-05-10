@@ -1,31 +1,23 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Logo } from "./Logo";
-import { Button } from "@/components/LandingPage/Button";
 import { signIn, useSession } from "next-auth/react";
-
+import { redirect } from "next/navigation";
 function Navbar() {
   const session = useSession();
-  const handleSignInGoogle = () => {
-    signIn("google");
-    if (session.status == "authenticated") {
-      localStorage.setItem("User Name", `${session.data.user?.name}`);
-      localStorage.setItem("User Profile Url", `${session.data.user?.image}`);
+  useEffect(() => {
+    if (session && session.status === "authenticated") {
+      redirect("/workspace");
     }
-  };
-  const handleSignInGithub = () => {
-    signIn("github");
-    if (session.status == "authenticated") {
-      localStorage.setItem("User Name", `${session.data.user?.name}`);
-      localStorage.setItem("User Profile Url", `${session.data.user?.image}`);
-    }
+  }, [session]);
+  const handleSignInGoogle = async () => {
+    await signIn("google", { callbackUrl: "http://localhost:3000/workspace" });
   };
   return (
     <div className="border-b border-zinc-600 text-white font-bold px-2 pt-2 bg-black flex flex-row justify-around">
       <Logo className="text-3xl mt-2" />
       <div className="flex flex-row gap-5">
-        <button onClick={handleSignInGoogle}>Sign in with Google</button>
-        <button onClick={handleSignInGithub}>Sign In With Github</button>
+        <button onClick={handleSignInGoogle}>Sign In With Google</button>
       </div>
     </div>
   );
