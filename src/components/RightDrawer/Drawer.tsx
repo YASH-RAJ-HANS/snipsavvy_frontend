@@ -2,50 +2,56 @@
 
 import { useState,useEffect } from "react";
 import CodeBlock from "./CodeBlock";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { MdCancel } from "react-icons/md";
 // import { Suspense } from 'react'
-const RightDrawer = () => {
-  const [isOpen, setIsOpen] = useState(true);
-  
-  const searchParams = useSearchParams();
 
+interface Props {
+  isOpen: boolean;
+  setIsOpen: any;
+  isEditable: boolean;
+  setIsEditable: any;
+}
+const RightDrawer = ({isOpen, setIsOpen, isEditable, setIsEditable }: Props) => {
+  const searchParams = useSearchParams();
+  const router = useRouter()
+  const pathName = usePathname()
   const snippet = searchParams.get("snippet")
     ? searchParams.get("snippet")
     : "";
 
+  const collection = searchParams.get("collection")
+    ? searchParams.get("collection")
+    : "";
 
-  const toggleDrawer = () => {
-    // setIsOpen(!isOpen);
-    setIsOpen(true);
+  const updateUrl = () => {
+    const nextSearchParams = new URLSearchParams(searchParams.toString());
+    nextSearchParams.delete("snippet");
+    router.push(`${pathName}?${nextSearchParams.toString()}`);
   };
+
+  const closeDrawer = () => {
+    setIsOpen(false);
+  }
 
   return (
     
-    snippet && 
-    (
       <div className="flex items-center justify-center">
-      {isOpen && (
+      {isOpen ? 
 
         <div className="fixed top-16 right-0 min-h-full w-1/2 bg-zinc-900 shadow-lg shadow-zinc-700 border-l-1 border-black transition-all duration-300" style={{ maxHeight: '600px', overflow: 'auto' }}>
           <div className="p-4 overflow-auto">
-            {/* Drawer content goes here
-
-        <div className="fixed top-16 right-0 h-full w-1/2 bg-black transition-all duration-300 z-10">
-          <div className="p-4">
-            Drawer content goes here snippet id-  {snippet}
-
-            <h2 className="text-xl font-semibold leading-2 text-white">
-              Sub Category Heading
-            </h2>
-              <input placeholder="Snippet Description..." className="text-black bg-zinc-800 rounded-lg px-3 py-1 my-4 w-[90%]"></input> */}
-            <CodeBlock />
+            {snippet ? <button className="absolute top-2 right-2 text-white text-2xl" onClick={updateUrl}>
+              <MdCancel />
+            </button> : <button className="absolute top-2 right-2 text-white text-2xl" onClick={closeDrawer}>
+              <MdCancel />
+            </button>}
+            <CodeBlock isEditable={isEditable} setIsEditable={setIsEditable}/>
           </div>
         </div>
-      )}
+      : null} 
     </div>
     )
-    
-  );
 };
 
 export default RightDrawer;
