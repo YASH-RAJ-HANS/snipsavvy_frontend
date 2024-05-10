@@ -50,8 +50,12 @@ const Sidebar = () => {
   const session = useSession();
   useEffect(() => {
     setIsDataLoading(true);
+    const token = localStorage.getItem("token")
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     axios
-      .get(`${baseURL}/v1/api/workspace?user_id=${"65f72cd38cfe34c5f0c2648b"}`)
+      .get(`${baseURL}/v1/api/workspace`, { headers })
       .then((response) => {
         setWorkspace(response.data);
         setIsDataLoading(false);
