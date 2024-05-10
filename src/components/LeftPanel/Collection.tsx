@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
 import useFetch from "@/network/useFetch";
+import { baseURL } from "@/config";
 
 const Collection = () => {
   const [showInput, setShowInput] = useState(false);
@@ -23,8 +24,12 @@ const Collection = () => {
   const [isDataLoading, setIsDataLoading] = useState(false);
 
   const fetchCategories = () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     axios
-      .get(`https://snipsavvy.onrender.com/vi/api/category/${workspace}`)
+      .get(`${baseURL}/vi/api/category/${workspace}`, { headers })
       .then((response) => {
         setCollection(response.data);
         console.log("collections=>", response.data.data);
@@ -52,8 +57,12 @@ const Collection = () => {
       name: data,
       description: "SnipSavvy Project Snippets",
     };
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     await axios
-      .post("https://snipsavvy.onrender.com/vi/api/category", body)
+      .post(` ${baseURL}/vi/api/category`, body, { headers })
       .then((response) => {
         console.log(response);
         // [FIX ME] at a toast here, instead of alert

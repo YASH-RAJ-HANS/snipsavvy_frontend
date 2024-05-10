@@ -74,8 +74,12 @@ const WorkspacePage: React.FC = () => {
 
   useEffect(() => {
     const globalSearch = async () => {
+      const token = localStorage.getItem("token")
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
       await axios
-        .get(`${baseURL}/v1/api/snippet/global?text=${inpText}`)
+        .get(`${baseURL}/v1/api/snippet/global?text=${inpText}` , { headers })
         .then((response) => {
           setSearchData(response.data);
         });
@@ -224,7 +228,7 @@ const WorkspacePage: React.FC = () => {
           </div>
           </div>
         </div>
-        <div className="mt-4 overflow-hidden p-4 m-auto">
+        <div className="mt-4 overflow-hidden p-4">
           <SnippetSection />
 
           {snippet && (

@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import axios from "axios";
 import Welcome from "./Welcome";
 import useFetch from "@/network/useFetch";
+import { baseURL } from "@/config";
 
 interface SnippetSectionProps {}
 
@@ -35,13 +36,17 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
   const [isSnippet, setIsSnippet] = useState<any>([]);
   useLayoutEffect(() => {
     const fetchSnippets = async () => {
+      const token = localStorage.getItem("token");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
       try {
         const response = await axios.get(
-          `https://snipsavvy.onrender.com/v1/api/snippet?cat_id=${collection}`
+          `${baseURL}/v1/api/snippet?cat_id=${collection}`,
+          { headers }
         );
         setIsSnippet(response.data);
         console.log(response.data.data);
-
       } catch (error) {
         console.log(error);
       }
@@ -72,8 +77,8 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
             </div>
           </div>
         </div>
-      ) : collection == ""||snippet==""? (
-        <div className=" m-auto" >
+      ) : collection == "" || snippet == "" ? (
+        <div className=" m-auto">
           <Welcome />
         </div>
       ) : (
