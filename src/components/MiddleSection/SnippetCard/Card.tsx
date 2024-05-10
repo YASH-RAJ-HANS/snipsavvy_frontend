@@ -32,7 +32,8 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
       className={`flex items-start border-zinc-800 rounded-lg ${snippet_id == _id ? "bg-zinc-950 border-zinc-300" : "hover:bg-zinc-950 hover:border-zinc-300"} border-transparent  shadow-xl overflow-hidden mb-6 mr-4 p-3 transition-border duration-500`}
       style={{
         width: "22vw",
-        minHeight: "25vh",
+        height: "26vh",
+
         // maxHeight: "30vh",
         borderRadius: "0.6rem",
         gap: "11px",
@@ -57,7 +58,7 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
           {code.substring(0, 60)}
         </div>
         <div className="flex  flex-wrap mt-2">
-          {tags.map((tag, index) => (
+          {tags.slice(0,3).map((tag, index) => (
             <div
               key={index}
               className="bg-blue-100 text-blue-800 rounded-full py-1 px-3 text-sm font-medium mr-2 mb-2"

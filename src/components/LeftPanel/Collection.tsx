@@ -22,8 +22,6 @@ const Collection = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
 
-  console.log("w_id=>", workspace);
-
   const fetchCategories = () => {
     axios
       .get(`https://snipsavvy.onrender.com/vi/api/category/${workspace}`)
