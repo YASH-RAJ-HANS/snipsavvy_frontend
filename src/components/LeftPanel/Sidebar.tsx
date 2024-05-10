@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import { CiSettings, CiLogout } from "react-icons/ci";
+import { FaShareAlt } from "react-icons/fa";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import Modal from "./Modal";
@@ -210,6 +212,13 @@ const Sidebar = () => {
           onBlur={() => closeDropdown()}
         >
           <ul className="w-20">
+          <li
+              className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
+              onClick={() => handleOptionClick("Option 3")}
+            >
+              Share <FaShareAlt  className="mt-1"/>
+
+            </li>
             <li
               className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
               onClick={() => handleOptionClick("Option 1")}
@@ -222,12 +231,7 @@ const Sidebar = () => {
             >
               Delete <MdDelete className="mt-1" />
             </li>
-            <li
-              className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
-              onClick={() => handleOptionClick("Option 2")}
-            >
-              Share <MdDelete className="mt-1" />
-            </li>
+            
           </ul>
         </div>
       )}
