@@ -93,7 +93,8 @@ const Collection = () => {
       .get(`https://snipsavvy.onrender.com/vi/api/category/${workspace}`)
       .then((response) => {
         setCollection(response.data);
-        console.log("collections=>", response.data);
+        console.log("collections=>", response.data.data);
+
         setIsDataLoading(false);
       })
       .catch((error) => {
