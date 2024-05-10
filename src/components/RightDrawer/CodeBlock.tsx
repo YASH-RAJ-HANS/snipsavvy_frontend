@@ -1,14 +1,14 @@
-'use client'
-import React, {useState, useEffect} from 'react'
-import 'prismjs';
-import dummyCodeData from '@/dummydata';
-import 'prismjs/themes/prism-twilight.css'; 
+"use client";
+import React, { useState, useEffect } from "react";
+import "prismjs";
+import dummyCodeData from "@/dummydata";
+import "prismjs/themes/prism-twilight.css";
 import { LuCopyPlus } from "react-icons/lu";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import 'prismjs/components/prism-python';
-import 'prismjs/components/prism-java';
-import 'prismjs/components/prism-javascript';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-java";
+import "prismjs/components/prism-javascript";
 import { MdEdit } from "react-icons/md";
 import { TbPencilCancel } from "react-icons/tb";
 import { CiShare2 } from "react-icons/ci";
@@ -29,9 +29,7 @@ function CodeBlock({isEditable, setIsEditable}: props) {
     const snippet = searchParams.get('snippet') ? searchParams.get('snippet') : ''
     const collection = searchParams.get('collection') ? searchParams.get('collection') : ''
     const workspace = searchParams.get('workspace') ? searchParams.get('workspace') : ''
-    useEffect (() => {
-      window.Prism.highlightAll()
-    },[])
+    
     useEffect (() => {
         const fetchCode = async() => {
           await axios.get('https://snipsavvy.onrender.com/v1/api/snippet?snippet_id=' + `${snippet}`)
@@ -46,37 +44,36 @@ function CodeBlock({isEditable, setIsEditable}: props) {
 
         window.Prism.highlightAll();
 
-        return() => {
 
-        }
-    }, [snippet]);
-   
+    window.Prism.highlightAll();
+  }, [snippet]);
+
   const toggleEditable = () => {
     setIsEditable(!isEditable);
-    const codeElement = document.getElementById('editable-code');
+    const codeElement = document.getElementById("editable-code");
     if (codeElement) {
-      codeElement.contentEditable = isEditable ? 'false' : 'true';
+      codeElement.contentEditable = isEditable ? "false" : "true";
     }
   };
-    
 
-  const copyToClipboard = (code : string) => {
-    navigator.clipboard.writeText(code)
+  const copyToClipboard = (code: string) => {
+    navigator.clipboard
+      .writeText(code)
       .then(() => {
         // Code successfully copied to clipboard
-        toast.success('Code copied to clipboard')
+        toast.success("Code copied to clipboard");
       })
       .catch((error) => {
         // Unable to copy to clipboard
-        console.error('Unable to copy code to clipboard', error);
+        console.error("Unable to copy code to clipboard", error);
       });
   };
 
   const toggleBox = () => {
     setShowBox(true);
   }
+  
   const flag = Array.isArray(codeData) ? true : false
-
   const cleanCode = flag===true && codeData[0].code.trim().replace(/`/g, '')
   const colors = ['bg-purple-700', 'bg-indigo-700', 'bg-teal-700', 'bg-lime-700', 'bg-fuchsia-700'];
   const [description, setDescription] = useState('')
@@ -197,7 +194,7 @@ function CodeBlock({isEditable, setIsEditable}: props) {
                         </div>
                         }
                         
-                </div>
+               </div>
                 </div>
             </div>
       </div>  
@@ -205,3 +202,4 @@ function CodeBlock({isEditable, setIsEditable}: props) {
       );
     };
 export default CodeBlock
+               

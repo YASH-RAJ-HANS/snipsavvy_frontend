@@ -10,6 +10,8 @@ import Skeleton from "@mui/material/Skeleton";
 import { MdEdit, MdDelete } from "react-icons/md";
 
 import { baseURL } from "@/config";
+import SettingsModal from "../Settings/SettingsModal";
+import useFetch from "@/network/useFetch";
 
 const Sidebar = () => {
   const [workspace, setWorkspace] = useState<any>([]);
@@ -24,10 +26,11 @@ const Sidebar = () => {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const [isCollectionVisible, setIsCollectionVisible] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
   const router = useRouter();
+
   useEffect(() => {
     setIsDataLoading(true);
     axios
@@ -44,7 +47,6 @@ const Sidebar = () => {
 
   const updateUrl = (name: string) => {
     setSelectedWorkspace(name);
-    setIsCollectionVisible(true);
     localStorage.setItem("selectedWorkspace", name);
 
     const query = { workspace: name };
@@ -118,7 +120,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className=" w-[5vw] flex flex-col items-center bg-[#1F1F20] rounded">
+      <div className=" w-[5vw] flex flex-col items-center bg-[#141415] rounded">
         <Image
           src="/logo.png"
           width={40}
@@ -185,7 +187,10 @@ const Sidebar = () => {
         <div className="fixed bottom-0 left-2 w-full p-4 text-center">
           <ul className="flex-col">
             <li className="mb-4">
-              <CiSettings className="text-white text-3xl cursor-pointer" />
+              <CiSettings
+                onClick={() => setIsSettingsModalOpen(true)}
+                className="text-white text-3xl cursor-pointer"
+              />
             </li>
             <li>
               <CiLogout className="text-white text-3xl cursor-pointer" />
@@ -193,7 +198,7 @@ const Sidebar = () => {
           </ul>
         </div>
       </div>
-      {isCollectionVisible && <Collection />}
+      <Collection />
       {isDropdownOpen && (
         <div
           ref={dropdownRef}
@@ -205,6 +210,7 @@ const Sidebar = () => {
             backgroundColor: "#131211c4",
             borderRadius: "4px",
             boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+            backdropFilter: "blur(3px)",
             zIndex: 9999,
           }}
           onBlur={() => closeDropdown()}
@@ -225,6 +231,10 @@ const Sidebar = () => {
           </ul>
         </div>
       )}
+      <SettingsModal
+        open={isSettingsModalOpen}
+        setOpen={setIsSettingsModalOpen}
+      />
     </>
   );
 };
