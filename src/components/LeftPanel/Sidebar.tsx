@@ -8,10 +8,13 @@ import Collection from "./Collection";
 import Image from "next/image";
 import Skeleton from "@mui/material/Skeleton";
 import { MdEdit, MdDelete } from "react-icons/md";
-
+import Avatar from "@mui/material/Avatar";
 import { baseURL } from "@/config";
 import SettingsModal from "../Settings/SettingsModal";
 import useFetch from "@/network/useFetch";
+import { signOut, useSession } from "next-auth/react"
+import { redirect } from 'next/navigation'
+
 
 const Sidebar = () => {
   const [workspace, setWorkspace] = useState<any>([]);
@@ -30,7 +33,7 @@ const Sidebar = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
   const router = useRouter();
-
+  const session = useSession()
   useEffect(() => {
     setIsDataLoading(true);
     axios
@@ -44,6 +47,10 @@ const Sidebar = () => {
         setIsDataLoading(false);
       });
   }, []);
+
+  const handleLogOut = () => {
+    signOut({ callbackUrl: 'http://localhost:3000/' });
+  }
 
   const updateUrl = (name: string) => {
     setSelectedWorkspace(name);
@@ -192,9 +199,13 @@ const Sidebar = () => {
                 className="text-white text-3xl cursor-pointer"
               />
             </li>
-            <li>
-              <CiLogout className="text-white text-3xl cursor-pointer" />
-            </li>
+            {session.status == 'authenticated' ? (
+              <Avatar className=" cursor-pointer" onClick={()=>handleLogOut()} sx={{ width: 30, height: 30 }} alt="Cindy Baker" src={session.data.user?.image?.toString() || "https://www.pngmart.com/files/22/User-Avatar-Profile-PNG-Isolated-Transparent-HD-Photo.png"} />
+            ) : (
+              <li>
+                <CiLogout onClick={()=>handleLogOut()} className="text-white text-3xl cursor-pointer" />
+              </li>
+            )}
           </ul>
         </div>
       </div>

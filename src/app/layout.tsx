@@ -2,6 +2,7 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Head from "next/head";
+import AuthProvider from "@/components/AuthProvider/AuthProvider";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -33,8 +34,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         <div className=" bg-black">
           <div className="">
-            <div className=" items-center min-h-screen ">
-              <div>{children}</div>
+            <div className="flex justify-center items-center min-h-screen bg-black">
+              <div>
+                <AuthProvider>{children}</AuthProvider>
+              </div>
             </div>
           </div>
         </div>

@@ -8,10 +8,15 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import React, { useState } from "react";
 import SnippetModal from "@/components/MiddleSection/SnippetModal";
+import Welcome from "@/components/MiddleSection/Welcome";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { IoIosAdd } from "react-icons/io";
 import { useEffect } from "react";
+// import Welcome from "@/components/MiddleSection/Welcome";
+import { signIn, useSession } from "next-auth/react";
 import axios from "axios";
-import { IoIosArrowForward } from "react-icons/io";
-import { useSearchParams, useRouter } from "next/navigation";
 import { baseURL } from "@/config";
 
 const style = {
@@ -27,9 +32,24 @@ const style = {
 const WorkspacePage: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const [openSnippet, setOpenSnippet] = React.useState(false);
+  const [openDrawer, setOpenDrawer] = React.useState(false)
+  const [isEditable, setIsEditable] = React.useState(false)
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const session = useSession();
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const snippet = searchParams.get("snippet") ? searchParams.get("snippet") : ""
+  const collection = searchParams.get("collection") ? searchParams.get("collection") : ""
+  const pathName = usePathname()
+  const handleAdd = () =>{
+    setOpenDrawer(true)
+    const nextSearchParams = new URLSearchParams(searchParams.toString());
+    nextSearchParams.delete("snippet");
+    router.push(`${pathName}?${nextSearchParams.toString()}`);
+  }
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "k") {
@@ -44,6 +64,13 @@ const WorkspacePage: React.FC = () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+  const handleSignIn = () => {
+    signIn("github");
+    if (session.status == "authenticated") {
+      localStorage.setItem("User Name", `${session.data.user?.name}`);
+      localStorage.setItem("User Profile Url", `${session.data.user?.image}`);
+    }
+  };
 
   const [inpText, setInpText] = useState("");
   const [searchData, setSearchData] = useState([]);
@@ -79,17 +106,11 @@ const WorkspacePage: React.FC = () => {
   };
 
   return (
-    <div
-      style={{ width: "75vw" }}
-      className="fixed top-0 right-0 h-screen text-white bg-zinc-900"
-    >
-      <div
-        style={{ width: "75vw" }}
-        className="fixed top-0 pr-3 flex flex-col justify-between bg-zinc-900 py-4"
-      >
-        <div className="flex w-full justify-end border-b-3 pb-3 border-zinc-700 shadow-lg font-mono">
-          <div className="flex " style={{ width: "100vw" }}>
-            <div className="ml-6 px-1 h-6 w-6 mt-2 flex items-center rounded-l text-gray-700">
+    <div style={{ width: "75vw" }} className="fixed top-0 right-0 h-screen text-white bg-zinc-900">
+      <div style={{ width: "75vw" }} className="fixed top-0   pr-3 flex flex-col justify-between items-center bg-zinc-900  py-4">
+        <div className="flex w-full justify-end">
+          <div className="flex w-1/3">
+            <div className="border-2 ml-6 px-2 border-zinc-700 h-10 flex items-center rounded-l">
               <SearchIcon />
             </div>
             {open && (
@@ -177,11 +198,11 @@ const WorkspacePage: React.FC = () => {
             )}
             <input
               type="text"
-              className="w-full h-10 vh-5 bg-zinc-900 px-4 hover:shadow-outline focus:outline-none rounded-r text-gray-600 placeholder-gray-700"
-              placeholder="Find by Code, Tag, title..."
+              className="w-full h-10 vh-5 bg-zinc-900 px-4 hover:shadow-outline focus:outline-none rounded-r text-lg text-gray-600 placeholder-gray-500"
+              placeholder="Find by Tag, Description , title..."
               onClick={handleOpen}
             />
-            <div className="px-4 py-1 rounded-xl flex   items-center text-xs text-gray-600 border-2 border-gray-600 shadow-lg   w-fit">
+            <div className="px-4 py-1 rounded-xl flex   items-center text-base text-gray-600 border-2 border-gray-600 shadow-lg   w-fit">
               <span>CTRL+K</span>
             </div>
           </div>
@@ -190,7 +211,10 @@ const WorkspacePage: React.FC = () => {
             {/* <button className="fixed right-0" onClick={() => setOpenSnippet(!openSnippet)}> */}
 
             {/* <SplitButton /> */}
-            <SnippetModal />
+            {/* <SnippetModal/> */}
+            <button className='bg-blue-600 hover:bg-blue-400 duration-300 rounded-xl text-xl px-3 py-2 text-white' onClick={handleAdd}><IoIosAdd /></button>
+            {collection && (<Drawer isOpen={openDrawer} setIsOpen={setOpenDrawer} isEditable={true} setIsEditable={setIsEditable}/>)}
+
 
             {/* </button> */}
             {/* {openSnippet && <SnippetModal />} */}
@@ -198,7 +222,8 @@ const WorkspacePage: React.FC = () => {
         </div>
         <div className="mt-4 overflow-hidden p-4">
           <SnippetSection />
-          <Drawer />
+
+          {snippet && <Drawer isOpen={true} setIsOpen={setOpenDrawer} isEditable={isEditable} setIsEditable={setIsEditable}/>}
         </div>
       </div>
     </div>

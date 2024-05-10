@@ -40,7 +40,8 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
           `https://snipsavvy.onrender.com/v1/api/snippet?cat_id=${collection}`
         );
         setIsSnippet(response.data);
-        console.log(response.data);
+        console.log(response.data.data);
+
       } catch (error) {
         console.log(error);
       }
