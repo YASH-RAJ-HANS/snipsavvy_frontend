@@ -14,6 +14,7 @@ import Welcome from "@/components/MiddleSection/Welcome";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { IoIosAdd } from "react-icons/io";
 
 const style = {
   position: "absolute" as "absolute",
@@ -48,10 +49,7 @@ const WorkspacePage: React.FC = () => {
 
   return (
     <div style={{ width: "75vw" }} className="fixed top-0 right-0 h-screen text-white bg-zinc-900">
-      <div
-        style={{ width: "75vw" }}
-        className="fixed top-0   pr-3 flex flex-col justify-between items-center bg-zinc-900  py-4"
-      >
+      <div style={{ width: "75vw" }} className="fixed top-0   pr-3 flex flex-col justify-between items-center bg-zinc-900  py-4">
         <div className="flex w-full justify-end">
           <div className="flex w-1/3">
             <div className="border-2 ml-6 px-2 border-zinc-700 h-10 flex items-center rounded-l">
@@ -104,8 +102,8 @@ const WorkspacePage: React.FC = () => {
               
             {/* <SplitButton /> */}
             {/* <SnippetModal/> */}
-            <button className='bg-blue-600 rounded-xl text-xl p-2 text-white' onClick={handleAdd}>Add Snippet</button>
-            <Drawer isOpen={openDrawer} setIsOpen={setOpenDrawer} isEditable={true} setIsEditable={setIsEditable}/>
+            <button className='bg-blue-600 hover:bg-blue-400 duration-300 rounded-xl text-xl px-3 py-2 text-white' onClick={handleAdd}><IoIosAdd /></button>
+            {collection && (<Drawer isOpen={openDrawer} setIsOpen={setOpenDrawer} isEditable={true} setIsEditable={setIsEditable}/>)}
             {/* </button> */}
             {/* {openSnippet && <SnippetModal />} */}
             

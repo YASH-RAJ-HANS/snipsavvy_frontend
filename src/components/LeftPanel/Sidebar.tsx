@@ -33,7 +33,7 @@ const Sidebar = () => {
     axios
       .get(`${baseURL}/v1/api/workspace?user_id=${"65f72cd38cfe34c5f0c2648b"}`)
       .then((response) => {
-        setWorkspace(response.data.data);
+        setWorkspace(response.data);
         setIsDataLoading(false);
       })
       .catch((error) => {
