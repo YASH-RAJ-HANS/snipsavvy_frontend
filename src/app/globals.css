@@ -20,6 +20,26 @@
   background-color: #333; /* Set the color of the scrollbar thumb */
   border-radius: 10px; /* Set the border radius to make it rounded */
 }
+.content h1 {
+  position: relative;
+  font-size: 5rem;
+  font-weight: 800;
+  color: #dddbdb;
+  text-shadow: 0px 0px 3px #006BCB, 0px 0px 10px #006BCB;
+  margin: 3px;
+ }
+.content h1::before {
+  content: "";
+  position: absolute;
+  top: 65%;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #006BCB;
+  transform: perspective(10px) rotateX(10deg) scale(1, 0.2);
+  filter: blur(1em);
+  opacity: 0.5;
+ }
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -31,6 +51,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
+  overflow-x: hidden;
   background: linear-gradient(
       to bottom,
       transparent,
