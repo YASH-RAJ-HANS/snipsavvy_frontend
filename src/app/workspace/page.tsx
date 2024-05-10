@@ -16,6 +16,7 @@ import { IoIosAdd } from "react-icons/io";
 import { useEffect } from "react";
 import axios from "axios";
 import { baseURL } from "@/config";
+import { IoIosArrowForward } from "react-icons/io";
 
 const style = {
   position: "absolute" as "absolute",
@@ -75,9 +76,6 @@ const WorkspacePage: React.FC = () => {
     };
     inpText ? globalSearch() : setSearchData([]);
   }, [inpText]);
-
-  const searchParams = useSearchParams();
-
   const Router = useRouter();
 
   const updateURL = (snippet: any) => {
@@ -203,7 +201,7 @@ const WorkspacePage: React.FC = () => {
             {/* <SplitButton /> */}
             {/* <SnippetModal/> */}
             <button className='bg-blue-600 hover:bg-blue-400 duration-300 rounded-xl text-xl px-3 py-2 text-white' onClick={handleAdd}><IoIosAdd /></button>
-            {collection && (<Drawer isOpen={openDrawer} setIsOpen={setOpenDrawer} isEditable={true} setIsEditable={setIsEditable}/>)}
+            {collection && (<Drawer className="fixed top-16 right-0" isOpen={openDrawer} setIsOpen={setOpenDrawer} isEditable={true} setIsEditable={setIsEditable} shared="false"/>)}
 
 
             {/* </button> */}
@@ -213,7 +211,7 @@ const WorkspacePage: React.FC = () => {
         <div className="mt-4 overflow-hidden p-4">
           <SnippetSection />
 
-          {snippet && <Drawer isOpen={true} setIsOpen={setOpenDrawer} isEditable={isEditable} setIsEditable={setIsEditable}/>}
+         {snippet && <Drawer className="fixed top-16 right-0" isOpen={true} setIsOpen={setOpenDrawer} isEditable={isEditable} setIsEditable={setIsEditable} shared="false"/>}
         </div>
       </div>
     </div>

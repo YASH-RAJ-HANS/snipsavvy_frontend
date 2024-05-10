@@ -21,8 +21,9 @@ import { Input } from './Input';
 interface props {
   isEditable: boolean;
   setIsEditable: any;
+  shared: string
 }
-function CodeBlock({isEditable, setIsEditable}: props) {
+function CodeBlock({isEditable, setIsEditable, shared}: props) {
     const [showBox, setShowBox] = useState(false);
     const [codeData, setCodeData] = useState<any>({})
     const searchParams = useSearchParams()
@@ -164,9 +165,8 @@ function CodeBlock({isEditable, setIsEditable}: props) {
                 }
 
                 <div className="">
-                {snippet &&
+                {shared !="true" && snippet &&
                 <div className='relative mt-12'>
-                
                 <button onClick={toggleEditable} className='absolute -top-10 right-6 text-zinc-100 bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2 mx-2'>
                   {isEditable ? <MdEdit /> : <TbPencilCancel />}
                 </button>
