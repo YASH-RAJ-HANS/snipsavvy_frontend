@@ -13,7 +13,7 @@ import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 import { useSearchParams, useRouter } from "next/navigation";
 import { baseURL } from "@/config";
-import { DataFetch } from "@/network/DataFetch";
+import { DataFetch } from "@/network/useFetch";
 
 const style = {
   position: "absolute" as "absolute",
@@ -107,7 +107,6 @@ const WorkspacePage: React.FC = () => {
                       height: 500,
                     }}
                     className="bg-zinc-950  rounded-xl"
-
                   >
                     <Typography
                       id="modal-modal-title"
@@ -172,7 +171,6 @@ const WorkspacePage: React.FC = () => {
                           ))}
                       </div>
                     )}
-
                   </Box>
                 </Modal>
               </div>
@@ -196,7 +194,6 @@ const WorkspacePage: React.FC = () => {
 
             {/* </button> */}
             {/* {openSnippet && <SnippetModal />} */}
-
           </div>
         </div>
         <div className="mt-4 overflow-hidden p-4">

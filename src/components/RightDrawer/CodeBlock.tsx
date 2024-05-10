@@ -16,7 +16,7 @@ import ShareSnippet from "./ShareSnippet";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
-import { DataFetch } from "@/network/DataFetch";
+import { DataFetch } from "@/network/useFetch";
 
 function CodeBlock() {
   const [isEditable, setIsEditable] = useState(false);
