@@ -60,8 +60,8 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
         >
           <div className={`${snippet ? "w-1/3 " : "vw-75"} flex flex-col `}>
             <div className="w-full flex mt-2">
-              <div className="w-full flex flex-wrap overflow-hidden">
-                <div className="flex flex-wrap justify-around pb-20">
+              <div className="w-full flex flex-wrap">
+                <div className="flex flex-wrap justify-start pb-20">
                   {isSnippet?.map((snip: any) => (
                     <button onClick={() => updateUrl(snip._id)} key={snip._id}>
                       <SnippetCard {...snip} />
@@ -73,7 +73,7 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
           </div>
         </div>
       ) : collection == ""||snippet==""? (
-        <div>
+        <div className=" m-auto" >
           <Welcome />
         </div>
       ) : (

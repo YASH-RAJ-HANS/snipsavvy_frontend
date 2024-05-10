@@ -1,4 +1,6 @@
+import { Button } from "@/components/LandingPage/Button";
 import Link from "next/link";
+import { SignUpButton } from "@/components/SignUpButton/SignUpButton";
 
 export default function Component() {
   return (
@@ -58,10 +60,12 @@ export default function Component() {
               </div>
               <div className="space-x-4">
                 <Link
-                  className="inline-flex h-9 items-center justify-center rounded-xl bg-[#045AA6] px-4 py-2 text-lg font-medium text-gray-300 shadow transition-colors hover:bg-[#045AA6]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#045AA6]-300 disabled:pointer-events-none disabled:opacity-50"
+                  // className="inline-flex h-9 items-center justify-center rounded-xl bg-[#045AA6] px-4 py-2 text-lg font-medium text-gray-300 shadow transition-colors hover:bg-[#045AA6]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#045AA6]-300 disabled:pointer-events-none disabled:opacity-50"
                   href="#"
+
                 >
-                  Get Started
+                  <SignUpButton description="Get Started">
+                  </SignUpButton>
                 </Link>
                 {/* <Link
                   className="inline-flex h-9 items-center justify-center rounded-md border border-gray-700 bg-gray-900 px-4 py-2 text-lg font-medium shadow-sm transition-colors hover:bg-gray-800 hover:text-gray-50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#045AA6]-300 disabled:pointer-events-none disabled:opacity-50"
