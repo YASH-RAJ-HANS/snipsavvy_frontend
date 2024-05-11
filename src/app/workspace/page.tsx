@@ -86,6 +86,9 @@ const WorkspacePage: React.FC = () => {
     };
     inpText ? globalSearch() : setSearchData([]);
   }, [inpText]);
+
+  // const searchParams = useSearchParams();
+
   const Router = useRouter();
 
   const updateURL = (snippet: any) => {
