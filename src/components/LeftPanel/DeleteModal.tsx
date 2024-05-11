@@ -43,7 +43,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ open, onClose, onDelete }) =>
           Are you sure you want to delete this item?
         </Typography>
         <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
-          <Button onClick={onClose} color="secondary" sx={{ mr: 2 }}>
+          <Button onClick={onClose}  sx={{ mr: 2 }}>
             Cancel
           </Button>
           <Button onClick={handleDelete} variant="contained" color="error">

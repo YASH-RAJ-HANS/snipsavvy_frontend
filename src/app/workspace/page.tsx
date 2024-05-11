@@ -76,7 +76,7 @@ const WorkspacePage: React.FC = () => {
     inpText ? globalSearch() : setSearchData([]);
   }, [inpText]);
 
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
 
   const Router = useRouter();
 
