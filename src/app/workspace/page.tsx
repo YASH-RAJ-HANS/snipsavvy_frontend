@@ -10,12 +10,15 @@ import React, { useState } from "react";
 import SnippetModal from "@/components/MiddleSection/SnippetModal";
 import Welcome from "@/components/MiddleSection/Welcome";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { IoIosAdd } from "react-icons/io";
 import { useEffect } from "react";
+// import Welcome from "@/components/MiddleSection/Welcome";
+import { useSession } from "next-auth/react";
 import axios from "axios";
 import { baseURL } from "@/config";
+import { IoIosArrowForward } from "react-icons/io";
 
 const style = {
   position: "absolute" as "absolute",
@@ -29,24 +32,28 @@ const style = {
 };
 const WorkspacePage: React.FC = () => {
   const [open, setOpen] = React.useState(false);
-  const [openSnippet, setOpenSnippet] = React.useState(false);
-  const [openDrawer, setOpenDrawer] = React.useState(false)
-  const [isEditable, setIsEditable] = React.useState(false)
+  const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [isEditable, setIsEditable] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const router = useRouter()
-  const searchParams = useSearchParams()
 
-  const snippet = searchParams.get("snippet") ? searchParams.get("snippet") : ""
-  const collection = searchParams.get("collection") ? searchParams.get("collection") : ""
-  const pathName = usePathname()
-  const handleAdd = () =>{
-    setOpenDrawer(true)
+  const session = useSession();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const snippet = searchParams.get("snippet")
+    ? searchParams.get("snippet")
+    : "";
+  const collection = searchParams.get("collection")
+    ? searchParams.get("collection")
+    : "";
+  const pathName = usePathname();
+  const handleAdd = () => {
+    setOpenDrawer(true);
     const nextSearchParams = new URLSearchParams(searchParams.toString());
     nextSearchParams.delete("snippet");
     router.push(`${pathName}?${nextSearchParams.toString()}`);
-  }
-
+  };
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "k") {
@@ -67,8 +74,12 @@ const WorkspacePage: React.FC = () => {
 
   useEffect(() => {
     const globalSearch = async () => {
+      const token = localStorage.getItem("token")
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
       await axios
-        .get(`${baseURL}/v1/api/snippet/global?text=${inpText}`)
+        .get(`${baseURL}/v1/api/snippet/global?text=${inpText}` , { headers })
         .then((response) => {
           setSearchData(response.data);
         });
@@ -90,17 +101,22 @@ const WorkspacePage: React.FC = () => {
 
     const newUrl = `${currentUrl.origin}${currentUrl.pathname}?${searchParams.toString()}`;
 
-    // Update the URL in the browser
     window.history.replaceState({}, "", newUrl);
     handleClose();
   };
 
   return (
-    <div style={{ width: "75vw" }} className="fixed top-0 right-0 h-screen text-white bg-zinc-900">
-      <div style={{ width: "75vw" }} className="fixed top-0   pr-3 flex flex-col justify-between items-center bg-zinc-900  py-4">
+    <div
+      style={{ width: "75vw" }}
+      className="fixed top-0 right-0 h-screen text-white bg-zinc-900"
+    >
+      <div
+        style={{ width: "75vw" }}
+        className="fixed top-0   pr-3 flex flex-col justify-between items-start bg-zinc-900  py-4"
+      >
         <div className="flex w-full justify-end">
-          <div className="flex w-1/3">
-            <div className="border-2 ml-6 px-2 border-zinc-700 h-10 flex items-center rounded-l">
+          <div className="flex w-full border-b-1 border-gray-700 shadow-md">
+            <div className=" ml-6 px-2 h-10 flex items-center rounded-l">
               <SearchIcon />
             </div>
             {open && (
@@ -188,32 +204,46 @@ const WorkspacePage: React.FC = () => {
             )}
             <input
               type="text"
-              className="w-full h-10 vh-5 bg-zinc-900 px-4 hover:shadow-outline focus:outline-none rounded-r text-gray-600 placeholder-gray-700"
-              placeholder="Find by Code, Tag, title..."
+              className="w-full h-10 vh-5 bg-zinc-900 px-4 hover:shadow-outline focus:outline-none rounded-r text-lg text-gray-600 placeholder-gray-500 font-mono"
+              placeholder="Find by Tag, Description , title..."
               onClick={handleOpen}
             />
-            <div className="px-4 py-1 rounded-xl flex   items-center text-xs text-gray-600 border-2 border-gray-600 shadow-lg   w-fit">
+            <div className="px-4 py-2 rounded-xl mb-2 flex   items-center text-xs text-gray-600 border-2 border-gray-600 shadow-lg   w-fit">
               <span>CTRL+K</span>
             </div>
-          </div>
           <div className="w-2/12 vh-6 flex justify-between pl-6 items-center">
-            <NotificationsIcon className="text-gray-600 mr-3" />
-            {/* <button className="fixed right-0" onClick={() => setOpenSnippet(!openSnippet)}> */}
-
-            {/* <SplitButton /> */}
-            {/* <SnippetModal/> */}
-            <button className='bg-blue-600 hover:bg-blue-400 duration-300 rounded-xl text-xl px-3 py-2 text-white' onClick={handleAdd}><IoIosAdd /></button>
-            {collection && (<Drawer isOpen={openDrawer} setIsOpen={setOpenDrawer} isEditable={true} setIsEditable={setIsEditable}/>)}
-
-
-            {/* </button> */}
-            {/* {openSnippet && <SnippetModal />} */}
+            <button
+              className="bg-blue-600 hover:bg-blue-400 duration-300 rounded-xl text-xl px-3 py-2 mb-2 text-white"
+              onClick={handleAdd}
+            >
+              <IoIosAdd />
+            </button>
+            {collection && (
+              <Drawer
+                className="fixed top-16 right-0"
+                isOpen={openDrawer}
+                setIsOpen={setOpenDrawer}
+                isEditable={true}
+                setIsEditable={setIsEditable}
+                shared="false"
+              />
+            )}
+          </div>
           </div>
         </div>
         <div className="mt-4 overflow-hidden p-4">
           <SnippetSection />
 
-          {snippet && <Drawer isOpen={true} setIsOpen={setOpenDrawer} isEditable={isEditable} setIsEditable={setIsEditable}/>}
+          {snippet && (
+            <Drawer
+              className="fixed top-16 right-0"
+              isOpen={true}
+              setIsOpen={setOpenDrawer}
+              isEditable={isEditable}
+              setIsEditable={setIsEditable}
+              shared="false"
+            />
+          )}
         </div>
       </div>
     </div>

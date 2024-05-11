@@ -7,8 +7,8 @@ import SnippetModal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import Image from "next/image";
 import Workspace from "../../../public/workspace.jpg";
-import axios from "axios";
-import { Button } from "@/components/ui/button";
+import axios from 'axios';
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -17,9 +17,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { baseURL } from "@/config";
 
 // const style = {
 //   position: "absolute" as "absolute",
@@ -51,13 +52,14 @@ export default function Modal() {
     const body = {
       name: data.name,
       description: data.description,
-      owner: "65f72cd38cfe34c5f0c2648b",
+    }
+    const token = localStorage.getItem("token")
+    const headers = {
+      Authorization: `Bearer ${token}`,
     };
-
-    await axios
-      .post("https://snipsavvy.onrender.com/v1/api/workspace", body)
-      .then(
-        (response) => {
+    
+    await axios.post(`${baseURL}/v1/api/workspace` ,body, { headers })
+      .then((response) => {
           console.log(response);
         },
         (error) => {

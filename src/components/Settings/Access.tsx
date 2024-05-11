@@ -15,8 +15,12 @@ export default function Access() {
 
   useEffect(() => {
     setIsDataLoading(true);
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     axios
-      .get(`${baseURL}/v1/api/workspace?user_id=${"65f72cd38cfe34c5f0c2648b"}`)
+      .get(`${baseURL}/v1/api/workspace`, { headers })
       .then((response) => {
         setWorkspace(response.data);
         setIsDataLoading(false);
@@ -30,10 +34,12 @@ export default function Access() {
   const getAccessList = async (workspace: any) => {
     console.log("this is workspace=>", workspace);
     setSingleWorkspace(workspace);
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     await axios
-      .get(
-        `https://snipsavvy.onrender.com/v1/api/workspace/access/${workspace._id}`
-      )
+      .get(`${baseURL}/v1/api/workspace/access/${workspace._id}`, { headers })
       .then((response) => {
         setAccessList(response.data);
       });
@@ -51,15 +57,19 @@ export default function Access() {
         email: access.email,
         workspace_id: access.workspace_id,
       };
-      const resp = await axios.delete(
-        "https://snipsavvy.onrender.com/v1/api/workspace/access",
-        { data: body }
-      );
+      const token = localStorage.getItem("token");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const resp = await axios.delete(`${baseURL}/v1/api/workspace/access`, {
+        data: body,
+        headers,
+      });
       alert("Access Removed !!");
       await axios
-        .get(
-          `https://snipsavvy.onrender.com/v1/api/workspace/access/${singleWorkspace._id}`
-        )
+        .get(`${baseURL}/v1/api/workspace/access/${singleWorkspace._id}`, {
+          headers,
+        })
         .then((response) => {
           setAccessList(response.data);
         });

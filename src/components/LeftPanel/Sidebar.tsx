@@ -10,11 +10,14 @@ import Collection from "./Collection";
 import Image from "next/image";
 import Skeleton from "@mui/material/Skeleton";
 import { MdEdit, MdDelete } from "react-icons/md";
-
+import Avatar from "@mui/material/Avatar";
 import { baseURL } from "@/config";
 import SettingsModal from "../Settings/SettingsModal";
 import DeleteModal from "./DeleteModal"
 import useFetch from "@/network/useFetch";
+import { signOut, useSession } from "next-auth/react";
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
 
 const Sidebar = () => {
   const [workspace, setWorkspace] = useState<any>([]);
@@ -26,6 +29,21 @@ const Sidebar = () => {
   const [activeWorkspaceIndex, setActiveWorkspaceIndex] = useState<
     number | null
   >(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+
+  const handleClick = (event: any) => {
+    console.log("in here")
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -33,11 +51,15 @@ const Sidebar = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
   const router = useRouter();
-
+  const session = useSession();
   useEffect(() => {
     setIsDataLoading(true);
+    const token = localStorage.getItem("token")
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     axios
-      .get(`${baseURL}/v1/api/workspace?user_id=${"65f72cd38cfe34c5f0c2648b"}`)
+      .get(`${baseURL}/v1/api/workspace`, { headers })
       .then((response) => {
         setWorkspace(response.data);
         setIsDataLoading(false);
@@ -47,6 +69,10 @@ const Sidebar = () => {
         setIsDataLoading(false);
       });
   }, []);
+
+  const handleLogOut = () => {
+    signOut({ callbackUrl: "http://localhost:3000/" });
+  };
 
   const updateUrl = (name: string) => {
     setSelectedWorkspace(name);
@@ -219,9 +245,33 @@ const Sidebar = () => {
                 className="text-white text-3xl cursor-pointer"
               />
             </li>
-            <li>
-              <CiLogout className="text-white text-3xl cursor-pointer" />
-            </li>
+            <Avatar
+              className=" cursor-pointer"
+              aria-describedby={id}
+              onClick={(e) => handleClick(e)}
+              sx={{ width: 30, height: 30 }}
+              alt="Cindy Baker"
+              src={
+                session?.data?.user?.image?.toString() ||
+                "https://www.pngmart.com/files/22/User-Avatar-Profile-PNG-Isolated-Transparent-HD-Photo.png"
+              }
+            />
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              className="ml-2"
+            >
+              <CiLogout
+                onClick={() => handleLogOut()}
+                className="ml-2 text-4xl cursor-pointer"
+              />
+            </Popover>
           </ul>
         </div>
       </div>
