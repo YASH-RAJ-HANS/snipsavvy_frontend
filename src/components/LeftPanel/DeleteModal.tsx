@@ -3,16 +3,38 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { baseURL } from "@/config";
+import axios from "axios";
 
 interface DeleteModalProps {
     open: boolean;
     onClose: () => void;
-    onDelete: () => void;
+    workspace_id: string;
   }
-const DeleteModal: React.FC<DeleteModalProps> = ({ open, onClose, onDelete }) =>  {
-  const handleDelete = () => {
-    onDelete();
-    onClose();
+const DeleteModal: React.FC<DeleteModalProps> = ({ open, onClose, workspace_id }) =>  {
+  const handleDelete = async (e: any) => {
+    e.preventDefault();
+    try {
+      
+      const token = localStorage.getItem("token");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const resp = await axios.delete(`${baseURL}/v1/api/workspace?w_id=${workspace_id}`, {headers})
+        .then((response) => {
+          window.location.reload()
+        });
+      alert("Workspace Removed !!");
+      // await axios
+      //   .get(`${baseURL}/v1/api/workspace`, {
+      //     headers,
+      //   })
+      //   .then((response) => {
+      //     window.location.reload()
+      //   });
+    } catch (error) {
+      alert("error occured while removing the workspace");
+    }
   };
 
   return (
@@ -46,7 +68,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ open, onClose, onDelete }) =>
           <Button onClick={onClose}  sx={{ mr: 2 }}>
             Cancel
           </Button>
-          <Button onClick={handleDelete} variant="contained" color="error">
+          <Button onClick={(e) => handleDelete(e)} variant="contained" color="error">
             Delete
           </Button>
         </Box>

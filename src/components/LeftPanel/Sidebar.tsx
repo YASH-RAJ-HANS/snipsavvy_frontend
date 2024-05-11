@@ -49,7 +49,7 @@ const Sidebar = () => {
 
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
+  const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>() ;
   const router = useRouter();
   const session = useSession();
   useEffect(() => {
@@ -125,6 +125,8 @@ const Sidebar = () => {
       dropdownRef.current.contains(target)
     );
   };
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteWorkspaceId, setDeleteWorkspaceId] = useState<string>();
 
   const handleRightClick = (
     e: React.MouseEvent<HTMLDivElement>,
@@ -136,9 +138,9 @@ const Sidebar = () => {
     setActiveWorkspaceIndex(index);
     setIsDropdownOpen(true);
     setSingleWorkspace(workspace);
+    setDeleteWorkspaceId(workspace._id);
   };
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-
+  
   const handleOptionClick = (option: string) => {
     console.log("Option clicked:", option);
     setIsDropdownOpen(false);
@@ -159,11 +161,6 @@ const Sidebar = () => {
       default:
         break;
     }
-  };
-  const handleDelete = () => {
-    // Perform the delete operation here
-    console.log("Deleting...");
-    setDeleteModalOpen(false); // Close the delete modal after deletion
   };
   
 
@@ -320,7 +317,7 @@ const Sidebar = () => {
         open={isSettingsModalOpen}
         setOpen={setIsSettingsModalOpen}
       />
-      <DeleteModal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)} onDelete={() => handleDelete()} />
+      <DeleteModal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)} workspace_id = {deleteWorkspaceId || ""} />
 
     </>
   );
