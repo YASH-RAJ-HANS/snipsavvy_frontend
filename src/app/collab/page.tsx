@@ -1,23 +1,42 @@
 "use client";
-import React, { Suspense, useState } from "react";
-import Collab from "./collab";
+import React, { Suspense,useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import RightDrawer from "@/components/RightDrawer/Drawer";
+import Unauthorized from "@/components/Collab/Unauthorized";
+import Image from "next/image";
 
 function Page() {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
-
+  const searchParams = useSearchParams()
+  const snippet = searchParams.get("snippet") ? searchParams.get("snippet") : ""
+  const shared = searchParams.get("shared") ? searchParams.get("shared") : ""
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <div className="">
-      <Suspense fallback={<div>Loading...</div>}>
-        {/* Render the Client Component */}
-        <Collab
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          isEditable={isEditable}
-          setIsEditable={setIsEditable}
+      <Image
+          src="/logo.png"
+          width={80}
+          height={80}
+          alt="logo"
+          className="pt-6 pl-4 pb-4 opacity-80"
         />
-      </Suspense>
+      {snippet && shared === "true" ? (
+        <div className="">
+          <RightDrawer
+            className="fixed top-0"
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            isEditable={isEditable}
+            setIsEditable={setIsEditable}
+            shared={shared}
+          />
+        </div>
+      ) : (
+        <Unauthorized />
+      )}
     </div>
+    </Suspense>
   );
 }
 

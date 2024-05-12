@@ -70,7 +70,7 @@ export default function Modal({fetchWorkspace} : any) {
       >
         <DialogHeader>
           <DialogTitle>Create Workspace</DialogTitle>
-          <DialogDescription>
+          <DialogDescription >
             Add Name & Description to your workspace
           </DialogDescription>
         </DialogHeader>
