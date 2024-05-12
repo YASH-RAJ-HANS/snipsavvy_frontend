@@ -34,8 +34,8 @@ const Collection = () => {
   const [singleCollection, setSingleCollection] = useState<collectionItem>({
     _id: "",
     name: "",
-    description:""
-}) ;
+    description: "",
+  });
   useEffect(() => {
     // Add event listener for clicks on the document
     document.addEventListener("click", handleClickOutside);
@@ -79,7 +79,8 @@ const Collection = () => {
     setIsDropdownOpen(true);
     setSingleCollection(collection);
   };
-  const [deleteCollectionModalOpen, setDeleteCollectionModalOpen] = useState(false);
+  const [deleteCollectionModalOpen, setDeleteCollectionModalOpen] =
+    useState(false);
   const handleOptionClick = (option: string) => {
     console.log("Option clicked:", option);
     setIsDropdownOpen(false);
@@ -97,12 +98,12 @@ const Collection = () => {
       case "share":
         console.log("Share clicked");
         // setShareModalOpen(true);
-        
+
         break;
       default:
         break;
     }
-  };;
+  };
 
   const closeDropdown = () => {
     setIsDropdownOpen(false);
@@ -116,7 +117,7 @@ const Collection = () => {
       Authorization: `Bearer ${token}`,
     };
     axios
-      .get(`${baseURL}/vi/api/category/${workspace}`, { headers })
+      .get(`${baseURL}/v1/api/category/${workspace}`, { headers })
       .then((response) => {
         setCollection(response.data);
         console.log("collections=>", response.data.data);
@@ -136,7 +137,7 @@ const Collection = () => {
         Authorization: `Bearer ${token}`,
       };
       axios
-        .get(`${baseURL}/vi/api/category/${workspace}`, { headers })
+        .get(`${baseURL}/v1/api/category/${workspace}`, { headers })
         .then((response) => {
           setCollection(response.data);
           console.log("collections=>", response.data.data);
@@ -166,7 +167,7 @@ const Collection = () => {
       Authorization: `Bearer ${token}`,
     };
     await axios
-      .post(`${baseURL}/vi/api/category`, body, { headers })
+      .post(`${baseURL}/v1/api/category`, body, { headers })
       .then((response) => {
         console.log(response);
         // [FIX ME] at a toast here, instead of alert
@@ -188,7 +189,7 @@ const Collection = () => {
   const updateUrl = (name: string) => {
     const query: Record<string, string> = { workspace };
     if (name) query.collection = name;
-    router.push( `?${new URLSearchParams(query).toString()}`);
+    router.push(`?${new URLSearchParams(query).toString()}`);
   };
 
   const colorOptions = [
@@ -323,7 +324,6 @@ const Collection = () => {
           onBlur={() => closeDropdown()}
         >
           <ul className="w-20">
-            
             <li
               className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
               onClick={() => handleOptionClick("edit")}
@@ -339,10 +339,13 @@ const Collection = () => {
           </ul>
         </div>
       )}
-      <DeleteCollectionModal open={deleteCollectionModalOpen} onClose={() => setDeleteCollectionModalOpen(false)} collection={singleCollection}/>
+      <DeleteCollectionModal
+        open={deleteCollectionModalOpen}
+        onClose={() => setDeleteCollectionModalOpen(false)}
+        collection={singleCollection}
+      />
     </Suspense>
-
   );
 };
 
-export default Collection;
+export default Collection;
