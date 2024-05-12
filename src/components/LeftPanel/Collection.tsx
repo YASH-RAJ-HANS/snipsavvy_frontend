@@ -89,8 +89,12 @@ const Collection = () => {
   console.log("w_id=>", workspace);
 
   const fetchCategories = () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     axios
-      .get(`${baseURL}/vi/api/category/${workspace}`)
+      .get(`${baseURL}/vi/api/category/${workspace}`, { headers })
       .then((response) => {
         setCollection(response.data);
         console.log("collections=>", response.data.data);
@@ -135,8 +139,12 @@ const Collection = () => {
       name: data,
       description: "SnipSavvy Project Snippets",
     };
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     await axios
-      .post("https://snipsavvy.onrender.com/vi/api/category", body)
+      .post(`${baseURL}/vi/api/category`, body, { headers })
       .then((response) => {
         console.log(response);
         // [FIX ME] at a toast here, instead of alert
