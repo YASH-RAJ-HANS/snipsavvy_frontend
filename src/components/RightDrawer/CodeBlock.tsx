@@ -266,7 +266,7 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
               </div>
             )}
 
-            {showBox && <ShareSnippet onClose={() => setShowBox(false)} />}
+            {showBox && snippet && <ShareSnippet snippet_id = {snippet} onClose={() => setShowBox(false)} />}
             <div className="min-h-[50vh] min-w-[40vw] w-[47vw] fixed py-2 rounded-b-md border-zinc-900 bg-zinc-900">
               {snippet ? (
                 <pre className="p-4 outline-none">

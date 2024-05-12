@@ -150,7 +150,7 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
           </Typography>
         </Popover>
 
-        {shareSnippet && <ShareSnippet onClose={() => handleClose()} />}
+        {shareSnippet && <ShareSnippet snippet_id={_id} onClose={() => handleClose()} />}
       </div>
     );
   };
