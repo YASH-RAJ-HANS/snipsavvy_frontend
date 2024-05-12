@@ -25,6 +25,7 @@ const UpcomingFeature: React.FC = () => (
               height={100}
               src="/goku.gif"
               alt="ongoing meeting"
+              unoptimized
               className="w-full obejct-fit object-center object-fill h-full"
             />
           </div>
