@@ -19,12 +19,14 @@ import { signOut, useSession } from "next-auth/react";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import ShareModal from "./ShareModal"
+import EditModal from "./EditModal";
 
 const Sidebar = () => {
   const [workspace, setWorkspace] = useState<any>([]);
   const [selectedWorkspace, setSelectedWorkspace] = useState<string | null>(
     null
   );
+
   const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0 });
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeWorkspaceIndex, setActiveWorkspaceIndex] = useState<
@@ -50,7 +52,11 @@ const Sidebar = () => {
 
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>() ;
+  const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>({
+      _id: "",
+      name: "",
+      description:""
+  }) ;
   const [modalClose, setModalClose] = useState(false);
   // const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
   const router = useRouter();
@@ -149,6 +155,7 @@ const Sidebar = () => {
     setDeleteWorkspaceId(workspace._id);
   };
   const [shareModalOpen, setShareModalOpen] = useState<boolean>(false) 
+  const [editModalOpen, setEditModalOpen] = useState<boolean>(false) 
   const handleOptionClick = (option: string) => {
     console.log("Option clicked:", option);
     setIsDropdownOpen(false);
@@ -156,6 +163,7 @@ const Sidebar = () => {
     switch (option) {
       case "edit":
         console.log("Edit clicked");
+        setEditModalOpen(true);
         break;
       case "delete":
         console.log("Delete clicked");
@@ -328,7 +336,8 @@ const Sidebar = () => {
         onClose={() => setDeleteModalOpen(false)}
         workspace_id={deleteWorkspaceId || ""}
       />
-      <ShareModal open={shareModalOpen} onClose={() => setShareModalOpen(false)} />
+      <ShareModal open={shareModalOpen} onClose={() => setShareModalOpen(false)} workspace={singleWorkSpace} />
+      <EditModal open={editModalOpen} onClose={() => setEditModalOpen(false)} workspace={singleWorkSpace}/>
     </Suspense>
   );
 };
