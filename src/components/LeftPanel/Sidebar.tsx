@@ -18,6 +18,7 @@ import useFetch from "@/network/useFetch";
 import { signOut, useSession } from "next-auth/react";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
+import ShareModal from "./ShareModal"
 
 const Sidebar = () => {
   const [workspace, setWorkspace] = useState<any>([]);
@@ -50,10 +51,11 @@ const Sidebar = () => {
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>() ;
+  const [modalClose, setModalClose] = useState(false);
   const router = useRouter();
   const session = useSession();
-  useEffect(() => {
-    setIsDataLoading(true);
+  
+  const fetchWorkspace = () =>{
     const token = localStorage.getItem("token")
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -68,6 +70,11 @@ const Sidebar = () => {
         console.log(error);
         setIsDataLoading(false);
       });
+  }
+
+  useEffect(() => {
+    setIsDataLoading(true);
+    fetchWorkspace();
   }, []);
 
   const handleLogOut = () => {
@@ -140,7 +147,7 @@ const Sidebar = () => {
     setSingleWorkspace(workspace);
     setDeleteWorkspaceId(workspace._id);
   };
-  
+  const [shareModalOpen, setShareModalOpen] = useState<boolean>(false) 
   const handleOptionClick = (option: string) => {
     console.log("Option clicked:", option);
     setIsDropdownOpen(false);
@@ -156,6 +163,7 @@ const Sidebar = () => {
         
       case "share":
         console.log("Share clicked");
+        setShareModalOpen(true);
         
         break;
       default:
@@ -232,7 +240,7 @@ const Sidebar = () => {
           )}
         </div>
         <div className="">
-          <Modal />
+          <Modal fetchWorkspace = {fetchWorkspace} />
         </div>
         <div className="fixed bottom-0 left-2 w-full p-4 text-center">
           <ul className="flex-col">
@@ -318,8 +326,9 @@ const Sidebar = () => {
         setOpen={setIsSettingsModalOpen}
       />
       <DeleteModal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)} workspace_id = {deleteWorkspaceId || ""} />
-
+      <ShareModal open={shareModalOpen} onClose={() => setShareModalOpen(false)} />
     </>
+
   );
 };
 
