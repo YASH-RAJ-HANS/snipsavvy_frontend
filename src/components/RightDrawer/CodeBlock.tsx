@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import "prismjs";
 import dummyCodeData from "@/dummydata";
 import "prismjs/themes/prism-twilight.css";
@@ -149,168 +149,170 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
   const handleClick = () => {};
 
   return (
-    <div className="overflow-hidden outline-none" id="editable-code">
-      <div>
-        <h2 className="text-3xl text-white p-2 font-bold overflow-y-auto">
-          {snippet && flag === true ? (
-            codeData[0].title
-          ) : (
-            <Input
-              className="outline-none"
-              value={data.title}
-              placeholder="Title..."
-              onKeyDown={handleClick}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setData({ ...data, title: e.target.value });
-              }}
-            />
+    <Suspense>
+      <div className="overflow-hidden outline-none" id="editable-code">
+        <div>
+          <h2 className="text-3xl text-white p-2 font-bold overflow-y-auto">
+            {snippet && flag === true ? (
+              codeData[0].title
+            ) : (
+              <Input
+                className="outline-none"
+                value={data.title}
+                placeholder="Title..."
+                onKeyDown={handleClick}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setData({ ...data, title: e.target.value });
+                }}
+              />
+            )}
+          </h2>
+          <h2 className="text-lg text-white p-2 font-semibold mb-2 ">
+            {snippet && flag === true ? (
+              codeData[0].description
+            ) : (
+              <Input
+                onKeyDown={handleClick}
+                className="outline-none"
+                value={data.description}
+                placeholder="Description..."
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setData({ ...data, description: e.target.value });
+                }}
+              />
+            )}
+          </h2>
+          {!snippet && (
+            <div className="bg-zinc-900 p-2">
+              <select
+                className="bg-zinc-900 shadow-zinc-950 shadow-xl text-white p-2"
+                value={selectedLanguage}
+                onChange={(e) => setSelectedLanguage(e.target.value)}
+              >
+                {languages.map((language) => (
+                  <option key={language} value={language}>
+                    {language}
+                  </option>
+                ))}
+              </select>{" "}
+            </div>
           )}
-        </h2>
-        <h2 className="text-lg text-white p-2 font-semibold mb-2 ">
-          {snippet && flag === true ? (
-            codeData[0].description
-          ) : (
-            <Input
-              onKeyDown={handleClick}
-              className="outline-none"
-              value={data.description}
-              placeholder="Description..."
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setData({ ...data, description: e.target.value });
-              }}
-            />
-          )}
-        </h2>
-        {!snippet && (
-          <div className="bg-zinc-900 p-2">
-            <select
-              className="bg-zinc-900 shadow-zinc-950 shadow-xl text-white p-2"
-              value={selectedLanguage}
-              onChange={(e) => setSelectedLanguage(e.target.value)}
-            >
-              {languages.map((language) => (
-                <option key={language} value={language}>
-                  {language}
-                </option>
-              ))}
-            </select>{" "}
-          </div>
-        )}
-        <div className="">
-          {snippet && flag === true ? (
-            codeData[0].tags.map((tag: any, index: any) => (
-              <div key={index} className="inline-flex">
+          <div className="">
+            {snippet && flag === true ? (
+              codeData[0].tags.map((tag: any, index: any) => (
+                <div key={index} className="inline-flex">
+                  <Badge
+                    variant="default"
+                    className="px-2 py-1 rounded-xl bg-purple-700 hover:bg-purple-500 mx-1 mb-2"
+                  >
+                    {tag}
+                  </Badge>
+                </div>
+              ))
+            ) : (
+              <div className="transform translate-x-3">
+                {" "}
+                <Input
+                  value={tagInput}
+                  onKeyDown={handleAddTag}
+                  className="w-[95%] mb-4  outline-none"
+                  placeholder="Tags..."
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setTagInput(e.target.value);
+                  }}
+                />{" "}
                 <Badge
                   variant="default"
                   className="px-2 py-1 rounded-xl bg-purple-700 hover:bg-purple-500 mx-1 mb-2"
                 >
-                  {tag}
+                  {selectedLanguage}
                 </Badge>
-              </div>
-            ))
-          ) : (
-            <div className="transform translate-x-3">
-              {" "}
-              <Input
-                value={tagInput}
-                onKeyDown={handleAddTag}
-                className="w-[95%] mb-4  outline-none"
-                placeholder="Tags..."
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setTagInput(e.target.value);
-                }}
-              />{" "}
-              <Badge
-                variant="default"
-                className="px-2 py-1 rounded-xl bg-purple-700 hover:bg-purple-500 mx-1 mb-2"
-              >
-                {selectedLanguage}
-              </Badge>
-              {tags.length > 0 &&
-                tags?.map((tag, index) => {
-                  return (
-                    <Badge
-                      key={index}
-                      variant="default"
-                      className="px-2 py-1 rounded-xl bg-purple-700 hover:bg-purple-500 mx-1 mb-2"
-                    >
-                      {tag}
-                    </Badge>
-                  );
-                })}
-            </div>
-          )}
-
-          <div className="">
-            {shared != "true" && snippet && (
-              <div className="relative mt-12">
-                <button
-                  onClick={toggleEditable}
-                  className="absolute -top-10 right-6 text-zinc-100 bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2 mx-2"
-                >
-                  {isEditable ? <MdEdit /> : <TbPencilCancel />}
-                </button>
-                <button
-                  className="absolute -top-10 right-0 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2"
-                  onClick={() => copyToClipboard(codeData[0].code)}
-                >
-                  <LuCopyPlus />
-                </button>
-                <ToastContainer />
-                <button
-                  className="absolute -top-10 right-16 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2"
-                  onClick={toggleBox}
-                >
-                  <CiShare2 />
-                </button>
+                {tags.length > 0 &&
+                  tags?.map((tag, index) => {
+                    return (
+                      <Badge
+                        key={index}
+                        variant="default"
+                        className="px-2 py-1 rounded-xl bg-purple-700 hover:bg-purple-500 mx-1 mb-2"
+                      >
+                        {tag}
+                      </Badge>
+                    );
+                  })}
               </div>
             )}
 
-            {showBox && <ShareSnippet onClose={() => setShowBox(false)} />}
-            <div className="min-h-[50vh] min-w-[40vw] w-[47vw] fixed py-2 rounded-b-md border-zinc-900 bg-zinc-900">
-              {snippet ? (
-                <pre className="p-4 outline-none">
-                  <code
-                    id="editable-code"
-                    className={`language-javascript ${isEditable ? "text-black" : "text-white"} outline-none`}
-                    contentEditable={isEditable}
-                  >
-                    {cleanCode}
-                  </code>
-                </pre>
-              ) : (
-                <div>
-                  <pre className="p-2 mt-6 min-h-[35vh] min-w-[40vw] w-[47vw] h-[40vh]">
-                    <code
-                      id="editable-code"
-                      className={`language-${selectedLanguage} ${isEditable ? "text-black" : "text-white"}  outline-none`}
-                      contentEditable={isEditable}
-                    >
-                      <textarea
-                        className="bg-zinc-900 h-[95%] w-full text-white border-none outline-none"
-                        value={data.code}
-                        onChange={(
-                          e: React.ChangeEvent<HTMLTextAreaElement>
-                        ) => {
-                          setData({ ...data, code: e.target.value });
-                        }}
-                      />
-                    </code>
-                  </pre>
+            <div className="">
+              {shared != "true" && snippet && (
+                <div className="relative mt-12">
                   <button
-                    className="text-white bg-black px-3 py-1 rounded-xl hover:bg-zinc-900 duration-300 mt-2"
-                    onClick={() => handleCreateSnippet()}
+                    onClick={toggleEditable}
+                    className="absolute -top-10 right-6 text-zinc-100 bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2 mx-2"
                   >
-                    Save
+                    {isEditable ? <MdEdit /> : <TbPencilCancel />}
+                  </button>
+                  <button
+                    className="absolute -top-10 right-0 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2"
+                    onClick={() => copyToClipboard(codeData[0].code)}
+                  >
+                    <LuCopyPlus />
                   </button>
                   <ToastContainer />
+                  <button
+                    className="absolute -top-10 right-16 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2"
+                    onClick={toggleBox}
+                  >
+                    <CiShare2 />
+                  </button>
                 </div>
               )}
+
+              {showBox && <ShareSnippet onClose={() => setShowBox(false)} />}
+              <div className="min-h-[50vh] min-w-[40vw] w-[47vw] fixed py-2 rounded-b-md border-zinc-900 bg-zinc-900">
+                {snippet ? (
+                  <pre className="p-4 outline-none">
+                    <code
+                      id="editable-code"
+                      className={`language-javascript ${isEditable ? "text-black" : "text-white"} outline-none`}
+                      contentEditable={isEditable}
+                    >
+                      {cleanCode}
+                    </code>
+                  </pre>
+                ) : (
+                  <div>
+                    <pre className="p-2 mt-6 min-h-[35vh] min-w-[40vw] w-[47vw] h-[40vh]">
+                      <code
+                        id="editable-code"
+                        className={`language-${selectedLanguage} ${isEditable ? "text-black" : "text-white"}  outline-none`}
+                        contentEditable={isEditable}
+                      >
+                        <textarea
+                          className="bg-zinc-900 h-[95%] w-full text-white border-none outline-none"
+                          value={data.code}
+                          onChange={(
+                            e: React.ChangeEvent<HTMLTextAreaElement>
+                          ) => {
+                            setData({ ...data, code: e.target.value });
+                          }}
+                        />
+                      </code>
+                    </pre>
+                    <button
+                      className="text-white bg-black px-3 py-1 rounded-xl hover:bg-zinc-900 duration-300 mt-2"
+                      onClick={() => handleCreateSnippet()}
+                    >
+                      Save
+                    </button>
+                    <ToastContainer />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </Suspense>
   );
 }
 export default CodeBlock;
