@@ -37,17 +37,12 @@ const WorkspacePage: React.FC = () => {
   const handleClose = () => setOpen(false);
 
   const session = useSession();
-  const pathName = usePathname();
 
   const handleAdd = () => {
     setOpenDrawer(true);
-    const nextSearchParams = new URLSearchParams(searchParams.toString());
-    nextSearchParams.delete("snippet");
-    router.push(`${pathName}?${nextSearchParams.toString()}`);
   };
 
   const router = useRouter();
-  const searchParams = useSearchParams();
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "k") {
