@@ -14,17 +14,20 @@ import { TbPencilCancel } from "react-icons/tb";
 import { CiShare2 } from "react-icons/ci";
 import ShareSnippet from "./ShareSnippet";
 import axios from "axios";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "./Input";
 import { baseURL } from "@/config";
+import {addSnippetBody} from "@/inputValidation"
+
 
 interface props {
   isEditable: boolean;
   setIsEditable: any;
   shared: string;
+  setIsOpen: any
 }
-function CodeBlock({ isEditable, setIsEditable, shared }: props) {
+function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
   const [showBox, setShowBox] = useState(false);
   const [codeData, setCodeData] = useState<any>({});
   const searchParams = useSearchParams();
@@ -38,30 +41,30 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
     ? searchParams.get("workspace")
     : "";
 
-  useEffect(() => {
-    const fetchCode = async () => {
-      const token = localStorage.getItem("token");
-      const headers = {
-        Authorization: `Bearer ${token}`,
+    useEffect(() => {
+      const fetchCode = async() => {
+        const token = localStorage.getItem("token");
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        await axios
+          .get(`${baseURL}/v1/api/snippet?snippet_id=` + `${snippet}`, {
+            headers,
+          })
+          .then((response) => {
+            console.log(response.data);
+            setCodeData(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       };
-      await axios
-        .get(`${baseURL}/v1/api/snippet?snippet_id=` + `${snippet}`, {
-          headers,
-        })
-        .then((response) => {
-          console.log(response.data);
-          setCodeData(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-    snippet && fetchCode();
-
-    window.Prism.highlightAll();
-
-    window.Prism.highlightAll();
-  }, [snippet]);
+      snippet && fetchCode();
+  
+      window.Prism.highlightAll();
+  
+      window.Prism.highlightAll();
+    }, [snippet]);
 
   const toggleEditable = () => {
     setIsEditable(!isEditable);
@@ -97,7 +100,6 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
     "bg-lime-700",
     "bg-fuchsia-700",
   ];
-  const [description, setDescription] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [data, setData] = React.useState({
@@ -109,48 +111,72 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
   });
 
   const handleAddTag = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && tagInput) {
+    if (e.key === "Enter"  && tagInput) {
       e.preventDefault();
       setTags([...tags, tagInput]);
       setTagInput("");
     }
   };
 
+  const description:string = data.description
+  const title:string = data.title
+  const code:string = data.code
+  const router = useRouter()
+  const pathname = usePathname()
   const handleCreateSnippet = async () => {
-    const body = {
-      title: data.title,
-      description: data.description,
-      code: data.code,
-      tags: tags,
-      category_id: `${collection}`,
-      workspace_id: `${workspace}`,
-    };
-    const token = localStorage.getItem("token");
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    {
-      collection &&
-        (await axios.post(`${baseURL}/v1/api/snippet`, body, { headers }).then(
-          (response) => {
-            console.log(response);
-          },
-          (error) => {
-            console.log(error);
-          }
-        ));
+    const validationResult = addSnippetBody.safeParse({tags, description, title, code})
+    if(validationResult.success){
+      try{
+        const body = {
+          title: data.title,
+          description: data.description,
+          code: data.code,
+          tags: tags,
+          category_id: `${collection}`,
+          workspace_id: `${workspace}`,
+        };
+        const token = localStorage.getItem("token");
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        {
+          collection &&
+            (await axios.post(`${baseURL}/v1/api/snippet`, body, { headers }).then((res: any) => {
+                console.log(res.data.data);
+                const id = res.data.data._id
+                const nextSearchParams = new URLSearchParams(searchParams.toString());
+                nextSearchParams.append("snippet", id);
+                setIsOpen(false)
+                router.push(`${pathname}?${nextSearchParams.toString()}`);
+              }).catch((error) => {
+                console.log(error);
+              })
+            );
+        }
+      }catch(error){
+        console.log('API call failed')
+      }
+    }else{
+      alert('Invalid Inputs')
     }
-    window.location.reload();
+    
   };
-
+  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.target && e.target.value) {
+      const selectedLanguage = e.target.value
+      setSelectedLanguage(selectedLanguage);
+      setTags([selectedLanguage]);
+    }
+  };
+  
   const languages = ["Python", "JavaScript", "Java", "TypeScript", "C++"];
-  const [selectedLanguage, setSelectedLanguage] = useState("");
+  const [selectedLanguage, setSelectedLanguage] = useState<any>();
 
   const handleClick = () => {};
 
   return (
-    <div className="overflow-hidden outline-none" id="editable-code">
-      <div>
+    <div className="outline-none" id="editable-code">
+      <div className="">
         <h2 className="text-3xl text-white p-2 font-bold overflow-y-auto">
           {snippet && flag === true ? (
             codeData[0].title
@@ -186,14 +212,14 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
             <select
               className="bg-zinc-900 shadow-zinc-950 shadow-xl text-white p-2"
               value={selectedLanguage}
-              onChange={(e) => setSelectedLanguage(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleSelect(e)}
             >
               {languages.map((language) => (
                 <option key={language} value={language}>
                   {language}
                 </option>
               ))}
-            </select>{" "}
+            </select>
           </div>
         )}
         <div className="">
@@ -210,7 +236,6 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
             ))
           ) : (
             <div className="transform translate-x-3">
-              {" "}
               <Input
                 value={tagInput}
                 onKeyDown={handleAddTag}
@@ -219,13 +244,8 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setTagInput(e.target.value);
                 }}
-              />{" "}
-              <Badge
-                variant="default"
-                className="px-2 py-1 rounded-xl bg-purple-700 hover:bg-purple-500 mx-1 mb-2"
-              >
-                {selectedLanguage}
-              </Badge>
+              />
+              
               {tags.length > 0 &&
                 tags?.map((tag) => {
                   return (
@@ -266,7 +286,7 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
             )}
 
             {showBox && <ShareSnippet onClose={() => setShowBox(false)} />}
-            <div className="min-h-[50vh] min-w-[40vw] w-[47vw] fixed py-2 rounded-b-md border-zinc-900 bg-zinc-900">
+            <div className="p-2 mt-6 min-h-[35vh] min-w-[40vw] w-[47vw] h-[42vh]">
               {snippet ? (
                 <pre className="p-4 outline-none">
                   <code

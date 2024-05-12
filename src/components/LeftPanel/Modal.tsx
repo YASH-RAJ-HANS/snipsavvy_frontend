@@ -71,14 +71,14 @@ export default function Modal() {
 
   return (
     
-      <Dialog  >
+      <Dialog >
       <DialogTrigger asChild>
         <Button  className="hover:bg-zinc-600 hover:rounded duration-300 font-bold text-3xl ">+</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] rounded-3xl">
+      <DialogContent className="text-white sm:max-w-[425px] rounded-3xl">
         <DialogHeader>
           <DialogTitle>Create Workspace</DialogTitle>
-          <DialogDescription>
+          <DialogDescription >
             Add Name & Description to your workspace
           </DialogDescription>
         </DialogHeader>
@@ -87,7 +87,7 @@ export default function Modal() {
             <Label htmlFor="name" className="text-right" >
               Name
             </Label>
-            <Input id="name" placeholder="New Workspace" className="col-span-3" onChange={(e)=> setData({...data, name:e.target.value})}/>
+            <Input id="name" placeholder="New Workspace" className="col-span-3 text-white" onChange={(e)=> setData({...data, name:e.target.value})}/>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="username" className="text-right">

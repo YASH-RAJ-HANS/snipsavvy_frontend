@@ -49,7 +49,7 @@ const RightDrawer = ({isOpen, setIsOpen, isEditable, setIsEditable, className, s
             </button>: null) : (<button className="absolute top-2 right-2 text-white text-2xl" onClick={closeDrawer}>
               <MdCancel />
             </button>)}
-            <CodeBlock isEditable={isEditable} setIsEditable={setIsEditable} shared={shared}/>
+            <CodeBlock isEditable={isEditable} setIsEditable={setIsEditable} setIsOpen={setIsOpen} shared={shared}/>
           </div>
         </div>
       : null} 

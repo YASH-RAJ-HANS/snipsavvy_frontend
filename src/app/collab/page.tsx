@@ -4,7 +4,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import RightDrawer from '@/components/RightDrawer/Drawer';
 import Unauthorized from '@/components/Collab/Unauthorized';
 
-function page() {
+function Page() {
     const [isOpen, setIsOpen] = useState(false);
     const [isEditable, setIsEditable] = useState(false);
     const searchParams = useSearchParams();
@@ -23,4 +23,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

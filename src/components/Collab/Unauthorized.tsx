@@ -7,7 +7,7 @@ const Unauthorized = () => {
         setTimeout(redirect('/'), 10000)
     })
     return (
-        <div className='text-white text-4xl'>Sorry, you are not authorized to access this page.</div>
+        <div className='text-white text-4xl '>Sorry, you are not authorized to access this page.</div>
     )
 }
 

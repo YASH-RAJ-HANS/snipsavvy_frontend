@@ -19,6 +19,7 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import { baseURL } from "@/config";
 import { IoIosArrowForward } from "react-icons/io";
+import { RiRefreshLine } from "react-icons/ri";
 
 const style = {
   position: "absolute" as "absolute",
@@ -101,6 +102,11 @@ const WorkspacePage: React.FC = () => {
     window.history.replaceState({}, "", newUrl);
     handleClose();
   };
+
+  const [isRefresh, setIsRefresh] = useState<boolean>()
+  const toggleRefresh = () => {
+    setIsRefresh(!isRefresh)
+  }
 
   return (
     <div
@@ -215,6 +221,9 @@ const WorkspacePage: React.FC = () => {
             >
               <IoIosAdd />
             </button>
+            <button className="bg-blue-600 hover:bg-blue-400 duration-300 rounded-xl text-xl px-3 py-2 mb-2 text-white" onClick={toggleRefresh}>
+            <RiRefreshLine />
+            </button>
             {collection && (
               <Drawer
                 className="fixed top-16 right-0"
@@ -229,7 +238,7 @@ const WorkspacePage: React.FC = () => {
           </div>
         </div>
         <div className="mt-4 overflow-hidden p-4">
-          <SnippetSection />
+          <SnippetSection isRefresh={isRefresh}/>
 
           {snippet && (
             <Drawer

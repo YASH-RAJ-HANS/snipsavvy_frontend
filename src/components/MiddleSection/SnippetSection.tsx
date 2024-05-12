@@ -7,10 +7,11 @@ import axios from "axios";
 import Welcome from "./Welcome";
 import useFetch from "@/network/useFetch";
 import { baseURL } from "@/config";
+interface SnippetSectionProps {
+  isRefresh: any
+}
 
-interface SnippetSectionProps {}
-
-const SnippetSection: React.FC<SnippetSectionProps> = () => {
+const SnippetSection: React.FC<SnippetSectionProps> = ({isRefresh}) => {
   const [openSnippet, setIsOpenSnippet] = useState<boolean>(false);
   const searchParams = useSearchParams();
 
@@ -54,7 +55,7 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
     if (collection) {
       fetchSnippets();
     }
-  }, [collection]);
+  }, [collection, isRefresh]);
 
   return (
     <div>
