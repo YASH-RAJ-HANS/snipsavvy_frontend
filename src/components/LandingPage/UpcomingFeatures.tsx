@@ -3,6 +3,7 @@ import { SiGooglegemini } from "react-icons/si";
 import { FaHistory } from "react-icons/fa";
 import { TbUsersGroup } from "react-icons/tb";
 import { IoExtensionPuzzle } from "react-icons/io5";
+import Image from "next/image";
 
 const UpcomingFeature: React.FC = () => (
   <div className="overflow-y-hidden bg-[#0E0E11] px-32">
@@ -16,11 +17,13 @@ const UpcomingFeature: React.FC = () => (
             Upcoming Features
           </p>
           <p className="text-lg leading-7 text-gray-300 mt-4 w-full">
-            Empowering developer's community with our upcoming features.
+            Empowering developer&apos; community with our upcoming features.
           </p>
           <div className="lg:hidden lg:w-3/5 xl:w-3/5 w-full lg:mt-0 mt-6">
-            <img
-              src="https://syllabusx.live/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fahzzxwlhflcn%2F2MXdyfKftEJipUoZKglBpY%2F9d008931b503f4471a9ff4f345d83f0f%2Fgoku.gif&w=1920&q=75"
+            <Image
+              width={100}
+              height={100}
+              src="/goku.gif"
               alt="ongoing meeting"
               className="w-full obejct-fit object-center object-fill h-full"
             />
@@ -89,8 +92,10 @@ const UpcomingFeature: React.FC = () => (
           </div>
         </div>
         <div className="hidden lg:block lg:w-3/5 xl:w-3/5 w-full lg:mt-0 mt-6">
-          <img
-            src="https://syllabusx.live/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fahzzxwlhflcn%2F2MXdyfKftEJipUoZKglBpY%2F9d008931b503f4471a9ff4f345d83f0f%2Fgoku.gif&w=1920&q=75"
+          <Image
+            width={72}
+            height={53}
+            src="/goku.gif"
             alt="ongoing meeting"
             className="w-[72%] object-fit object-center object-fill h-[53vh] ml-28 rounded-xl opacity-90"
           />

@@ -30,7 +30,7 @@ const Sidebar = () => {
   );
 
   const handleClick = (event: any) => {
-    console.log("in here")
+    console.log("in here");
     setAnchorEl(event.currentTarget);
   };
 
@@ -50,7 +50,7 @@ const Sidebar = () => {
   const session = useSession();
   useEffect(() => {
     setIsDataLoading(true);
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
     };
@@ -102,7 +102,7 @@ const Sidebar = () => {
       // Cleanup: Remove event listener when component unmounts
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  });
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -225,7 +225,7 @@ const Sidebar = () => {
               alt="Cindy Baker"
               src={
                 session?.data?.user?.image?.toString() ||
-                "https://www.pngmart.com/files/22/User-Avatar-Profile-PNG-Isolated-Transparent-HD-Photo.png"
+                "https://www.pngmart.com/files/22/User-Avatar-Profile-PNG-Isolated-Transparent-HD-/photo.png"
               }
             />
             <Popover

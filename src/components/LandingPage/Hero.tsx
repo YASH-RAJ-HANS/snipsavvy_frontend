@@ -1,24 +1,34 @@
 "use client";
 import React, { useState } from "react";
 import { SignUpButton } from "../SignUpButton/SignUpButton";
+import Image from "next/image";
 
 const Hero: React.FC = () => {
   const [menu, setMenu] = useState<boolean>(false);
 
   return (
     <>
-      <div className="relative w-full h-screen bg-[#0E1116] px-10">
+      <div className="relative w-full h-screen bg-[#0E1116]">
         <div className="hidden md:block">
-          <img
-            className="absolute bg-cover bg-center w-full h-full inset-0"
-            src="hero.png"
+          <Image
+            className=" w-full h-full relative"
+            src="/hero.png"
             alt=""
+            layout="fill"
+            // objectFit="contain"
+            sizes="100vw"
           />
         </div>
         <nav className="lg:hidden relative z-50">
           <div className="flex py-2 justify-between items-center px-4">
             <div>
-              <img className="w-[45vw] mt-10" src="fullLogo.png" alt="logo" />
+              <Image
+                width={45}
+                height={45}
+                className="w-[45vw] mt-10"
+                src="/fullLogo.png"
+                alt="logo"
+              />
             </div>
             <div className="visible flex items-center">
               <button
@@ -26,7 +36,7 @@ const Hero: React.FC = () => {
                 onClick={() => setMenu(!menu)}
                 className={`${menu ? "hidden" : ""} focus:outline-none focus:ring-2 focus:ring-black`}
               >
-                {/* <img src="fullLogo.png" alt="menu" /> */}
+                {/* <Image src="/fullLogo.png" alt="menu" /> */}
               </button>
               <ul
                 id="list"
@@ -79,7 +89,9 @@ const Hero: React.FC = () => {
                   className={`${menu ? "" : "hidden"} close-m-menu focus:ring-2 focus:ring-black focus:outline-none`}
                   onClick={() => setMenu(!menu)}
                 >
-                  <img
+                  <Image
+                    width={20}
+                    height={20}
                     src="https://tuk-cdn.s3.amazonaws.com/can-uploader/large_typography_with_gradient_and_glass_effect_Svg3.svg"
                     alt="close"
                   />
@@ -91,13 +103,19 @@ const Hero: React.FC = () => {
         <nav className="f-f-l relative z-10">
           <div className="relative z-10 mx-auto container hidden w-full px-4 xl:px-0 lg:flex justify-between items-center py-11">
             <div>
-              <img className="w-[14vw]" src="fullLogo.png" alt="logo" />
+              <Image
+                width={200}
+                height={15}
+                // className="w-[14vw]"
+                src="/fullLogo.png"
+                alt="logo"
+              />
             </div>
             <div className="flex items-center text-white text-base font-medium">
               <ul className="flex items-center pr-3 xl:pr-12">
                 <li className="cursor-pointer hover:text-gray-300 ease-in">
                   <a
-                    href="javascript:void(0)"
+                    href=""
                     className="focus:outline-none focus:ring-2 focus:ring-white"
                   >
                     Home
@@ -105,7 +123,7 @@ const Hero: React.FC = () => {
                 </li>
                 <li className="pl-3 lg:pl-5 xl:pl-8 cursor-pointer hover:text-gray-300 ease-in">
                   <a
-                    href="javascript:void(0)"
+                    href=""
                     className="focus:outline-none focus:ring-2 focus:ring-white"
                   >
                     Features
@@ -145,11 +163,13 @@ const Hero: React.FC = () => {
               </button> */}
             </div>
           </div>
-          <img
+          <Image
             className="w-full mt-8 md:mt-0 object-fill md:w-[60%] md:-ml-10 lg:-ml-10 xl:ml-16"
-            src="photo.png"
+            src="/photo.png"
             alt="sample page"
-            role="img"
+            role="Image"
+            width={1500}
+            height={100}
           />
         </div>
       </div>

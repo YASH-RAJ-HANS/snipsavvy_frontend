@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 import { FaLinkedin } from "react-icons/fa";
 
@@ -6,7 +7,7 @@ const Footer = () => {
     <div className=" xl:px-20 lg:px-12 sm:px-6 px-4 py-12 bg-[#0E0E11]">
       <div className="flex flex-col items-center justify-center">
         <div>
-          <img width={200} src="fullLogo.png" alt="" />
+          <Image width={200} height={100} src="/fullLogo.png" alt="" />
         </div>
 
         <div className="flex items-center gap-x-8 mt-6">
