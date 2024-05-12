@@ -12,6 +12,7 @@ import useFetch from "@/network/useFetch";
 import { FaShareAlt } from "react-icons/fa";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { baseURL } from "@/config";
+import DeleteCollectionModal from "./DeleteCollectionModal";
 
 const Collection = () => {
   const [showInput, setShowInput] = useState(false);
@@ -78,7 +79,7 @@ const Collection = () => {
     setIsDropdownOpen(true);
     setSingleCollection(collection);
   };
-
+  const [deleteCollectionModalOpen, setDeleteCollectionModalOpen] = useState(false);
   const handleOptionClick = (option: string) => {
     console.log("Option clicked:", option);
     setIsDropdownOpen(false);
@@ -90,7 +91,7 @@ const Collection = () => {
         break;
       case "delete":
         console.log("Delete clicked");
-        // setDeleteModalOpen(true);
+        setDeleteCollectionModalOpen(true);
         break;
 
       case "share":
@@ -338,6 +339,7 @@ const Collection = () => {
           </ul>
         </div>
       )}
+      <DeleteCollectionModal open={deleteCollectionModalOpen} onClose={() => setDeleteCollectionModalOpen(false)} collection={singleCollection}/>
     </Suspense>
 
   );
