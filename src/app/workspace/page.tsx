@@ -15,7 +15,6 @@ import { IoIosAdd } from "react-icons/io";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import SearchParamsHandler from "./SearchParamHandler";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 const style = {
   position: "absolute" as "absolute",
@@ -42,7 +41,6 @@ const WorkspacePage: React.FC = () => {
     setOpenDrawer(true);
   };
 
-  const router = useRouter();
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "k") {
