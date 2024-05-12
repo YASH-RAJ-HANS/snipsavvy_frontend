@@ -11,6 +11,7 @@ import Skeleton from "@mui/material/Skeleton";
 import useFetch from "@/network/useFetch";
 import { FaShareAlt } from "react-icons/fa";
 import { MdEdit, MdDelete } from "react-icons/md";
+import {baseURL} from "@/config";
 
 const Collection = () => {
   const [showInput, setShowInput] = useState(false);
