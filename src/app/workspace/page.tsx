@@ -9,7 +9,6 @@ import React, { Suspense } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { IoIosAdd } from "react-icons/io";
 import { useEffect } from "react";
-import { useSession } from "next-auth/react";
 import SearchParamsHandler from "./SearchParamHandler";
 
 const style = {

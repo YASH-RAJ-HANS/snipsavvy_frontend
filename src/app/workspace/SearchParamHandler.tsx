@@ -1,13 +1,10 @@
 "use client";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
 import axios from "axios";
 import { baseURL } from "@/config";
 import { IoIosArrowForward } from "react-icons/io";
 
 const SearchParamsHandler = () => {
-  const searchParams = useSearchParams();
-
   const [inpText, setInpText] = useState("");
   const [searchData, setSearchData] = useState([]);
 
