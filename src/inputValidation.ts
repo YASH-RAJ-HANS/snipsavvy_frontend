@@ -3,7 +3,7 @@ import * as zod from 'zod'
 export const addSnippetBody = zod.object({
     tags: zod.string().array(),
     title: zod.string(),
-    description: zod.string(),
+    description: zod.string().max(50),
     code: zod.string()
 })
 export const addWorkspaceBody = zod.object({

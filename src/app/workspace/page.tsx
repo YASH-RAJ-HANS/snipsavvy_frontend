@@ -9,7 +9,7 @@ import React, { Suspense } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { IoIosAdd } from "react-icons/io";
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams, usePathname } from "next/navigation"
 // import Welcome from "@/components/MiddleSection/Welcome";
 import { useSession } from "next-auth/react";
 import axios from "axios";
@@ -34,11 +34,14 @@ const WorkspacePage: React.FC = () => {
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [isEditable, setIsEditable] = React.useState(false);
   const handleOpen = () => setOpen(true);
-
   const handleClose = () => setOpen(false);
-
+  const router = useRouter()
+  const pathname = usePathname()
   const handleAdd = () => {
     setOpenDrawer(true);
+    const nextSearchParams = new URLSearchParams(searchParams.toString());
+    nextSearchParams.append("add", "true");
+    router.push(`${pathname}?${nextSearchParams.toString()}`);
   };
 
   useEffect(() => {

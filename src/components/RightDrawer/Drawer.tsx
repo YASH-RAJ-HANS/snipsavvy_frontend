@@ -27,6 +27,9 @@ const RightDrawer = ({isOpen, setIsOpen, isEditable, setIsEditable, className, s
   const collection = searchParams.get("collection")
     ? searchParams.get("collection")
     : "";
+  const add = searchParams.get("add")
+    ? searchParams.get("add")
+    : "";
 
   const updateUrl = () => {
     const nextSearchParams = new URLSearchParams(searchParams.toString());
@@ -35,11 +38,15 @@ const RightDrawer = ({isOpen, setIsOpen, isEditable, setIsEditable, className, s
       nextSearchParams.delete("edit")
     }
     router.push(`${pathName}?${nextSearchParams.toString()}`);
-    closeDrawer()
+    setIsOpen(false)
   };
 
   const closeDrawer = () => {
-    setIsOpen(false);
+    const nextSearchParams = new URLSearchParams(searchParams.toString());
+    if(add){
+      nextSearchParams.delete("add")
+    }
+    router.push(`${pathName}?${nextSearchParams.toString()}`);
   }
   if(snippet) {
     setIsOpen(true)
@@ -48,9 +55,9 @@ const RightDrawer = ({isOpen, setIsOpen, isEditable, setIsEditable, className, s
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="flex items-center justify-center">
-      {isOpen ? (
+      { (add==="true" || snippet ) ? (
 
-        <div className={`${className}  min-h-full w-1/2 bg-zinc-900 shadow-lg shadow-zinc-700 border-l-1 border-black transition-all duration-300`} style={{ maxHeight: '600px', overflow: 'auto' }}>
+        <div className={`${className}  min-h-full w-1/2 bg-zinc-900 shadow-lg shadow-zinc-700 border-l-1 border-black transition-all duration-300 overflow-y-auto`}>
           <div className="p-4 overflow-auto">
             {snippet ? (flag != true ? <button className="absolute top-2 right-2 text-white text-2xl" onClick={updateUrl}>
               <MdCancel />
