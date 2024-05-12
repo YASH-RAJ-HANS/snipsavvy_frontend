@@ -7,54 +7,63 @@ import { baseURL } from "@/config";
 import axios from "axios";
 import { redirect, useSearchParams } from "next/navigation";
 
-
 interface collectionItem {
-    name: string;
-    description: string;
-    _id: string;
-  }
+  name: string;
+  description: string;
+  _id: string;
+}
 interface DeleteCollectionModalProps {
-    open: boolean;
-    onClose: () => void;
-    collection: collectionItem
-  }
-const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({ open, onClose, collection }) =>  {
-    const searchParams = useSearchParams();
-    const workspace = searchParams.get("workspace") || "";
-    const collection_id = searchParams.get("collection") || "";
-    const snippet_id = searchParams.get("snippet") || "";
-    const nextSearchParams = new URLSearchParams(searchParams.toString());
-    const handleDelete = async (e: any) => {
+  open: boolean;
+  onClose: () => void;
+  collection: collectionItem;
+}
+const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({
+  open,
+  onClose,
+  collection,
+}) => {
+  const searchParams = useSearchParams();
+  const workspace = searchParams.get("workspace") || "";
+  const collection_id = searchParams.get("collection") || "";
+  const snippet_id = searchParams.get("snippet") || "";
+  const nextSearchParams = new URLSearchParams(searchParams.toString());
+  const handleDelete = async (e: any) => {
     e.preventDefault();
     try {
       const body = {
         workspace_id: workspace,
-        category_id: collection._id
-
-      }
-      console.log(body)
+        category_id: collection._id,
+      };
+      console.log(body);
       const token = localStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
-      }
+      };
 
-      const resp = await axios.delete(`${baseURL}/vi/api/category/`,    {data: body,headers})
-        .then((response) => {
-            
-            if(collection._id === collection_id){
-                nextSearchParams.delete("snippet");
-                nextSearchParams.delete("collection");
+      const resp = await axios
+        .delete(`${baseURL}/v1/api/category/`, { data: body, headers })
+        .then(
+          (response) => {
+            console.log(
+              "c_id => ",
+              collection._id,
+              "param_c_id =>",
+              collection_id
+            );
+            if (collection._id === collection_id) {
+              redirect("/workspace");
             }
             alert("Collection Removed !!");
             // window.location.reload()
-            console.log(window.location.href)
-          
-        },
-        (error)=>{
-            console.log(error)
-            alert("Error")
-        });
-      
+            onClose();
+            console.log(window.location.href);
+          },
+          (error) => {
+            console.log(error);
+            alert("Error");
+          }
+        );
+
       // await axios
       //   .get(`${baseURL}/v1/api/workspace`, {
       //     headers,
@@ -95,10 +104,14 @@ const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({ open, onC
           Are you sure you want to delete this item?
         </Typography>
         <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
-          <Button onClick={onClose}  sx={{ mr: 2 }}>
+          <Button onClick={onClose} sx={{ mr: 2 }}>
             Cancel
           </Button>
-          <Button onClick={(e) => handleDelete(e)} variant="contained" color="error">
+          <Button
+            onClick={(e) => handleDelete(e)}
+            variant="contained"
+            color="error"
+          >
             Delete
           </Button>
         </Box>
