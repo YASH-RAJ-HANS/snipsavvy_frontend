@@ -104,6 +104,23 @@ const Collection = () => {
 
   useEffect(() => {
     setIsDataLoading(true);
+    const fetchCategories = () => {
+      const token = localStorage.getItem("token");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      axios
+        .get(`${baseURL}/vi/api/category/${workspace}`, { headers })
+        .then((response) => {
+          setCollection(response.data);
+          console.log("collections=>", response.data.data);
+
+          setIsDataLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
     workspace && fetchCategories();
   }, [workspace]);
 

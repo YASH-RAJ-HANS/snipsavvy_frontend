@@ -1,92 +1,28 @@
 import { Button } from "@/components/LandingPage/Button";
 import Link from "next/link";
 import { SignUpButton } from "@/components/SignUpButton/SignUpButton";
+import Hero from "@/components/LandingPage/Hero";
+import UpcomingFeature from "@/components/LandingPage/UpcomingFeatures";
+import Features from "@/components/LandingPage/Features";
+import Footer from "@/components/LandingPage/Footer";
+import Working from "@/components/LandingPage/Bug";
+import Bug from "@/components/LandingPage/Bug";
 
 export default function Component() {
   return (
-    <div className="flex flex-col min-h-[100dvh] w-full text-gray-50">
-      <header className="px-4 lg:px-6 h-28 flex items-center bg-[#0E1116]">
-        <Link className="flex items-center justify-center" href="#">
-          <img src="logo.png" className="w-10" alt="" />
-        </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link
-            className="text-lg font-medium hover:underline underline-offset-4 text-gray-50"
-            href="#"
-          >
-            Features
-          </Link>
-
-          <Link
-            className="text-lg font-medium hover:underline underline-offset-4 text-gray-50"
-            href="#"
-          >
-            About
-          </Link>
-          <Link
-            className="text-lg font-medium hover:underline underline-offset-4 text-gray-50"
-            href="#"
-          >
-            Contact
-          </Link>
-          <Link
-            className="text-lg font-medium hover:underline underline-offset-4 flex items-center text-gray-50"
-            href="#"
-          >
-            <GithubIcon className="h-5 w-5 mr-1" />
-            GitHub
-          </Link>
-        </nav>
-      </header>
+    <div className="flex flex-col min-h-[100dvh] text-gray-50">
       <main className="flex-1">
-        <section className="w-full py-8 md:py-24 lg:py-32 xl:py-40 bg-[#0E1116] hero">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center space-y-10 text-center">
-              <div className="space-y-2 content">
-                <h1
-                  // style={{ textShadow: "0px 0px 10px #006BCB" }}
-                  className=" text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl/none "
-                >
-                  Manage Your Code Snippets with Ease
-                </h1>
-                {/* <p
-                  style={{ marginTop: "20px" }}
-                  className="mx-auto max-w-[700px] text-secondary md:text-xl"
-                >
-                  SnipSavvy is a powerful SaaS tool that helps you organize,
-                  share, and access your code snippets from anywhere. Stop
-                  wasting time searching for that one snippet you need.
-                </p> */}
-              </div>
-              <div className="space-x-4">
-                <Link
-                  // className="inline-flex h-9 items-center justify-center rounded-xl bg-[#045AA6] px-4 py-2 text-lg font-medium text-gray-300 shadow transition-colors hover:bg-[#045AA6]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#045AA6]-300 disabled:pointer-events-none disabled:opacity-50"
-                  href="#"
+        <Hero />
 
-                >
-                  <SignUpButton description="Get Started">
-                  </SignUpButton>
-                </Link>
-                {/* <Link
-                  className="inline-flex h-9 items-center justify-center rounded-md border border-gray-700 bg-gray-900 px-4 py-2 text-lg font-medium shadow-sm transition-colors hover:bg-gray-800 hover:text-gray-50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#045AA6]-300 disabled:pointer-events-none disabled:opacity-50"
-                  href="#"
-                >
-                  <GithubIcon className="h-5 w-5 mr-1" />
-                  GitHub
-                </Link> */}
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-[#0E1116] text-gray-50">
+        <section className="w-full py-12 md:py-24 lg:py-24 bg-[#151519] text-gray-50">
           <div className="container px-4 md:px-6">
-            <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-10">
-              <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
+            <div className=" items-center gap-6  lg:gap-10">
+              <div className="flex justify-center space-y-4">
+                {/* <div className="space-y-2">
                   <div className="inline-block rounded-lg bg-gray-800 px-3 py-1 text-lg text-gray-50">
                     Key Features
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-[#045AA6]">
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-[#00AEFF]">
                     Organize Your Code Snippets with Ease
                   </h2>
                   <p className="max-w-[600px] text-secondary md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
@@ -95,8 +31,10 @@ export default function Component() {
                     Never waste time searching for that one snippet you need
                     again.
                   </p>
-                </div>
-                <ul className="grid gap-4">
+                </div> */}
+                <Features />
+
+                {/* <ul className="grid gap-4">
                   <li className="flex items-center gap-2">
                     <CheckIcon className="h-5 w-5 text-[#00B4D8]" />
                     <span className="text-[#00B4D8]">
@@ -115,134 +53,176 @@ export default function Component() {
                       Secure sharing and collaboration
                     </span>
                   </li>
-                </ul>
+                </ul> */}
               </div>
-              <img
-                style={{ boxShadow: "0px 0px 10px 10px #006BCB" }}
-                alt="SnipSavvy"
-                className="mx-auto w-[120%] aspect-video rounded-xl object-contain object-center sm:w-full lg:order-last"
-                height="400"
-                src="/photo.png"
-                width="650"
-              />
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-[#0E1116]">
+        <section className="w-full py-12 md:py-20 lg:pt-32 pb-24 bg-[#0E0E11] px-32">
           <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10">
             <div className="space-y-3">
               <h2
-                style={{ textShadow: "0px 0px 10px #006BCB" }}
+                // style={{ textShadow: "0px 0px 10px #006BCB" }}
                 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-gray-50"
               >
-                Benefits of Using SnipSavvy
+                SnipSavvy Offers
               </h2>
-              <p className="mx-auto max-w-[700px] text-secondary md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                SnipSavvy helps you save time, improve productivity, and
-                collaborate more effectively with your team.
-              </p>
+              <p className="mx-auto max-w-[700px] text-secondary md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"></p>
             </div>
-            <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="rounded-lg border border-gray-700 bg-gray-900 p-6 shadow-sm transition-colors hover:bg-gray-800 text-gray-50">
-                <div className="flex items-center gap-4">
-                  <ClockIcon className="h-8 w-8 text-[#045AA6]" />
-                  <h3 className="text-xl font-bold">Save Time</h3>
+            <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+          </div>
+          <div className="overflow-y-hidden">
+            <div className="pb-16" style={{ fontFamily: '"Lato", sans-serif' }}>
+              <section className="bg-[#0E0E11] py-2">
+                <div
+                  tabIndex={0}
+                  aria-label="group of cards"
+                  className="focus:outline-none px-4 lg:px-0"
+                >
+                  <div className="mx-auto container flex flex-wrap px-2 lg:px-24">
+                    <div
+                      tabIndex={0}
+                      aria-label="card 1"
+                      className="focus:outline-none flex sm:w-full md:w-1/2 lg:border-r md:border-r sm:border-r-0 border-indigo-400 pb-10 lg:pt-10"
+                    >
+                      {/* <div className=" flex flex-shrink-0 mr-5 text-white">
+                        <ClockIcon className="h-8 w-8 text-[#045AA6]" />
+                      </div> */}
+
+                      <div className="w-20 h-20 relative mr-5">
+                        <div className="absolute top-0 right-0 bg-indigo-100 rounded w-16 h-16 mt-2 mr-1" />
+                        <div className="absolute text-white bottom-0 left-0 bg-[#045AA6] rounded w-16 h-16 flex items-center justify-center mt-2 mr-3">
+                          <ClockIcon className="h-8 w-8 text-[#fff]" />
+                        </div>
+                      </div>
+
+                      <div className="md:w-9/12 lg:w-9/12">
+                        <h2
+                          tabIndex={0}
+                          className="focus:outline-none text-lg font-semibold leading-5 text-white"
+                        >
+                          Save Time
+                        </h2>
+                        <p
+                          tabIndex={0}
+                          className="focus:outline-none text-base text-white leading-normal xl:w-10/12 pt-2"
+                        >
+                          Quickly find and reuse the code snippets you need,
+                          reducing development time and increasing productivity.
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      tabIndex={0}
+                      aria-label="card 2"
+                      className="focus:outline-none pl-8 flex sm:w-full md:w-1/2 lg:pb-10 lg:pt-10"
+                    >
+                      {/* <div className=" flex flex-shrink-0 sm:ml-0 md:ml-10 lg:ml-10 mr-5 text-white">
+                        <FolderIcon className="h-8 w-8 text-[#045AA6]" />
+                      </div> */}
+                      <div className="w-20 h-20 relative mr-5">
+                        <div className="absolute top-0 right-0 bg-indigo-100 rounded w-16 h-16 mt-2 mr-1" />
+                        <div className="absolute text-white bottom-0 left-0 bg-[#045AA6] rounded w-16 h-16 flex items-center justify-center mt-2 mr-3">
+                          <FolderIcon className="h-8 w-8 text-[#fff]" />
+                        </div>
+                      </div>
+                      <div className="md:w-9/12 lg:w-9/12 ">
+                        <h2
+                          tabIndex={0}
+                          className="focus:outline-none text-lg font-semibold leading-5 text-white"
+                        >
+                          Stay Organized
+                        </h2>
+                        <p
+                          tabIndex={0}
+                          className="focus:outline-none text-base text-white leading-normal xl:w-10/12 pt-2"
+                        >
+                          Keep your code snippets neatly organized and easily
+                          accessible, so you can focus on writing great code.
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      tabIndex={0}
+                      aria-label="card 3"
+                      className="focus:outline-none flex sm:w-full md:w-1/2 lg:border-t md:border-t sm:border-t-0 lg:border-r md:border-r sm:border-r-0 border-indigo-400 pt-10 lg:pb-20"
+                    >
+                      {/* <div className=" flex flex-shrink-0 mr-5 text-white">
+                        <img
+                          src="https://tuk-cdn.s3.amazonaws.com/can-uploader/indigo_bg_with_divider-svg3.svg"
+                          alt="html-tag"
+                        />
+                      </div> */}
+                      <div className="w-20 h-20 relative mr-5">
+                        <div className="absolute top-0 right-0 bg-indigo-100 rounded w-16 h-16 mt-2 mr-1" />
+                        <div className="absolute text-white bottom-0 left-0 bg-[#045AA6] rounded w-16 h-16 flex items-center justify-center mt-2 mr-3">
+                          <LayersIcon className="h-8 w-8 text-[#fff]" />
+                        </div>
+                      </div>
+                      <div className="md:w-9/12 lg:w-9/12 ">
+                        <h2
+                          tabIndex={0}
+                          className="focus:outline-none text-lg font-semibold leading-5 text-white"
+                        >
+                          Personalized Experience
+                        </h2>
+                        <p
+                          tabIndex={0}
+                          className="focus:outline-none text-base text-white leading-normal xl:w-10/12 pt-2"
+                        >
+                          Empowers users with personalized workspaces and
+                          repositories tailored to their individual preferences
+                          and workflow.
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      tabIndex={0}
+                      aria-label="card 4"
+                      className="focus:outline-none pl-8 flex sm:w-full md:w-1/2 lg:border-t md:border-t sm:border-t-0 border-indigo-400 pt-10 lg:pb-20"
+                    >
+                      {/* <div className=" flex flex-shrink-0 sm:ml-0 md:ml-10 lg:ml-10 mr-5 text-white">
+                        <UsersIcon className="h-8 w-8 text-[#045AA6]" />
+                      </div> */}
+
+                      <div className="w-20 h-20 relative mr-5">
+                        <div className="absolute top-0 right-0 bg-indigo-100 rounded w-16 h-16 mt-2 mr-1" />
+                        <div className="absolute text-white bottom-0 left-0 bg-[#045AA6] rounded w-16 h-16 flex items-center justify-center mt-2 mr-3">
+                          <UsersIcon className="h-8 w-8 text-[#fff]" />
+                        </div>
+                      </div>
+                      <div className="md:w-9/12 lg:w-9/12 ">
+                        <h2
+                          tabIndex={0}
+                          className="focus:outline-none text-lg font-semibold leading-5 text-white"
+                        >
+                          Effortless Collaboration
+                        </h2>
+                        <p
+                          tabIndex={0}
+                          className="focus:outline-none text-base text-white leading-normal xl:w-10/12 pt-2"
+                        >
+                          Share and collaborate on code snippets with your team,
+                          ensuring everyone has access to the resources they
+                          need.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <p className="mt-2 text-secondary">
-                  Quickly find and reuse the code snippets you need, reducing
-                  development time and increasing productivity.
-                </p>
-              </div>
-              <div className="rounded-lg border border-gray-700 bg-gray-900 p-6 shadow-sm transition-colors hover:bg-gray-800 text-gray-50">
-                <div className="flex items-center gap-4">
-                  <FolderIcon className="h-8 w-8 text-[#045AA6]" />
-                  <h3 className="text-xl font-bold">Stay Organized</h3>
-                </div>
-                <p className="mt-2 text-secondary">
-                  Keep your code snippets neatly organized and easily
-                  accessible, so you can focus on writing great code.
-                </p>
-              </div>
-              <div className="rounded-lg border border-gray-700 bg-gray-900 p-6 shadow-sm transition-colors hover:bg-gray-800 text-gray-50">
-                <div className="flex items-center gap-4">
-                  <UsersIcon className="h-8 w-8 text-[#045AA6]" />
-                  <h3 className="text-xl font-bold">Collaborate Effectively</h3>
-                </div>
-                <p className="mt-2 text-secondary">
-                  Share and collaborate on code snippets with your team,
-                  ensuring everyone has access to the resources they need.
-                </p>
-              </div>
+              </section>
+              {/* </dh-component> */}
+              {/* Code block ends */}
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-[#0E1116] text-gray-50">
-          <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10">
-            <div className="space-y-3">
-              <h2
-                style={{ textShadow: "0px 0px 10px #006BCB" }}
-                className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-[#fff]"
-              >
-                Upcoming Features
-              </h2>
-              <p className="mx-auto max-w-[700px] text-secondary md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                SnipSavvy is constantly evolving to meet your needs. Check out
-                some of the exciting features we have in the works.
-              </p>
-            </div>
-            <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="rounded-lg border border-gray-700  p-6 shadow-sm transition-colors hover:bg-gray-800 text-gray-50">
-                <div className="flex items-center gap-4">
-                  <CodeIcon className="h-8 w-8 text-[#045AA6]" />
-                  <h3 className="text-xl font-bold">Snippet Versioning</h3>
-                </div>
-                <p className="mt-2 text-secondary">
-                  Track changes to your code snippets and easily revert to
-                  previous versions.
-                </p>
-              </div>
-              <div className="rounded-lg border border-gray-700 bg-[#0E1116] p-6 shadow-sm transition-colors hover:bg-gray-800 text-gray-50">
-                <div className="flex items-center gap-4">
-                  <LayersIcon className="h-8 w-8 text-[#045AA6]" />
-                  <h3 className="text-xl font-bold">Snippet Templating</h3>
-                </div>
-                <p className="mt-2 text-secondary">
-                  Create and apply custom templates to your code snippets for
-                  consistent formatting.
-                </p>
-              </div>
-              <div className="rounded-lg border border-gray-700 bg-[#0E1116] p-6 shadow-sm transition-colors hover:bg-gray-800 text-gray-50">
-                <div className="flex items-center gap-4">
-                  <CloudIcon className="h-8 w-8 text-[#045AA6]" />
-                  <h3 className="text-xl font-bold">Cloud Sync</h3>
-                </div>
-                <p className="mt-2 text-secondary">
-                  Seamlessly sync your code snippets across all your devices for
-                  easy access from anywhere.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+
+        {/* <Working /> */}
+
+        <UpcomingFeature />
+        <Bug />
       </main>
-      <footer className="bg-[#0E1116] p-6 md:py-12 lg:py-16 w-full">
-        <div className="container max-w-7xl flex flex-col gap-6 items-center justify-between md:flex-row">
-          <Link className="flex items-center gap-2 text-gray-50" href="#">
-            <img src="welcome_logo.png" className="w-48" alt="" />
-          </Link>
-          <div className="flex gap-4 text-lg text-secondary">
-            <Link className="hover:underline" href="#">
-              Terms of Service
-            </Link>
-            <Link className="hover:underline" href="#">
-              Privacy Policy
-            </Link>
-            <Link className="hover:underline" href="#">
-              Contact Us
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
@@ -404,6 +384,5 @@ function UsersIcon(props: any) {
       <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
       <path d="M16 3.13a4 4 0 0 1 0 7.75" />
     </svg>
-
   );
 }
