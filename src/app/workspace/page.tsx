@@ -1,15 +1,11 @@
 "use client";
 import Drawer from "@/components/RightDrawer/Drawer";
 import SnippetSection from "@/components/MiddleSection/SnippetSection";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import React, { Suspense, useState } from "react";
-import SnippetModal from "@/components/MiddleSection/SnippetModal";
-import Welcome from "@/components/MiddleSection/Welcome";
-import { ToastContainer, toast } from "react-toastify";
+import React, { Suspense } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { IoIosAdd } from "react-icons/io";
 import { useEffect } from "react";
@@ -35,8 +31,6 @@ const WorkspacePage: React.FC = () => {
 
   const handleClose = () => setOpen(false);
 
-  const session = useSession();
-
   const handleAdd = () => {
     setOpenDrawer(true);
   };
@@ -60,7 +54,6 @@ const WorkspacePage: React.FC = () => {
     <Suspense fallback={<div>Loading...</div>}>
       <Suspense fallback={<div>Loading...</div>}>
         <SearchParamsHandler />
-        {/* Your component JSX here */}
         <div
           style={{ width: "75vw" }}
           className="fixed top-0 right-0 h-screen text-white bg-zinc-900"
