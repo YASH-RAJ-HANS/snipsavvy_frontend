@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import RightDrawer from "@/components/RightDrawer/Drawer";
 import Unauthorized from "@/components/Collab/Unauthorized";
+import Image from "next/image";
 
 function Page() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +16,13 @@ function Page() {
 
   return (
     <div className="">
+      <Image
+          src="/logo.png"
+          width={80}
+          height={80}
+          alt="logo"
+          className="pt-6 pl-4 pb-4 opacity-80"
+        />
       {snippet && shared === "true" ? (
         <div className="">
           <RightDrawer

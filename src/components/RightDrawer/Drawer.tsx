@@ -39,7 +39,7 @@ const RightDrawer = ({isOpen, setIsOpen, isEditable, setIsEditable, className, s
   const flag = shared ==="true" ? true : false
   return (
     
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center bg-zinc-900 z-[1000]">
       {isOpen ? 
 
         <div className={`${className}  min-h-full w-1/2 bg-zinc-900 shadow-lg shadow-zinc-700 border-l-1 border-black transition-all duration-300`} style={{ maxHeight: '600px', overflow: 'auto' }}>
