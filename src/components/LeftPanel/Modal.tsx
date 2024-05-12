@@ -48,6 +48,8 @@ export default function Modal({fetchWorkspace} : any) {
     await axios.post(`${baseURL}/v1/api/workspace` ,body, { headers })
       .then((response) => {
           console.log(response);
+          alert("Workspace Created")
+          window.location.reload();
         },
         (error) => {
           console.log(error);

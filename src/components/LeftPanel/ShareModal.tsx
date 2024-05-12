@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
+import { baseURL } from '@/config';
 
 // Define ShareModalProps interface
 interface ShareModalProps {
     open: boolean;
     onClose: () => void;
+    workspace: {
+      _id: string;
+      name: string;
+      description: string;
+    }
 }
 
 const modalStyle = {
@@ -23,7 +30,31 @@ const modalStyle = {
   p: 4,
 };
 
-const ShareModal: React.FC<ShareModalProps> = ({ open, onClose }) => {
+const ShareModal: React.FC<ShareModalProps> = ({ open, onClose , workspace}) => {
+  const [email, setEmail] = useState<string>();
+  const handleShareWorkspace = async () =>{
+    const body = {
+      email : email,
+      workspace_id: `${workspace._id}`,
+      sharedData: "workspace"
+    }
+    const token = localStorage.getItem("token");
+
+    const headers = {
+      Authorization : `Bearer ${token}`,
+    }
+    await axios.post(`${baseURL}/v1/api/share/workspace`, body, {headers})
+      .then((response) => {
+        console.log(response)
+        alert("Workspace Shared Successfully")
+      },
+      (error) =>{
+        console.log(error);
+      }
+    )
+    onClose();
+  }
+  
   return (
     <div>
       <Modal
@@ -33,8 +64,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ open, onClose }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalStyle}>
-          <Typography id="modal-modal-title" variant="h6" component="h2" mb={2} className='text-black
-          '>
+          <Typography id="modal-modal-title" variant="h6" component="h2" mb={2} className='text-black'>
             Share Access
           </Typography>
           <TextField
@@ -43,8 +73,9 @@ const ShareModal: React.FC<ShareModalProps> = ({ open, onClose }) => {
             variant="outlined" // Change variant to outlined for a cleaner look
             fullWidth // Take up full width
             className='mb-2' // Add margin bottom
+            onChange={(e)=>setEmail(e.target.value)}
           />
-          <Button variant="contained" color="primary" onClick={onClose} fullWidth>
+          <Button variant="contained" color="primary" onClick={handleShareWorkspace} fullWidth  >
             Share
           </Button>
         </Box>
