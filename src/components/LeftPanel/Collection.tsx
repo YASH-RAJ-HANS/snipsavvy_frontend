@@ -27,11 +27,14 @@ const Collection = () => {
   const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0 });
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [activeWorkspaceIndex, setActiveWorkspaceIndex] = useState<
+  const [activeCollectionIndex, setActiveCollectionIndex] = useState<
     number | null
   >(null);
-  const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
-
+  const [singleCollection, setSingleCollection] = useState<collectionItem>({
+    _id: "",
+    name: "",
+    description:""
+}) ;
   useEffect(() => {
     // Add event listener for clicks on the document
     document.addEventListener("click", handleClickOutside);
@@ -67,19 +70,38 @@ const Collection = () => {
   const handleRightClick = (
     e: React.MouseEvent<HTMLDivElement>,
     index: number,
-    workspace: Workspace
+    collection: collectionItem
   ) => {
     e.preventDefault();
     setDropdownPosition({ x: e.clientX, y: e.clientY });
-    setActiveWorkspaceIndex(index);
+    setActiveCollectionIndex(index);
     setIsDropdownOpen(true);
-    setSingleWorkspace(workspace);
+    setSingleCollection(collection);
   };
 
   const handleOptionClick = (option: string) => {
     console.log("Option clicked:", option);
     setIsDropdownOpen(false);
-  };
+
+    switch (option) {
+      case "edit":
+        console.log("Edit clicked");
+        // setEditModalOpen(true);
+        break;
+      case "delete":
+        console.log("Delete clicked");
+        // setDeleteModalOpen(true);
+        break;
+
+      case "share":
+        console.log("Share clicked");
+        // setShareModalOpen(true);
+        
+        break;
+      default:
+        break;
+    }
+  };;
 
   const closeDropdown = () => {
     setIsDropdownOpen(false);
@@ -236,6 +258,7 @@ const Collection = () => {
                 collection?.map((item: collectionItem, index: number) => (
                   <div
                     key={item._id}
+                    onContextMenu={(e) => handleRightClick(e, index, item)}
                     style={{
                       backgroundColor:
                         collectionid === item?._id ? "#131212" : "",
@@ -282,7 +305,41 @@ const Collection = () => {
           </div>
         </div>
       </div>
+      {isDropdownOpen && (
+        <div
+          ref={dropdownRef}
+          style={{
+            position: "fixed",
+            padding: "10px",
+            top: dropdownPosition.y,
+            left: dropdownPosition.x,
+            backgroundColor: "#131211c4",
+            borderRadius: "4px",
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+            backdropFilter: "blur(3px)",
+            zIndex: 9999,
+          }}
+          onBlur={() => closeDropdown()}
+        >
+          <ul className="w-20">
+            
+            <li
+              className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
+              onClick={() => handleOptionClick("edit")}
+            >
+              Edit <MdEdit className="mt-1" />
+            </li>
+            <li
+              className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
+              onClick={() => handleOptionClick("delete")}
+            >
+              Delete <MdDelete className="mt-1" />
+            </li>
+          </ul>
+        </div>
+      )}
     </Suspense>
+
   );
 };
 
