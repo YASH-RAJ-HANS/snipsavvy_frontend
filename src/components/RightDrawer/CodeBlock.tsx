@@ -224,8 +224,8 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
         )}
         <div className="">
           {snippet && flag === true ? (
-            codeData[0].tags.map((tag: any) => (
-              <div className="inline-flex">
+            codeData[0].tags.map((tag: any, index: any) => (
+              <div key={index} className="inline-flex">
                 <Badge
                   variant="default"
                   className="px-2 py-1 rounded-xl bg-purple-700 hover:bg-purple-500 mx-1 mb-2"
@@ -247,9 +247,10 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
               />
               
               {tags.length > 0 &&
-                tags?.map((tag) => {
+                tags?.map((tag, index) => {
                   return (
                     <Badge
+                      key={index}
                       variant="default"
                       className="px-2 py-1 rounded-xl bg-purple-700 hover:bg-purple-500 mx-1 mb-2"
                     >

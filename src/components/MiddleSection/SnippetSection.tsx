@@ -69,7 +69,7 @@ const SnippetSection: React.FC<SnippetSectionProps> = ({isRefresh}) => {
               <div className="w-full flex flex-wrap">
                 <div className="flex flex-wrap justify-start pb-20">
                   {isSnippet?.map((snip: any) => (
-                    <button onClick={() => updateUrl(snip._id)} key={snip._id}>
+                    <button key={snip._id}>
                       <SnippetCard {...snip} />
                     </button>
                   ))}
