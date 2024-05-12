@@ -40,12 +40,12 @@ export default function SettingsModal({ open, setOpen }: SettingsModalProps) {
               <span className="text-lg font-semibold mb-4">
                 Personal settings
               </span>
-              <div className="flex items-center mb-4 cursor-pointer">
-                <UserIcon className="h-5 w-5 mr-3" />
-                <span>My account</span>
+              <div className="flex items-center mb-4 cursor-not-allowed">
+                <UserIcon className="h-5 w-5 mr-3 opacity-50" />
+                <span className="" >My account</span>
               </div>
-              <div className="flex items-center mb-4 cursor-pointer">
-                <BellIcon className="h-5 w-5 mr-3" />
+              <div className="flex items-center mb-4 cursor-not-allowed">
+                <BellIcon className="h-5 w-5 mr-3 opacity-50" />
                 <span>My notifications</span>
               </div>
               <span className="text-lg font-semibold mt-6 mb-4">
@@ -55,16 +55,16 @@ export default function SettingsModal({ open, setOpen }: SettingsModalProps) {
                 <GaugeIcon className="h-5 w-5 mr-3" />
                 <span>Access Controls</span>
               </div>
-              <div className="flex items-center mb-4 cursor-pointer">
-                <LayoutTemplateIcon className="h-5 w-5 mr-3" />
+              <div className="flex items-center mb-4 cursor-not-allowed">
+                <LayoutTemplateIcon className="h-5 w-5 mr-3 opacity-50" />
                 <span>Templates</span>
               </div>
-              <div className="flex items-center mb-4 cursor-pointer">
-                <UsersIcon className="h-5 w-5 mr-3" />
+              <div className="flex items-center mb-4 cursor-not-allowed">
+                <UsersIcon className="h-5 w-5 mr-3 opacity-50" />
                 <span>Members & teams</span>
               </div>
-              <div className="flex items-center mb-4 cursor-pointer">
-                <PlugIcon className="h-5 w-5 mr-3" />
+              <div className="flex items-center mb-4 cursor-not-allowed">
+                <PlugIcon className="h-5 w-5 mr-3 opacity-50" />
                 <span>Integrations</span>
               </div>
             </div>

@@ -212,7 +212,7 @@ const WorkspacePage: React.FC = () => {
               placeholder="Find by Tag, Description , title..."
               onClick={handleOpen}
             />
-            <div className="px-4 py-2 rounded-xl mb-2 flex   items-center text-xs text-gray-600 border-2 border-gray-600 shadow-lg   w-fit">
+            <div onClick={handleOpen} className="px-4 py-2 rounded-xl mb-2 flex   items-center text-xs text-gray-600 border-2 border-gray-600 shadow-lg   w-fit">
               <span>CTRL+K</span>
             </div>
             <div className="w-2/12 vh-6 flex justify-between pl-6 items-center">
