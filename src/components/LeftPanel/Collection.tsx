@@ -17,7 +17,6 @@ const Collection = () => {
   const [showInput, setShowInput] = useState(false);
   const [collection, setCollection] = useState<any>([]);
   const [data, setData] = useState("");
-  // const [workspace, setWorkspace] = useState<any>([]);
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -166,7 +165,7 @@ const Collection = () => {
   const updateUrl = (name: string) => {
     const query: Record<string, string> = { workspace };
     if (name) query.collection = name;
-    router.push(`?${new URLSearchParams(query).toString()}`);
+    router.push( `?${new URLSearchParams(query).toString()}`);
   };
 
   const colorOptions = [
@@ -284,47 +283,7 @@ const Collection = () => {
         </div>
       </div>
     </Suspense>
-    // {isDropdownOpen && (
-    //   <div
-    //     ref={dropdownRef}
-    //     style={{
-    //       position: "fixed",
-    //       padding: "10px",
-    //       top: dropdownPosition.y,
-    //       left: dropdownPosition.x,
-    //       backgroundColor: "#131211c4",
-    //       borderRadius: "4px",
-    //       boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-    //       backdropFilter: "blur(3px)",
-    //       zIndex: 9999,
-    //     }}
-    //     onBlur={() => closeDropdown()}
-    //   >
-    //     <ul className="w-20">
-    //     <li
-    //         className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
-    //         onClick={() => handleOptionClick("Option 3")}
-    //       >
-    //         Share <FaShareAlt  className="mt-1"/>
-
-    //       </li>
-    //       <li
-    //         className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
-    //         onClick={() => handleOptionClick("Option 1")}
-    //       >
-    //         Edit <MdEdit className="mt-1" />
-    //       </li>
-    //       <li
-    //         className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
-    //         onClick={() => handleOptionClick("Option 2")}
-    //       >
-    //         Delete <MdDelete className="mt-1" />
-    //       </li>
-
-    //     </ul>
-    //   </div>
-    // )}
   );
 };
 
-export default Collection;
+export default Collection;
