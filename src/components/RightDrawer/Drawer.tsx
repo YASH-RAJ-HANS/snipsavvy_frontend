@@ -45,7 +45,7 @@ const RightDrawer = ({
 
   const flag = shared === "true" ? true : false;
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="flex items-center justify-center">
         {isOpen ? (
           <div

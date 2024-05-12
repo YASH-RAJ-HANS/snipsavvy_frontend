@@ -149,7 +149,7 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
   const handleClick = () => {};
 
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="overflow-hidden outline-none" id="editable-code">
         <div>
           <h2 className="text-3xl text-white p-2 font-bold overflow-y-auto">

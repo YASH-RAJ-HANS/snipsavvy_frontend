@@ -106,7 +106,7 @@ const WorkspacePage: React.FC = () => {
   };
 
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <div
         style={{ width: "75vw" }}
         className="fixed top-0 right-0 h-screen text-white bg-zinc-900"

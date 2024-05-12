@@ -168,7 +168,7 @@ const Sidebar = () => {
   };
 
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className=" w-[5vw] flex flex-col items-center bg-[#141415] rounded">
         <Image
           src="/logo.png"
