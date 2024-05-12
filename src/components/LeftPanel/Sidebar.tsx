@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import { CiSettings, CiLogout } from "react-icons/ci";
+import { FaShareAlt } from "react-icons/fa";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import Modal from "./Modal";
@@ -11,6 +13,8 @@ import { MdEdit, MdDelete } from "react-icons/md";
 import Avatar from "@mui/material/Avatar";
 import { baseURL } from "@/config";
 import SettingsModal from "../Settings/SettingsModal";
+import DeleteModal from "./DeleteModal"
+import useFetch from "@/network/useFetch";
 import { signOut, useSession } from "next-auth/react";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
@@ -45,7 +49,7 @@ const Sidebar = () => {
 
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
+  const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>() ;
   const router = useRouter();
   const session = useSession();
   useEffect(() => {
@@ -121,6 +125,8 @@ const Sidebar = () => {
       dropdownRef.current.contains(target)
     );
   };
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteWorkspaceId, setDeleteWorkspaceId] = useState<string>();
 
   const handleRightClick = (
     e: React.MouseEvent<HTMLDivElement>,
@@ -132,12 +138,31 @@ const Sidebar = () => {
     setActiveWorkspaceIndex(index);
     setIsDropdownOpen(true);
     setSingleWorkspace(workspace);
+    setDeleteWorkspaceId(workspace._id);
   };
-
+  
   const handleOptionClick = (option: string) => {
     console.log("Option clicked:", option);
     setIsDropdownOpen(false);
+
+    switch (option) {
+      case "edit":
+        console.log("Edit clicked");
+        break;
+        case "delete":
+          console.log("Delete clicked");
+          setDeleteModalOpen(true);
+          break;
+        
+      case "share":
+        console.log("Share clicked");
+        
+        break;
+      default:
+        break;
+    }
   };
+  
 
   const closeDropdown = () => {
     setIsDropdownOpen(false);
@@ -265,18 +290,26 @@ const Sidebar = () => {
           onBlur={() => closeDropdown()}
         >
           <ul className="w-20">
+          <li
+              className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
+              onClick={() => handleOptionClick("share")}
+            >
+              Share <FaShareAlt  className="mt-1"/>
+
+            </li>
             <li
               className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
-              onClick={() => handleOptionClick("Option 1")}
+              onClick={() => handleOptionClick("edit")}
             >
               Edit <MdEdit className="mt-1" />
             </li>
             <li
               className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
-              onClick={() => handleOptionClick("Option 2")}
+              onClick={() => handleOptionClick("delete")}
             >
               Delete <MdDelete className="mt-1" />
             </li>
+            
           </ul>
         </div>
       )}
@@ -284,6 +317,8 @@ const Sidebar = () => {
         open={isSettingsModalOpen}
         setOpen={setIsSettingsModalOpen}
       />
+      <DeleteModal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)} workspace_id = {deleteWorkspaceId || ""} />
+
     </>
   );
 };

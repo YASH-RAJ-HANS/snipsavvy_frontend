@@ -120,6 +120,7 @@ export default function Access() {
                 key={index}
                 className="border-b-2 border-slate-600 pb-1 flex justify-between w-[70%] mb-6"
               >
+
                 <p> {access.email} </p>
                 <Tooltip title="Remove Access">
                   <MdDelete
