@@ -43,6 +43,8 @@ const RightDrawer = ({
     setIsOpen(false);
   };
 
+  if (snippet) isOpen = true;
+
   const flag = shared === "true" ? true : false;
   return (
     <Suspense fallback={<div>Loading...</div>}>

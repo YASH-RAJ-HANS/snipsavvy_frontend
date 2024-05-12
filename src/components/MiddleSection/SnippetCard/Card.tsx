@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ShareSnippet from "@/components/RightDrawer/ShareSnippet";
 import CodeBlock from "@/components/RightDrawer/CodeBlock";
+import DeleteSnippet from "./DeleteSnippet";
 interface SnippetCardProps {
   title: string;
   code: string;
@@ -31,40 +32,40 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
   console.log("snippet_id=>", snippet_id);
   console.log("id=>", _id);
 
-  async function deleteSnippet(event: React.MouseEvent<HTMLButtonElement>) {
-    event.stopPropagation();
-    const token = localStorage.getItem("token");
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    try {
-      const snippet = searchParams.get("snippet") || "";
-      if (snippet === _id) {
-        const workspace = searchParams.get("workspace") || "";
-        const collection = searchParams.get("collection") || "";
-        const query: Record<string, string> = {
-          workspace,
-          collection,
-        };
+  // async function deleteSnippet(event: React.MouseEvent<HTMLButtonElement>) {
+  //   event.stopPropagation();
+  //   const token = localStorage.getItem("token");
+  //   const headers = {
+  //     Authorization: `Bearer ${token}`,
+  //   };
+  //   try {
+  //     const snippet = searchParams.get("snippet") || "";
+  //     if (snippet === _id) {
+  //       const workspace = searchParams.get("workspace") || "";
+  //       const collection = searchParams.get("collection") || "";
+  //       const query: Record<string, string> = {
+  //         workspace,
+  //         collection,
+  //       };
 
-        Router.push(`?${new URLSearchParams(query).toString()}`);
-      }
-      console.log("Deleting user with id:", _id);
-      const response = await axios.delete(
-        `${baseURL}/v1/api/snippet?s_id=${_id}`,
-        {
-          headers,
-        }
-      );
-      if (response.status === 200) {
-        console.log("User deleted successfully");
-      } else {
-        console.log("Failed to delete user");
-      }
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }
-  }
+  //       Router.push(`?${new URLSearchParams(query).toString()}`);
+  //     }
+  //     console.log("Deleting user with id:", _id);
+  //     const response = await axios.delete(
+  //       `${baseURL}/v1/api/snippet?s_id=${_id}`,
+  //       {
+  //         headers,
+  //       }
+  //     );
+  //     if (response.status === 200) {
+  //       console.log("User deleted successfully");
+  //     } else {
+  //       console.log("Failed to delete user");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting user:", error);
+  //   }
+  // }
   const [shareSnippet, setShareSnippet] = useState(false);
 
   const Router = useRouter();
@@ -110,45 +111,48 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
 
     const open = Boolean(anchorEl);
     const id = open ? "simple-popover" : undefined;
+    const [deleteSnippetOpen, setDeleteSnippetOpen] = useState(false);
     return (
       <Suspense fallback={<div>Loading...</div>}>
-        <div>
-          <Button aria-describedby={id} onClick={handleClick}>
-            <MoreVertIcon />
-          </Button>
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-          >
-            <Typography sx={{ width: 75, height: 95 }} className="no-scrollbar">
-              <div className="z-200 flex flex-col bg-zinc-950 p-2 absolute w-[10-vw] text-white">
-                <button
-                  className="bg-zinc-700 px-2 mb-1 hover:bg-zinc-800"
-                  onClick={(e) => deleteSnippet(e)}
-                >
-                  Delete
-                </button>
-                <button
-                  onClick={() => newUpdateUrl()}
-                  className="bg-zinc-700 px-2 mb-1 hover:bg-zinc-800"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => setShareSnippet(true)}
-                  className="bg-zinc-700 px-2 hover:bg-zinc-800"
-                >
-                  share
-                </button>
-              </div>
-            </Typography>
-          </Popover>
+      <div>
+        <Button aria-describedby={id} onClick={handleClick}>
+          <MoreVertIcon />
+        </Button>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        >
+          <Typography sx={{ width: 75, height: 95 }} className="no-scrollbar">
+            <div className="z-200 flex flex-col bg-zinc-950 p-2 absolute w-[10-vw] text-white">
+              <button
+                className="bg-zinc-700 px-2 mb-1 hover:bg-zinc-800"
+                onClick={(e) => setDeleteSnippetOpen(true)}
+              >
+                Delete
+                {deleteSnippetOpen && <DeleteSnippet  open={deleteSnippetOpen}  onClose={() => setDeleteSnippetOpen(false)} snippet_id = {_id || ""} />}
+                {/* <DeleteSnippetonClose={() => setDeleteSnippetOpen(false)} snippet_id = {_id || ""} /> */}
+              </button>
+              <button
+                onClick={() => newUpdateUrl()}
+                className="bg-zinc-700 px-2 mb-1 hover:bg-zinc-800"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => setShareSnippet(true)}
+                className="bg-zinc-700 px-2 hover:bg-zinc-800"
+              >
+                share
+              </button>
+            </div>
+          </Typography>
+        </Popover>
 
           {shareSnippet && <ShareSnippet onClose={() => handleClose()} />}
         </div>
@@ -159,11 +163,11 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div
-        className={`flex relative border-zinc-800  ${snippet_id == _id ? "bg-zinc-950 border-zinc-300" : "hover:bg-zinc-950 hover:border-zinc-300"} border-transparent `}
+        className={`flex relative border-zinc-800  ${snippet_id == _id ? "bg-zinc-950 border-zinc-300" : "hover:bg-zinc-950 hover:border-zinc-300"} border-transparent shadow-xl overflow-hidden mb-6 mr-4 p-3 transition-border duration-500 rounded-lg`}
       >
         <div
           onClick={() => updateUrl(_id)}
-          className={`flex items-start border-zinc-800 rounded-lg ${snippet_id == _id ? "bg-zinc-950 border-zinc-300" : "hover:bg-zinc-950 hover:border-zinc-300"} border-transparent  shadow-xl overflow-hidden mb-6 mr-4 p-3 transition-border duration-500`}
+          className={`flex items-start border-zinc-800 rounded-lg ${snippet_id == _id ? "bg-zinc-950 border-zinc-300" : ""} border-transparent  `}
           style={{
             width: "18vw",
             height: "26vh",

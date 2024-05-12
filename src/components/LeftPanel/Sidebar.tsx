@@ -79,7 +79,7 @@ const Sidebar = () => {
   }, []);
 
   const handleLogOut = () => {
-    signOut({ callbackUrl: "http://localhost:3000/" });
+    signOut({ callbackUrl: "https://snipsavvy.vercel.app/" });
   };
 
   const updateUrl = (name: string) => {
