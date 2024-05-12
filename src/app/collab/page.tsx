@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { Suspense,useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import RightDrawer from "@/components/RightDrawer/Drawer";
 import Unauthorized from "@/components/Collab/Unauthorized";
@@ -8,13 +8,9 @@ import Image from "next/image";
 function Page() {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
-  const searchParams = useSearchParams();
-  const snippet = searchParams.get("snippet")
-    ? searchParams.get("snippet")
-    : "";
-  const shared = searchParams.get("shared") ? searchParams.get("shared") : "";
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <div className="">
       <Image
           src="/logo.png"
@@ -38,6 +34,7 @@ function Page() {
         <Unauthorized />
       )}
     </div>
+    </Suspense>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import { FaFolderOpen } from "react-icons/fa";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,6 @@ const Collection = () => {
   const [showInput, setShowInput] = useState(false);
   const [collection, setCollection] = useState<any>([]);
   const [data, setData] = useState("");
-  // const [workspace, setWorkspace] = useState<any>([]);
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -166,7 +165,7 @@ const Collection = () => {
   const updateUrl = (name: string) => {
     const query: Record<string, string> = { workspace };
     if (name) query.collection = name;
-    router.push(`?${new URLSearchParams(query).toString()}`);
+    router.push( `?${new URLSearchParams(query).toString()}`);
   };
 
   const colorOptions = [
@@ -185,144 +184,106 @@ const Collection = () => {
   }
 
   return (
-    <div className="w-[20vw] bg-[#1a1b1c] overflow-none">
-      <div>
-        <div className="flex m-8 items-center justify- ">
-          <div className="mr-3 text-gray-400  ">
-            <FaFolderOpen size={20} />
-          </div>
-          <div className="flex justify-between w-full">
-            <p className="text-md text-gray-400 font-bold">COLLECTIONS</p>
-            <button
-              className="font-extrabold rounded-full text-2xl -mt-1.5  text-gray-400 hover:text-white"
-              onClick={handleAddClick}
-            >
-              {showInput ? <FiMinus /> : "+"}
-            </button>
-          </div>
-          <hr />
-        </div>
-        {showInput && (
-          <div className="flex items-center ">
-            <Input
-              value={data}
-              type="text"
-              className="mb-8 ml-4 w-64 h-10 rounded p-1 pl-4 text-white"
-              placeholder="Collection name .."
-              onChange={(e) => setData(e.target.value)}
-              onKeyDown={handleKeyPress}
-            />
-
-            {!isLoading ? (
-              <Button
-                variant="outline"
-                className="mb-8 w-16 ml-2 mr-2 rounded h-8 bg-gray-600"
-                onClick={handleCreateCollection}
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="w-[20vw] bg-[#1a1b1c] overflow-none">
+        <div>
+          <div className="flex m-8 items-center justify- ">
+            <div className="mr-3 text-gray-400  ">
+              <FaFolderOpen size={20} />
+            </div>
+            <div className="flex justify-between w-full">
+              <p className="text-md text-gray-400 font-bold">COLLECTIONS</p>
+              <button
+                className="font-extrabold rounded-full text-2xl -mt-1.5  text-gray-400 hover:text-white"
+                onClick={handleAddClick}
               >
-                Save
-              </Button>
-            ) : (
-              <CircularProgress
-                color="success"
-                className="mb-10 ml-2"
-                size={25}
+                {showInput ? <FiMinus /> : "+"}
+              </button>
+            </div>
+            <hr />
+          </div>
+          {showInput && (
+            <div className="flex items-center ">
+              <Input
+                value={data}
+                type="text"
+                className="mb-8 ml-4 w-64 h-10 rounded p-1 pl-4 text-white"
+                placeholder="Collection name .."
+                onChange={(e) => setData(e.target.value)}
+                onKeyDown={handleKeyPress}
               />
+
+              {!isLoading ? (
+                <Button
+                  variant="outline"
+                  className="mb-8 w-16 ml-2 mr-2 rounded h-8 bg-gray-600"
+                  onClick={handleCreateCollection}
+                >
+                  Save
+                </Button>
+              ) : (
+                <CircularProgress
+                  color="success"
+                  className="mb-10 ml-2"
+                  size={25}
+                />
+              )}
+            </div>
+          )}
+          <div className="-mt-4">
+            {workspace ? (
+              !isDataLoading ? (
+                collection?.map((item: collectionItem, index: number) => (
+                  <div
+                    key={item._id}
+                    style={{
+                      backgroundColor:
+                        collectionid === item?._id ? "#131212" : "",
+                      color: collectionid === item?._id ? "white" : "",
+                    }}
+                    onClick={() => updateUrl(item._id)}
+                    className="hover:bg-[#131212] h-10 w-64 rounded-xl m-auto ml-4 pt-1 text-lg mt-1 text-slate-300 hover:text-white cursor-pointer flex"
+                  >
+                    <span className="-mt-2.5">
+                      <BsDot size={50} color={colorOptions[index % 6]} />
+                    </span>
+                    {item?.name}
+                  </div>
+                ))
+              ) : (
+                <div className="w-60 ml-8 mt-10 flex flex-col gap-4">
+                  <Skeleton
+                    sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
+                    height={30}
+                    variant="rectangular"
+                  />
+                  <Skeleton
+                    sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
+                    height={30}
+                    variant="rectangular"
+                  />
+                  <Skeleton
+                    sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
+                    height={30}
+                    variant="rectangular"
+                  />
+                  <Skeleton
+                    sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
+                    height={30}
+                    variant="rectangular"
+                  />
+                </div>
+              )
+            ) : (
+              <h1 className="font-bold text-2xl opacity-50 text-center mt-20">
+                Select a workspace to get started
+              </h1>
             )}
           </div>
-        )}
-        <div className="-mt-4">
-          {workspace ? (
-            !isDataLoading ? (
-              collection?.map((item: collectionItem, index: number) => (
-                <div
-                  key={item._id}
-                  style={{
-                    backgroundColor:
-                      collectionid === item?._id ? "#131212" : "",
-                    color: collectionid === item?._id ? "white" : "",
-                  }}
-                  onClick={() => updateUrl(item._id)}
-                  className="hover:bg-[#131212] h-10 w-64 rounded-xl m-auto ml-4 pt-1 text-lg mt-1 text-slate-300 hover:text-white cursor-pointer flex"
-                >
-                  <span className="-mt-2.5">
-                    <BsDot size={50} color={colorOptions[index % 6]} />
-                  </span>
-                  {item?.name}
-                </div>
-              ))
-            ) : (
-              <div className="w-60 ml-8 mt-10 flex flex-col gap-4">
-                <Skeleton
-                  sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
-                  height={30}
-                  variant="rectangular"
-                />
-                <Skeleton
-                  sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
-                  height={30}
-                  variant="rectangular"
-                />
-                <Skeleton
-                  sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
-                  height={30}
-                  variant="rectangular"
-                />
-                <Skeleton
-                  sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
-                  height={30}
-                  variant="rectangular"
-                />
-              </div>
-            )
-          ) : (
-            <h1 className="font-bold text-2xl opacity-50 text-center mt-20">
-              Select a workspace to get started
-            </h1>
-          )}
         </div>
       </div>
-    </div>
-    // {isDropdownOpen && (
-    //   <div
-    //     ref={dropdownRef}
-    //     style={{
-    //       position: "fixed",
-    //       padding: "10px",
-    //       top: dropdownPosition.y,
-    //       left: dropdownPosition.x,
-    //       backgroundColor: "#131211c4",
-    //       borderRadius: "4px",
-    //       boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-    //       backdropFilter: "blur(3px)",
-    //       zIndex: 9999,
-    //     }}
-    //     onBlur={() => closeDropdown()}
-    //   >
-    //     <ul className="w-20">
-    //     <li
-    //         className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
-    //         onClick={() => handleOptionClick("Option 3")}
-    //       >
-    //         Share <FaShareAlt  className="mt-1"/>
-
-    //       </li>
-    //       <li
-    //         className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
-    //         onClick={() => handleOptionClick("Option 1")}
-    //       >
-    //         Edit <MdEdit className="mt-1" />
-    //       </li>
-    //       <li
-    //         className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
-    //         onClick={() => handleOptionClick("Option 2")}
-    //       >
-    //         Delete <MdDelete className="mt-1" />
-    //       </li>
-
-    //     </ul>
-    //   </div>
-    // )}
+    </Suspense>
   );
 };
 
-export default Collection;
+export default Collection;

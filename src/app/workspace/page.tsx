@@ -1,25 +1,22 @@
 "use client";
 import Drawer from "@/components/RightDrawer/Drawer";
 import SnippetSection from "@/components/MiddleSection/SnippetSection";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import React, { useState } from "react";
-import SnippetModal from "@/components/MiddleSection/SnippetModal";
-import Welcome from "@/components/MiddleSection/Welcome";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { ToastContainer, toast } from "react-toastify";
+import React, { Suspense } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { IoIosAdd } from "react-icons/io";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation"
 // import Welcome from "@/components/MiddleSection/Welcome";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import { baseURL } from "@/config";
 import { IoIosArrowForward } from "react-icons/io";
 import { RiRefreshLine } from "react-icons/ri";
+import SearchParamsHandler from "./SearchParamHandler";
 
 const style = {
   position: "absolute" as "absolute",
@@ -31,30 +28,19 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
 const WorkspacePage: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [isEditable, setIsEditable] = React.useState(false);
   const handleOpen = () => setOpen(true);
+
   const handleClose = () => setOpen(false);
 
-  const session = useSession();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const snippet = searchParams.get("snippet")
-    ? searchParams.get("snippet")
-    : "";
-  const collection = searchParams.get("collection")
-    ? searchParams.get("collection")
-    : "";
-  const pathName = usePathname();
   const handleAdd = () => {
     setOpenDrawer(true);
-    const nextSearchParams = new URLSearchParams(searchParams.toString());
-    nextSearchParams.delete("snippet");
-    router.push(`${pathName}?${nextSearchParams.toString()}`);
   };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "k") {
@@ -88,8 +74,9 @@ const WorkspacePage: React.FC = () => {
     inpText ? globalSearch() : setSearchData([]);
   }, [inpText]);
 
-  // const searchParams = useSearchParams();
-
+  const searchParams = useSearchParams();
+  const collection = searchParams.get("collection") ? searchParams.get("collection") : ""
+  const snippet = searchParams.get("snippet") ? searchParams.get("snippet") : ""
   const Router = useRouter();
 
   const updateURL = (snippet: any) => {
@@ -112,6 +99,10 @@ const WorkspacePage: React.FC = () => {
   }
 
   return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <SearchParamsHandler />
+      </Suspense>
     <div
       style={{ width: "75vw" }}
       className="fixed top-0 right-0 h-screen text-white bg-zinc-900"
@@ -153,6 +144,7 @@ const WorkspacePage: React.FC = () => {
                       id="modal-modal-description"
                       sx={{ mt: 2, display: "flex" }}
                     >
+                      <SearchParamsHandler />
                       <div className="border-2 ml-6 px-2 border-gray-400 h-10 flex items-center rounded-l">
                         <SearchIcon />
                       </div>
@@ -221,42 +213,40 @@ const WorkspacePage: React.FC = () => {
             <div onClick={handleOpen} className="px-4 py-2 rounded-xl mb-2 flex   items-center text-xs text-gray-600 border-2 border-gray-600 shadow-lg   w-fit">
               <span>CTRL+K</span>
             </div>
-          <div className="w-2/12 vh-6 flex justify-between pl-6 items-center">
-            <button
-              className="bg-blue-600 hover:bg-blue-400 duration-300 rounded-xl text-xl px-3 py-2 mb-2 text-white"
-              onClick={handleAdd}
-            >
-              <IoIosAdd />
+            <div className="w-2/12 vh-6 flex justify-between pl-6 items-center">
+              <button
+                className="bg-blue-600 hover:bg-blue-400 duration-300 rounded-xl text-xl px-3 py-2 mb-2 text-white"
+                onClick={handleAdd}
+              >
+                <IoIosAdd />
+              </button>
+              <button className="bg-blue-600 hover:bg-blue-400 duration-300 rounded-xl text-xl px-3 py-2 mb-2 text-white" onClick={toggleRefresh}>
+              <RiRefreshLine />
             </button>
-            <button className="bg-blue-600 hover:bg-blue-400 duration-300 rounded-xl text-xl px-3 py-2 mb-2 text-white" onClick={toggleRefresh}>
-            <RiRefreshLine />
-            </button>
-            {collection && (
-              <Drawer
-                className="fixed top-16 right-0"
-                isOpen={openDrawer}
-                setIsOpen={setOpenDrawer}
-                isEditable={true}
-                setIsEditable={setIsEditable}
-                shared="false"
-              />
-            )}
-          </div>
+              {collection && (
+                <Drawer
+                  className="fixed top-16 right-0"
+                  isOpen={openDrawer}
+                  setIsOpen={setOpenDrawer}
+                  isEditable={true}
+                  setIsEditable={setIsEditable}
+                  shared="false"
+                />
+              )}
+            </div>
           </div>
         </div>
         <div className="mt-4 overflow-hidden p-4">
           <SnippetSection isRefresh={isRefresh}/>
-
-          {snippet && (
-            <Drawer
+          <Drawer
               className="fixed top-16 right-0"
-              isOpen={true}
+              isOpen={openDrawer}
               setIsOpen={setOpenDrawer}
               isEditable={isEditable}
               setIsEditable={setIsEditable}
               shared="false"
             />
-          )}
+          </div>
         </div>
       </div>
     </div>

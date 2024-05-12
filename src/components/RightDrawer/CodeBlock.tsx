@@ -1,7 +1,6 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import "prismjs";
-import dummyCodeData from "@/dummydata";
 import "prismjs/themes/prism-twilight.css";
 import { LuCopyPlus } from "react-icons/lu";
 import { ToastContainer, toast } from "react-toastify";
@@ -40,7 +39,9 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
   const workspace = searchParams.get("workspace")
     ? searchParams.get("workspace")
     : "";
-
+  const edit = searchParams.get("edit")
+    ? searchParams.get("edit") 
+    : "";
     useEffect(() => {
       const fetchCode = async() => {
         const token = localStorage.getItem("token");
@@ -173,10 +174,13 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
   const [selectedLanguage, setSelectedLanguage] = useState<any>();
 
   const handleClick = () => {};
-
+  if(edit === "true"){
+    setIsEditable(true)
+  }
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <div className="outline-none" id="editable-code">
-      <div className="">
+      <div>
         <h2 className="text-3xl text-white p-2 font-bold overflow-y-auto">
           {snippet && flag === true ? (
             codeData[0].title
@@ -212,14 +216,14 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
             <select
               className="bg-zinc-900 shadow-zinc-950 shadow-xl text-white p-2"
               value={selectedLanguage}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleSelect(e)}
+              onChange={(e) => handleSelect(e)}
             >
               {languages.map((language) => (
                 <option key={language} value={language}>
                   {language}
                 </option>
               ))}
-            </select>
+            </select>{" "}
           </div>
         )}
         <div className="">
@@ -236,6 +240,7 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
             ))
           ) : (
             <div className="transform translate-x-3">
+              {" "}
               <Input
                 value={tagInput}
                 onKeyDown={handleAddTag}
@@ -244,8 +249,7 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setTagInput(e.target.value);
                 }}
-              />
-              
+              />{" "}
               {tags.length > 0 &&
                 tags?.map((tag, index) => {
                   return (
@@ -261,33 +265,33 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
             </div>
           )}
 
-          <div className="">
-            {shared != "true" && snippet && (
-              <div className="relative mt-12">
-                <button
-                  onClick={toggleEditable}
-                  className="absolute -top-10 right-6 text-zinc-100 bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2 mx-2"
-                >
-                  {isEditable ? <MdEdit /> : <TbPencilCancel />}
-                </button>
-                <button
-                  className="absolute -top-10 right-0 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2"
-                  onClick={() => copyToClipboard(codeData[0].code)}
-                >
-                  <LuCopyPlus />
-                </button>
-                <ToastContainer />
-                <button
-                  className="absolute -top-10 right-16 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2"
-                  onClick={toggleBox}
-                >
-                  <CiShare2 />
-                </button>
-              </div>
-            )}
+            <div className="">
+              {shared != "true" && snippet && (
+                <div className="relative mt-12">
+                  <button
+                    onClick={toggleEditable}
+                    className="absolute -top-10 right-6 text-zinc-100 bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2 mx-2"
+                  >
+                    {isEditable ? <MdEdit /> : <TbPencilCancel />}
+                  </button>
+                  <button
+                    className="absolute -top-10 right-0 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2"
+                    onClick={() => copyToClipboard(codeData[0].code)}
+                  >
+                    <LuCopyPlus />
+                  </button>
+                  <ToastContainer />
+                  <button
+                    className="absolute -top-10 right-16 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2"
+                    onClick={toggleBox}
+                  >
+                    <CiShare2 />
+                  </button>
+                </div>
+              )}
 
             {showBox && <ShareSnippet onClose={() => setShowBox(false)} />}
-            <div className="p-2 mt-6 min-h-[35vh] min-w-[40vw] w-[47vw] h-[42vh]">
+            <div className="min-h-[50vh] min-w-[40vw] w-[47vw] fixed py-2 rounded-b-md border-zinc-900 bg-zinc-900">
               {snippet ? (
                 <pre className="p-4 outline-none">
                   <code
@@ -331,6 +335,7 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
         </div>
       </div>
     </div>
+    </Suspense>
   );
 }
 export default CodeBlock;

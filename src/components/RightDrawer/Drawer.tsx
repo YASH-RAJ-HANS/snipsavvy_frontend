@@ -1,6 +1,6 @@
 "use client";
 
-import { useState,useEffect } from "react";
+import { useState,useEffect, Suspense } from "react";
 import CodeBlock from "./CodeBlock";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { MdCancel } from "react-icons/md";
@@ -21,7 +21,9 @@ const RightDrawer = ({isOpen, setIsOpen, isEditable, setIsEditable, className, s
   const snippet = searchParams.get("snippet")
     ? searchParams.get("snippet")
     : "";
-
+  const edit = searchParams.get("edit")
+    ? searchParams.get("edit")
+    : "";
   const collection = searchParams.get("collection")
     ? searchParams.get("collection")
     : "";
@@ -29,18 +31,24 @@ const RightDrawer = ({isOpen, setIsOpen, isEditable, setIsEditable, className, s
   const updateUrl = () => {
     const nextSearchParams = new URLSearchParams(searchParams.toString());
     nextSearchParams.delete("snippet");
+    if(edit){
+      nextSearchParams.delete("edit")
+    }
     router.push(`${pathName}?${nextSearchParams.toString()}`);
+    closeDrawer()
   };
 
   const closeDrawer = () => {
     setIsOpen(false);
   }
-  
+  if(snippet) {
+    setIsOpen(true)
+  }
   const flag = shared ==="true" ? true : false
   return (
-    
-      <div className="flex items-center justify-center bg-zinc-900 z-[1000]">
-      {isOpen ? 
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="flex items-center justify-center">
+      {isOpen ? (
 
         <div className={`${className}  min-h-full w-1/2 bg-zinc-900 shadow-lg shadow-zinc-700 border-l-1 border-black transition-all duration-300`} style={{ maxHeight: '600px', overflow: 'auto' }}>
           <div className="p-4 overflow-auto">
@@ -52,8 +60,9 @@ const RightDrawer = ({isOpen, setIsOpen, isEditable, setIsEditable, className, s
             <CodeBlock isEditable={isEditable} setIsEditable={setIsEditable} setIsOpen={setIsOpen} shared={shared}/>
           </div>
         </div>
-      : null} 
+      ) : null} 
     </div>
+     </Suspense>
     )
 };
 
