@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaFolderOpen } from "react-icons/fa";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
 import useFetch from "@/network/useFetch";
+import { FaShareAlt } from "react-icons/fa";
+import { MdEdit, MdDelete } from "react-icons/md";
 import { baseURL } from "@/config";
 
 const Collection = () => {
@@ -22,6 +24,68 @@ const Collection = () => {
   const collectionid = searchParams.get("collection") || "";
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0 });
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [activeWorkspaceIndex, setActiveWorkspaceIndex] = useState<
+    number | null
+  >(null);
+  const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
+
+  useEffect(() => {
+    // Add event listener for clicks on the document
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      // Cleanup: Remove event listener when component unmounts
+      document.removeEventListener("click", handleClickOutside);
+    };
+  });
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node) &&
+      !isDropdownButton(event.target as Node)
+    ) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  const isDropdownButton = (target: Node) => {
+    return (
+      target instanceof Node &&
+      dropdownRef.current &&
+      dropdownRef.current.contains(target)
+    );
+  };
+
+  interface Workspace {
+    _id: string;
+    name: string;
+    description: string;
+  }
+  const handleRightClick = (
+    e: React.MouseEvent<HTMLDivElement>,
+    index: number,
+    workspace: Workspace
+  ) => {
+    e.preventDefault();
+    setDropdownPosition({ x: e.clientX, y: e.clientY });
+    setActiveWorkspaceIndex(index);
+    setIsDropdownOpen(true);
+    setSingleWorkspace(workspace);
+  };
+
+  const handleOptionClick = (option: string) => {
+    console.log("Option clicked:", option);
+    setIsDropdownOpen(false);
+  };
+
+  const closeDropdown = () => {
+    setIsDropdownOpen(false);
+  };
+
+  console.log("w_id=>", workspace);
 
   const fetchCategories = () => {
     const token = localStorage.getItem("token");
@@ -43,6 +107,23 @@ const Collection = () => {
 
   useEffect(() => {
     setIsDataLoading(true);
+    const fetchCategories = () => {
+      const token = localStorage.getItem("token");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      axios
+        .get(`${baseURL}/vi/api/category/${workspace}`, { headers })
+        .then((response) => {
+          setCollection(response.data);
+          console.log("collections=>", response.data.data);
+
+          setIsDataLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
     workspace && fetchCategories();
   }, [workspace]);
 

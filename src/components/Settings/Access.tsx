@@ -115,8 +115,12 @@ export default function Access() {
           <p className="text-xl"> {singleWorkspace?.name} Access Controls</p>
 
           <div className="mt-8 overflow-auto">
-            {accessList?.map((access: any) => (
-              <div  key={access._id} className="border-b-2 border-slate-600 pb-1 flex justify-between w-[70%] mb-6">
+            {accessList?.map((access: any, index: any) => (
+              <div
+                key={index}
+                className="border-b-2 border-slate-600 pb-1 flex justify-between w-[70%] mb-6"
+              >
+
                 <p> {access.email} </p>
                 <Tooltip title="Remove Access">
                   <MdDelete

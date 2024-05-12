@@ -74,12 +74,12 @@ const WorkspacePage: React.FC = () => {
 
   useEffect(() => {
     const globalSearch = async () => {
-      const token = localStorage.getItem("token")
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
+      const token = localStorage.getItem("token");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
       await axios
-        .get(`${baseURL}/v1/api/snippet/global?text=${inpText}` , { headers })
+        .get(`${baseURL}/v1/api/snippet/global?text=${inpText}`, { headers })
         .then((response) => {
           setSearchData(response.data);
         });
@@ -163,8 +163,9 @@ const WorkspacePage: React.FC = () => {
                     {inpText && (
                       <div className="w-[95%] m-auto mt-4 max-h-[40vh] overflow-auto">
                         {searchData &&
-                          searchData.map((snippet: any) => (
+                          searchData.map((snippet: any, index: any) => (
                             <div
+                              key={index}
                               onClick={() => updateURL(snippet)}
                               className="shadow-2xl mr-2 flex flex-col gap-2 rounded-xl mb-6 cursor-pointer border-2 border-zinc-950 hover:border-2 hover:border-slate-500 p-2"
                             >
@@ -187,8 +188,11 @@ const WorkspacePage: React.FC = () => {
                                 </div>
                               </div>
                               <div className="flex">
-                                {snippet.tags.map((tag: any) => (
-                                  <p className="bg-black mr-2 p-1 pl-2 pr-2 rounded-xl">
+                                {snippet.tags.map((tag: any, index: any) => (
+                                  <p
+                                    key={index}
+                                    className="bg-black mr-2 p-1 pl-2 pr-2 rounded-xl"
+                                  >
                                     {" "}
                                     {tag}{" "}
                                   </p>
@@ -208,27 +212,27 @@ const WorkspacePage: React.FC = () => {
               placeholder="Find by Tag, Description , title..."
               onClick={handleOpen}
             />
-            <div className="px-4 py-2 rounded-xl mb-2 flex   items-center text-xs text-gray-600 border-2 border-gray-600 shadow-lg   w-fit">
+            <div onClick={handleOpen} className="px-4 py-2 rounded-xl mb-2 flex   items-center text-xs text-gray-600 border-2 border-gray-600 shadow-lg   w-fit">
               <span>CTRL+K</span>
             </div>
-          <div className="w-2/12 vh-6 flex justify-between pl-6 items-center">
-            <button
-              className="bg-blue-600 hover:bg-blue-400 duration-300 rounded-xl text-xl px-3 py-2 mb-2 text-white"
-              onClick={handleAdd}
-            >
-              <IoIosAdd />
-            </button>
-            {collection && (
-              <Drawer
-                className="fixed top-16 right-0"
-                isOpen={openDrawer}
-                setIsOpen={setOpenDrawer}
-                isEditable={true}
-                setIsEditable={setIsEditable}
-                shared="false"
-              />
-            )}
-          </div>
+            <div className="w-2/12 vh-6 flex justify-between pl-6 items-center">
+              <button
+                className="bg-blue-600 hover:bg-blue-400 duration-300 rounded-xl text-xl px-3 py-2 mb-2 text-white"
+                onClick={handleAdd}
+              >
+                <IoIosAdd />
+              </button>
+              {collection && (
+                <Drawer
+                  className="fixed top-16 right-0"
+                  isOpen={openDrawer}
+                  setIsOpen={setOpenDrawer}
+                  isEditable={true}
+                  setIsEditable={setIsEditable}
+                  shared="false"
+                />
+              )}
+            </div>
           </div>
         </div>
         <div className="mt-4 overflow-hidden p-4">
