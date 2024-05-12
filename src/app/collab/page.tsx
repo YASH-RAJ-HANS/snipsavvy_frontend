@@ -14,7 +14,7 @@ function Page() {
   const shared = searchParams.get("shared") ? searchParams.get("shared") : "";
 
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="">
         {snippet && shared === "true" ? (
           <div className="">

@@ -75,7 +75,7 @@ const SnippetModal = () => {
     }
   };
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="w-5/6 ">
         <Sheet>
           <SheetTrigger>

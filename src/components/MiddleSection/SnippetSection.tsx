@@ -57,7 +57,7 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
   }, [collection]);
 
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <div>
         {collection ? (
           <div

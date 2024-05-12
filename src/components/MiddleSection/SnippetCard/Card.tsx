@@ -111,7 +111,7 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
     const open = Boolean(anchorEl);
     const id = open ? "simple-popover" : undefined;
     return (
-      <Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
         <div>
           <Button aria-describedby={id} onClick={handleClick}>
             <MoreVertIcon />
@@ -157,7 +157,7 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
   };
 
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <div
         className={`flex relative border-zinc-800  ${snippet_id == _id ? "bg-zinc-950 border-zinc-300" : "hover:bg-zinc-950 hover:border-zinc-300"} border-transparent `}
       >
