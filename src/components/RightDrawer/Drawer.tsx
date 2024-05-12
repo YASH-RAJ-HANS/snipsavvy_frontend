@@ -1,6 +1,6 @@
 "use client";
 
-import { useState,useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import CodeBlock from "./CodeBlock";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { MdCancel } from "react-icons/md";
@@ -12,12 +12,19 @@ interface Props {
   isEditable: boolean;
   setIsEditable: any;
   className: string;
-  shared: string
+  shared: string;
 }
-const RightDrawer = ({isOpen, setIsOpen, isEditable, setIsEditable, className, shared }: Props) => {
+const RightDrawer = ({
+  isOpen,
+  setIsOpen,
+  isEditable,
+  setIsEditable,
+  className,
+  shared,
+}: Props) => {
   const searchParams = useSearchParams();
-  const router = useRouter()
-  const pathName = usePathname()
+  const router = useRouter();
+  const pathName = usePathname();
   const snippet = searchParams.get("snippet")
     ? searchParams.get("snippet")
     : "";
@@ -34,27 +41,46 @@ const RightDrawer = ({isOpen, setIsOpen, isEditable, setIsEditable, className, s
 
   const closeDrawer = () => {
     setIsOpen(false);
-  }
-  
-  const flag = shared ==="true" ? true : false
-  return (
-    
-      <div className="flex items-center justify-center">
-      {isOpen ? 
+  };
 
-        <div className={`${className}  min-h-full w-1/2 bg-zinc-900 shadow-lg shadow-zinc-700 border-l-1 border-black transition-all duration-300`} style={{ maxHeight: '600px', overflow: 'auto' }}>
-          <div className="p-4 overflow-auto">
-            {snippet ? (flag != true ? <button className="absolute top-2 right-2 text-white text-2xl" onClick={updateUrl}>
-              <MdCancel />
-            </button>: null) : (<button className="absolute top-2 right-2 text-white text-2xl" onClick={closeDrawer}>
-              <MdCancel />
-            </button>)}
-            <CodeBlock isEditable={isEditable} setIsEditable={setIsEditable} shared={shared}/>
+  const flag = shared === "true" ? true : false;
+  return (
+    <Suspense>
+      <div className="flex items-center justify-center">
+        {isOpen ? (
+          <div
+            className={`${className}  min-h-full w-1/2 bg-zinc-900 shadow-lg shadow-zinc-700 border-l-1 border-black transition-all duration-300`}
+            style={{ maxHeight: "600px", overflow: "auto" }}
+          >
+            <div className="p-4 overflow-auto">
+              {snippet ? (
+                flag != true ? (
+                  <button
+                    className="absolute top-2 right-2 text-white text-2xl"
+                    onClick={updateUrl}
+                  >
+                    <MdCancel />
+                  </button>
+                ) : null
+              ) : (
+                <button
+                  className="absolute top-2 right-2 text-white text-2xl"
+                  onClick={closeDrawer}
+                >
+                  <MdCancel />
+                </button>
+              )}
+              <CodeBlock
+                isEditable={isEditable}
+                setIsEditable={setIsEditable}
+                shared={shared}
+              />
+            </div>
           </div>
-        </div>
-      : null} 
-    </div>
-    )
+        ) : null}
+      </div>
+    </Suspense>
+  );
 };
 
 export default RightDrawer;
