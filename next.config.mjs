@@ -17,6 +17,9 @@ const nextConfig = {
       },
     ],
     domains: ["img.icons8.com", "syllabusx.live"],
+    experimental: {
+      missingSuspenseWithCSRBailout: false,
+    },
   },
 };
 
