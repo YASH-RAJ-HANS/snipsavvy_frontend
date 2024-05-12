@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaFolderOpen } from "react-icons/fa";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import Skeleton from "@mui/material/Skeleton";
 import useFetch from "@/network/useFetch";
 import { FaShareAlt } from "react-icons/fa";
 import { MdEdit, MdDelete } from "react-icons/md";
+import { baseURL } from "@/config";
 
 const Collection = () => {
   const [showInput, setShowInput] = useState(false);
@@ -32,7 +33,6 @@ const Collection = () => {
   >(null);
   const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
 
-
   useEffect(() => {
     // Add event listener for clicks on the document
     document.addEventListener("click", handleClickOutside);
@@ -40,7 +40,7 @@ const Collection = () => {
       // Cleanup: Remove event listener when component unmounts
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  });
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -89,8 +89,12 @@ const Collection = () => {
   console.log("w_id=>", workspace);
 
   const fetchCategories = () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     axios
-      .get(`https://snipsavvy.onrender.com/vi/api/category/${workspace}`)
+      .get(`${baseURL}/vi/api/category/${workspace}`, { headers })
       .then((response) => {
         setCollection(response.data);
         console.log("collections=>", response.data.data);
@@ -135,8 +139,12 @@ const Collection = () => {
       name: data,
       description: "SnipSavvy Project Snippets",
     };
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     await axios
-      .post("https://snipsavvy.onrender.com/vi/api/category", body)
+      .post(`${baseURL}/vi/api/category`, body, { headers })
       .then((response) => {
         console.log(response);
         // [FIX ME] at a toast here, instead of alert
@@ -310,7 +318,7 @@ const Collection = () => {
     //       >
     //         Delete <MdDelete className="mt-1" />
     //       </li>
-          
+
     //     </ul>
     //   </div>
     // )}
