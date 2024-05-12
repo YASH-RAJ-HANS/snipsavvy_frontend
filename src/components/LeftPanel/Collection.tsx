@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { FaFolderOpen } from "react-icons/fa";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
@@ -9,12 +9,14 @@ import { Button } from "@/components/ui/button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
 import useFetch from "@/network/useFetch";
-import { baseURL } from "@/config";
+import { FaShareAlt } from "react-icons/fa";
+import { MdEdit, MdDelete } from "react-icons/md";
 
 const Collection = () => {
   const [showInput, setShowInput] = useState(false);
   const [collection, setCollection] = useState<any>([]);
   const [data, setData] = useState("");
+  // const [workspace, setWorkspace] = useState<any>([]);
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -22,14 +24,73 @@ const Collection = () => {
   const collectionid = searchParams.get("collection") || "";
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0 });
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [activeWorkspaceIndex, setActiveWorkspaceIndex] = useState<
+    number | null
+  >(null);
+  const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
+
+
+  useEffect(() => {
+    // Add event listener for clicks on the document
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      // Cleanup: Remove event listener when component unmounts
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node) &&
+      !isDropdownButton(event.target as Node)
+    ) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  const isDropdownButton = (target: Node) => {
+    return (
+      target instanceof Node &&
+      dropdownRef.current &&
+      dropdownRef.current.contains(target)
+    );
+  };
+
+  interface Workspace {
+    _id: string;
+    name: string;
+    description: string;
+  }
+  const handleRightClick = (
+    e: React.MouseEvent<HTMLDivElement>,
+    index: number,
+    workspace: Workspace
+  ) => {
+    e.preventDefault();
+    setDropdownPosition({ x: e.clientX, y: e.clientY });
+    setActiveWorkspaceIndex(index);
+    setIsDropdownOpen(true);
+    setSingleWorkspace(workspace);
+  };
+
+  const handleOptionClick = (option: string) => {
+    console.log("Option clicked:", option);
+    setIsDropdownOpen(false);
+  };
+
+  const closeDropdown = () => {
+    setIsDropdownOpen(false);
+  };
+
+  console.log("w_id=>", workspace);
 
   const fetchCategories = () => {
-    const token = localStorage.getItem("token");
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
     axios
-      .get(`${baseURL}/vi/api/category/${workspace}`, { headers })
+      .get(`https://snipsavvy.onrender.com/vi/api/category/${workspace}`)
       .then((response) => {
         setCollection(response.data);
         console.log("collections=>", response.data.data);
@@ -43,6 +104,23 @@ const Collection = () => {
 
   useEffect(() => {
     setIsDataLoading(true);
+    const fetchCategories = () => {
+      const token = localStorage.getItem("token");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      axios
+        .get(`${baseURL}/vi/api/category/${workspace}`, { headers })
+        .then((response) => {
+          setCollection(response.data);
+          console.log("collections=>", response.data.data);
+
+          setIsDataLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
     workspace && fetchCategories();
   }, [workspace]);
 
@@ -57,12 +135,8 @@ const Collection = () => {
       name: data,
       description: "SnipSavvy Project Snippets",
     };
-    const token = localStorage.getItem("token");
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
     await axios
-      .post(` ${baseURL}/vi/api/category`, body, { headers })
+      .post("https://snipsavvy.onrender.com/vi/api/category", body)
       .then((response) => {
         console.log(response);
         // [FIX ME] at a toast here, instead of alert
@@ -200,6 +274,46 @@ const Collection = () => {
         </div>
       </div>
     </div>
+    // {isDropdownOpen && (
+    //   <div
+    //     ref={dropdownRef}
+    //     style={{
+    //       position: "fixed",
+    //       padding: "10px",
+    //       top: dropdownPosition.y,
+    //       left: dropdownPosition.x,
+    //       backgroundColor: "#131211c4",
+    //       borderRadius: "4px",
+    //       boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+    //       backdropFilter: "blur(3px)",
+    //       zIndex: 9999,
+    //     }}
+    //     onBlur={() => closeDropdown()}
+    //   >
+    //     <ul className="w-20">
+    //     <li
+    //         className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
+    //         onClick={() => handleOptionClick("Option 3")}
+    //       >
+    //         Share <FaShareAlt  className="mt-1"/>
+
+    //       </li>
+    //       <li
+    //         className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
+    //         onClick={() => handleOptionClick("Option 1")}
+    //       >
+    //         Edit <MdEdit className="mt-1" />
+    //       </li>
+    //       <li
+    //         className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
+    //         onClick={() => handleOptionClick("Option 2")}
+    //       >
+    //         Delete <MdDelete className="mt-1" />
+    //       </li>
+          
+    //     </ul>
+    //   </div>
+    // )}
   );
 };
 
