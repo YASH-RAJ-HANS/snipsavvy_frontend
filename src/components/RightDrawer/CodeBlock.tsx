@@ -179,7 +179,7 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
   }
   return (
     <Suspense fallback={<div>Loading...</div>}>
-    <div className="outline-none" id="editable-code">
+    <div className="outline-none " id="editable-code">
       <div>
         <h2 className="text-3xl text-white p-2 font-bold overflow-y-auto">
           {snippet && flag === true ? (
@@ -291,7 +291,7 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
               )}
 
             {showBox && <ShareSnippet onClose={() => setShowBox(false)} />}
-            <div className="min-h-[50vh] min-w-[40vw] w-[47vw] fixed py-2 rounded-b-md border-zinc-900 bg-zinc-900">
+            <div className="min-h-[50vh] min-w-[40vw] w-[47vw] h-[52vh] overflow-auto fixed py-2 rounded-b-md border-zinc-900 bg-zinc-900">
               {snippet ? (
                 <pre className="p-4 outline-none">
                   <code
@@ -304,7 +304,7 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
                 </pre>
               ) : (
                 <div>
-                  <pre className="p-2 mt-6 min-h-[35vh] min-w-[40vw] w-[47vw] h-[40vh]">
+                  <pre className="p-2 mt-6 min-h-[35vh] min-w-[40vw] w-[47vw] h-[47vh]">
                     <code
                       id="editable-code"
                       className={`language-${selectedLanguage} ${isEditable ? "text-black" : "text-white"}  outline-none`}

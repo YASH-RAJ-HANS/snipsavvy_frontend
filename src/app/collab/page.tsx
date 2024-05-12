@@ -8,7 +8,9 @@ import Image from "next/image";
 function Page() {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
-
+  const searchParams = useSearchParams()
+  const snippet = searchParams.get("snippet") ? searchParams.get("snippet") : ""
+  const shared = searchParams.get("shared") ? searchParams.get("shared") : ""
   return (
     <Suspense fallback={<div>Loading...</div>}>
     <div className="">
@@ -23,7 +25,7 @@ function Page() {
         <div className="">
           <RightDrawer
             className="fixed top-0"
-            isOpen={!isOpen}
+            isOpen={isOpen}
             setIsOpen={setIsOpen}
             isEditable={isEditable}
             setIsEditable={setIsEditable}
