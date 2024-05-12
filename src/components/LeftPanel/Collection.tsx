@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import { FaFolderOpen } from "react-icons/fa";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
@@ -11,7 +11,7 @@ import Skeleton from "@mui/material/Skeleton";
 import useFetch from "@/network/useFetch";
 import { FaShareAlt } from "react-icons/fa";
 import { MdEdit, MdDelete } from "react-icons/md";
-import {baseURL} from "@/config";
+import { baseURL } from "@/config";
 
 const Collection = () => {
   const [showInput, setShowInput] = useState(false);
@@ -33,7 +33,6 @@ const Collection = () => {
   >(null);
   const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
 
-
   useEffect(() => {
     // Add event listener for clicks on the document
     document.addEventListener("click", handleClickOutside);
@@ -41,7 +40,7 @@ const Collection = () => {
       // Cleanup: Remove event listener when component unmounts
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  });
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -90,8 +89,12 @@ const Collection = () => {
   console.log("w_id=>", workspace);
 
   const fetchCategories = () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     axios
-      .get(`https://snipsavvy.onrender.com/vi/api/category/${workspace}`)
+      .get(`${baseURL}/vi/api/category/${workspace}`, { headers })
       .then((response) => {
         setCollection(response.data);
         console.log("collections=>", response.data.data);
@@ -136,8 +139,12 @@ const Collection = () => {
       name: data,
       description: "SnipSavvy Project Snippets",
     };
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     await axios
-      .post("https://snipsavvy.onrender.com/vi/api/category", body)
+      .post(`${baseURL}/vi/api/category`, body, { headers })
       .then((response) => {
         console.log(response);
         // [FIX ME] at a toast here, instead of alert
@@ -178,103 +185,105 @@ const Collection = () => {
   }
 
   return (
-    <div className="w-[20vw] bg-[#1a1b1c] overflow-none">
-      <div>
-        <div className="flex m-8 items-center justify- ">
-          <div className="mr-3 text-gray-400  ">
-            <FaFolderOpen size={20} />
-          </div>
-          <div className="flex justify-between w-full">
-            <p className="text-md text-gray-400 font-bold">COLLECTIONS</p>
-            <button
-              className="font-extrabold rounded-full text-2xl -mt-1.5  text-gray-400 hover:text-white"
-              onClick={handleAddClick}
-            >
-              {showInput ? <FiMinus /> : "+"}
-            </button>
-          </div>
-          <hr />
-        </div>
-        {showInput && (
-          <div className="flex items-center ">
-            <Input
-              value={data}
-              type="text"
-              className="mb-8 ml-4 w-64 h-10 rounded p-1 pl-4 text-white"
-              placeholder="Collection name .."
-              onChange={(e) => setData(e.target.value)}
-              onKeyDown={handleKeyPress}
-            />
-
-            {!isLoading ? (
-              <Button
-                variant="outline"
-                className="mb-8 w-16 ml-2 mr-2 rounded h-8 bg-gray-600"
-                onClick={handleCreateCollection}
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="w-[20vw] bg-[#1a1b1c] overflow-none">
+        <div>
+          <div className="flex m-8 items-center justify- ">
+            <div className="mr-3 text-gray-400  ">
+              <FaFolderOpen size={20} />
+            </div>
+            <div className="flex justify-between w-full">
+              <p className="text-md text-gray-400 font-bold">COLLECTIONS</p>
+              <button
+                className="font-extrabold rounded-full text-2xl -mt-1.5  text-gray-400 hover:text-white"
+                onClick={handleAddClick}
               >
-                Save
-              </Button>
-            ) : (
-              <CircularProgress
-                color="success"
-                className="mb-10 ml-2"
-                size={25}
+                {showInput ? <FiMinus /> : "+"}
+              </button>
+            </div>
+            <hr />
+          </div>
+          {showInput && (
+            <div className="flex items-center ">
+              <Input
+                value={data}
+                type="text"
+                className="mb-8 ml-4 w-64 h-10 rounded p-1 pl-4 text-white"
+                placeholder="Collection name .."
+                onChange={(e) => setData(e.target.value)}
+                onKeyDown={handleKeyPress}
               />
+
+              {!isLoading ? (
+                <Button
+                  variant="outline"
+                  className="mb-8 w-16 ml-2 mr-2 rounded h-8 bg-gray-600"
+                  onClick={handleCreateCollection}
+                >
+                  Save
+                </Button>
+              ) : (
+                <CircularProgress
+                  color="success"
+                  className="mb-10 ml-2"
+                  size={25}
+                />
+              )}
+            </div>
+          )}
+          <div className="-mt-4">
+            {workspace ? (
+              !isDataLoading ? (
+                collection?.map((item: collectionItem, index: number) => (
+                  <div
+                    key={item._id}
+                    style={{
+                      backgroundColor:
+                        collectionid === item?._id ? "#131212" : "",
+                      color: collectionid === item?._id ? "white" : "",
+                    }}
+                    onClick={() => updateUrl(item._id)}
+                    className="hover:bg-[#131212] h-10 w-64 rounded-xl m-auto ml-4 pt-1 text-lg mt-1 text-slate-300 hover:text-white cursor-pointer flex"
+                  >
+                    <span className="-mt-2.5">
+                      <BsDot size={50} color={colorOptions[index % 6]} />
+                    </span>
+                    {item?.name}
+                  </div>
+                ))
+              ) : (
+                <div className="w-60 ml-8 mt-10 flex flex-col gap-4">
+                  <Skeleton
+                    sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
+                    height={30}
+                    variant="rectangular"
+                  />
+                  <Skeleton
+                    sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
+                    height={30}
+                    variant="rectangular"
+                  />
+                  <Skeleton
+                    sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
+                    height={30}
+                    variant="rectangular"
+                  />
+                  <Skeleton
+                    sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
+                    height={30}
+                    variant="rectangular"
+                  />
+                </div>
+              )
+            ) : (
+              <h1 className="font-bold text-2xl opacity-50 text-center mt-20">
+                Select a workspace to get started
+              </h1>
             )}
           </div>
-        )}
-        <div className="-mt-4">
-          {workspace ? (
-            !isDataLoading ? (
-              collection?.map((item: collectionItem, index: number) => (
-                <div
-                  key={item._id}
-                  style={{
-                    backgroundColor:
-                      collectionid === item?._id ? "#131212" : "",
-                    color: collectionid === item?._id ? "white" : "",
-                  }}
-                  onClick={() => updateUrl(item._id)}
-                  className="hover:bg-[#131212] h-10 w-64 rounded-xl m-auto ml-4 pt-1 text-lg mt-1 text-slate-300 hover:text-white cursor-pointer flex"
-                >
-                  <span className="-mt-2.5">
-                    <BsDot size={50} color={colorOptions[index % 6]} />
-                  </span>
-                  {item?.name}
-                </div>
-              ))
-            ) : (
-              <div className="w-60 ml-8 mt-10 flex flex-col gap-4">
-                <Skeleton
-                  sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
-                  height={30}
-                  variant="rectangular"
-                />
-                <Skeleton
-                  sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
-                  height={30}
-                  variant="rectangular"
-                />
-                <Skeleton
-                  sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
-                  height={30}
-                  variant="rectangular"
-                />
-                <Skeleton
-                  sx={{ bgcolor: "grey.700", borderRadius: "10px" }}
-                  height={30}
-                  variant="rectangular"
-                />
-              </div>
-            )
-          ) : (
-            <h1 className="font-bold text-2xl opacity-50 text-center mt-20">
-              Select a workspace to get started
-            </h1>
-          )}
         </div>
       </div>
-    </div>
+    </Suspense>
     // {isDropdownOpen && (
     //   <div
     //     ref={dropdownRef}
@@ -311,7 +320,7 @@ const Collection = () => {
     //       >
     //         Delete <MdDelete className="mt-1" />
     //       </li>
-          
+
     //     </ul>
     //   </div>
     // )}
