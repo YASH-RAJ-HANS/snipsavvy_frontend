@@ -7,31 +7,29 @@ import { baseURL } from "@/config";
 import axios from "axios";
 
 interface DeleteModalProps {
-    open: boolean;
-    onClose: () => void;
-    workspace_id: string;
-  }
-const DeleteModal: React.FC<DeleteModalProps> = ({ open, onClose, workspace_id }) =>  {
+  open: boolean;
+  onClose: () => void;
+  workspace_id: string;
+}
+const DeleteModal: React.FC<DeleteModalProps> = ({
+  open,
+  onClose,
+  workspace_id,
+}) => {
   const handleDelete = async (e: any) => {
     e.preventDefault();
     try {
-      
       const token = localStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const resp = await axios.delete(`${baseURL}/v1/api/workspace?w_id=${workspace_id}`, {headers})
+      const resp = await axios
+        .delete(`${baseURL}/v1/api/workspace?w_id=${workspace_id}`, { headers })
         .then((response) => {
-          window.location.reload()
+          window.location.reload();
         });
       alert("Workspace Removed !!");
-      // await axios
-      //   .get(`${baseURL}/v1/api/workspace`, {
-      //     headers,
-      //   })
-      //   .then((response) => {
-      //     window.location.reload()
-      //   });
+     
     } catch (error) {
       alert("error occured while removing the workspace");
     }
@@ -65,10 +63,14 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ open, onClose, workspace_id }
           Are you sure you want to delete this item?
         </Typography>
         <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
-          <Button onClick={onClose}  sx={{ mr: 2 }}>
+          <Button onClick={onClose} sx={{ mr: 2 }}>
             Cancel
           </Button>
-          <Button onClick={(e) => handleDelete(e)} variant="contained" color="error">
+          <Button
+            onClick={(e) => handleDelete(e)}
+            variant="contained"
+            color="error"
+          >
             Delete
           </Button>
         </Box>

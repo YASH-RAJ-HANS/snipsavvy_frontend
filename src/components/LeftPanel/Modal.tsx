@@ -7,8 +7,8 @@ import SnippetModal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import Image from "next/image";
 // import Workspace from "../../../public/workspace.jpg";
-import axios from 'axios';
-import { Button } from "@/components/ui/button"
+import axios from "axios";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -17,13 +17,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { baseURL } from "@/config";
 
-
-export default function Modal({fetchWorkspace} : any) {
+export default function Modal({ fetchWorkspace }: any) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -39,22 +38,22 @@ export default function Modal({fetchWorkspace} : any) {
     const body = {
       name: data.name,
       description: data.description,
-    }
-    const token = localStorage.getItem("token")
+    };
+    const token = localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    
-    await axios.post(`${baseURL}/v1/api/workspace` ,body, { headers })
-      .then((response) => {
-          console.log(response);
-          alert("Workspace Created")
-          window.location.reload();
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+
+    await axios.post(`${baseURL}/v1/api/workspace`, body, { headers }).then(
+      (response) => {
+        console.log(response);
+        alert("Workspace Created");
+        window.location.reload();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   return (
@@ -70,7 +69,7 @@ export default function Modal({fetchWorkspace} : any) {
       >
         <DialogHeader>
           <DialogTitle>Create Workspace</DialogTitle>
-          <DialogDescription >
+          <DialogDescription>
             Add Name & Description to your workspace
           </DialogDescription>
         </DialogHeader>

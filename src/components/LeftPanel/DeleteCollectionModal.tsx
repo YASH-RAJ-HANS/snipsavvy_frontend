@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { baseURL } from "@/config";
 import axios from "axios";
-import { redirect, useSearchParams } from "next/navigation";
+import { redirect, useSearchParams ,useRouter, usePathname} from "next/navigation";
 
 interface collectionItem {
   name: string;
@@ -16,17 +16,21 @@ interface DeleteCollectionModalProps {
   open: boolean;
   onClose: () => void;
   collection: collectionItem;
+  fetchCategories: () => void;
 }
 const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({
   open,
   onClose,
   collection,
+  fetchCategories,
 }) => {
   const searchParams = useSearchParams();
   const workspace = searchParams.get("workspace") || "";
   const collection_id = searchParams.get("collection") || "";
   const snippet_id = searchParams.get("snippet") || "";
   const nextSearchParams = new URLSearchParams(searchParams.toString());
+  const router = useRouter()
+  const pathName = usePathname()
   const handleDelete = async (e: any) => {
     e.preventDefault();
     try {
@@ -44,6 +48,7 @@ const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({
         .delete(`${baseURL}/v1/api/category/`, { data: body, headers })
         .then(
           (response) => {
+            
             console.log(
               "c_id => ",
               collection._id,
@@ -51,12 +56,18 @@ const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({
               collection_id
             );
             if (collection._id === collection_id) {
-              redirect("/workspace");
+              // const nextSearchParams = new URLSearchParams(searchParams.toString());
+              console.log("Working")
+              nextSearchParams.delete("snippet");
+              nextSearchParams.delete("collection")
+              router.push(`${pathName}?${nextSearchParams.toString()}`);
+              // redirect(`/workspace/${workspace}`);
             }
             alert("Collection Removed !!");
             // window.location.reload()
             onClose();
-            console.log(window.location.href);
+            fetchCategories();
+            // console.log(window.location.href);
           },
           (error) => {
             console.log(error);
@@ -64,13 +75,7 @@ const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({
           }
         );
 
-      // await axios
-      //   .get(`${baseURL}/v1/api/workspace`, {
-      //     headers,
-      //   })
-      //   .then((response) => {
-      //     window.location.reload()
-      //   });
+      
     } catch (error) {
       alert("error occured while removing the collection");
     }

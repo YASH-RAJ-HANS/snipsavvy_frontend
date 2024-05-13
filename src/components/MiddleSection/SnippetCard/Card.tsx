@@ -32,40 +32,6 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
   console.log("snippet_id=>", snippet_id);
   console.log("id=>", _id);
 
-  // async function deleteSnippet(event: React.MouseEvent<HTMLButtonElement>) {
-  //   event.stopPropagation();
-  //   const token = localStorage.getItem("token");
-  //   const headers = {
-  //     Authorization: `Bearer ${token}`,
-  //   };
-  //   try {
-  //     const snippet = searchParams.get("snippet") || "";
-  //     if (snippet === _id) {
-  //       const workspace = searchParams.get("workspace") || "";
-  //       const collection = searchParams.get("collection") || "";
-  //       const query: Record<string, string> = {
-  //         workspace,
-  //         collection,
-  //       };
-
-  //       Router.push(`?${new URLSearchParams(query).toString()}`);
-  //     }
-  //     console.log("Deleting user with id:", _id);
-  //     const response = await axios.delete(
-  //       `${baseURL}/v1/api/snippet?s_id=${_id}`,
-  //       {
-  //         headers,
-  //       }
-  //     );
-  //     if (response.status === 200) {
-  //       console.log("User deleted successfully");
-  //     } else {
-  //       console.log("Failed to delete user");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting user:", error);
-  //   }
-  // }
   const [shareSnippet, setShareSnippet] = useState(false);
 
   const Router = useRouter();
