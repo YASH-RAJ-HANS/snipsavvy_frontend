@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import SnippetModal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import Image from "next/image";
-import Workspace from "../../../public/workspace.jpg";
+// import Workspace from "../../../public/workspace.jpg";
 import axios from 'axios';
 import { Button } from "@/components/ui/button"
 import {
@@ -22,21 +22,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { baseURL } from "@/config";
 
-// const style = {
-//   position: "absolute" as "absolute",
-//   top: "50%",
-//   left: "50%",
-//   transform: "translate(-50%, -50%)",
-//   width: 800,
-//   // border: "2px solid gray",
-//   borderRadius:"1.5rem",
-//   boxShadow: 24,
-//   text: "white",
-//   display:"flex",
-//   // p: 4,
-// };
 
-export default function Modal() {
+export default function Modal({fetchWorkspace} : any) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -61,6 +48,8 @@ export default function Modal() {
     await axios.post(`${baseURL}/v1/api/workspace` ,body, { headers })
       .then((response) => {
           console.log(response);
+          alert("Workspace Created")
+          window.location.reload();
         },
         (error) => {
           console.log(error);
@@ -81,7 +70,7 @@ export default function Modal() {
       >
         <DialogHeader>
           <DialogTitle>Create Workspace</DialogTitle>
-          <DialogDescription>
+          <DialogDescription >
             Add Name & Description to your workspace
           </DialogDescription>
         </DialogHeader>

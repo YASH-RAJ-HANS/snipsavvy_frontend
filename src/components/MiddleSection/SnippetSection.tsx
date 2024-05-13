@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { Suspense, useEffect, useLayoutEffect } from "react";
 import { useState } from "react";
 import SnippetCard from "./SnippetCard/Card";
 import Link from "next/link";
@@ -7,10 +7,11 @@ import axios from "axios";
 import Welcome from "./Welcome";
 import useFetch from "@/network/useFetch";
 import { baseURL } from "@/config";
+interface SnippetSectionProps {
+  isRefresh: any
+}
 
-interface SnippetSectionProps {}
-
-const SnippetSection: React.FC<SnippetSectionProps> = () => {
+const SnippetSection: React.FC<SnippetSectionProps> = ({isRefresh}) => {
   const [openSnippet, setIsOpenSnippet] = useState<boolean>(false);
   const searchParams = useSearchParams();
 
@@ -54,37 +55,39 @@ const SnippetSection: React.FC<SnippetSectionProps> = () => {
     if (collection) {
       fetchSnippets();
     }
-  }, [collection]);
+  }, [collection, isRefresh]);
 
   return (
-    <div>
-      {collection ? (
-        <div
-          style={{ height: "100vh" }}
-          className="h-screen-full w-full overflow-y-auto"
-        >
-          <div className={`${snippet ? "w-1/3 " : "vw-75"} flex flex-col `}>
-            <div className="w-full flex mt-2">
-              <div className="w-full flex flex-wrap">
-                <div className="flex flex-wrap justify-start pb-20">
-                  {isSnippet?.map((snip: any) => (
-                    <button key={snip._id}>
-                      <SnippetCard {...snip} />
-                    </button>
-                  ))}
+    <Suspense fallback={<div>Loading...</div>}>
+      <div>
+        {collection ? (
+          <div
+            style={{ height: "100vh" }}
+            className="h-screen-full w-full overflow-y-auto"
+          >
+            <div className={`${snippet ? "w-1/3 " : "vw-75"} flex flex-col `}>
+              <div className="w-full flex mt-2">
+                <div className="w-full flex flex-wrap">
+                  <div className="flex flex-wrap justify-start pb-20">
+                    {isSnippet?.map((snip: any) => (
+                      <button key={snip._id}>
+                        <SnippetCard {...snip} />
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : collection == "" || snippet == "" ? (
-        <div className=" m-auto">
-          <Welcome />
-        </div>
-      ) : (
-        <div></div>
-      )}
-    </div>
+        ) : collection == "" || snippet == "" ? (
+          <div className=" m-auto">
+            <Welcome />
+          </div>
+        ) : (
+          <div></div>
+        )}
+      </div>
+    </Suspense>
   );
 };
 

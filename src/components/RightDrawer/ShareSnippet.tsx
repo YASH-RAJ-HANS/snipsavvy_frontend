@@ -17,7 +17,8 @@ interface ModalProps {
 const ShareSnippet = ({ onClose, snippet_id }: ModalProps) => {
   const session = useSession();
   const [email, setEmail] = useState("");
-  const sendEmail = async () => {
+  const sendEmail = async (e: any) => {
+    e.preventDefault();
     const token = localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -27,9 +28,9 @@ const ShareSnippet = ({ onClose, snippet_id }: ModalProps) => {
       snippetid: snippet_id,
       user_name: session.data?.user?.name,
     };
-    console.log("Share Snippet Body =>",body);
+    console.log("Share Snippet Body =>", body);
     await axios
-      .post(`${baseURL}/v1/api/snippet/share`, body, { headers })
+      .put(`${baseURL}/v1/api/snippet/share`, body, { headers })
       .then((response) => {
         toast.success("Email sent successfully!");
       })
@@ -71,7 +72,7 @@ const ShareSnippet = ({ onClose, snippet_id }: ModalProps) => {
           <button
             className="border translate-y-0.5 hover:bg-zinc-600 duration-300 rounded-r-md p-2 border-zinc-100"
             type="submit"
-            onClick={sendEmail}
+            onClick={(e) => sendEmail(e)}
           >
             <LuSendHorizonal />
           </button>

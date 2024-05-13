@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, Suspense } from "react";
 import { CiSettings, CiLogout } from "react-icons/ci";
 import { FaShareAlt } from "react-icons/fa";
 
@@ -13,17 +13,20 @@ import { MdEdit, MdDelete } from "react-icons/md";
 import Avatar from "@mui/material/Avatar";
 import { baseURL } from "@/config";
 import SettingsModal from "../Settings/SettingsModal";
-import DeleteModal from "./DeleteModal"
+import DeleteModal from "./DeleteModal";
 import useFetch from "@/network/useFetch";
 import { signOut, useSession } from "next-auth/react";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
+import ShareModal from "./ShareModal"
+import EditModal from "./EditModal";
 
 const Sidebar = () => {
   const [workspace, setWorkspace] = useState<any>([]);
   const [selectedWorkspace, setSelectedWorkspace] = useState<string | null>(
     null
   );
+
   const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0 });
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeWorkspaceIndex, setActiveWorkspaceIndex] = useState<
@@ -49,12 +52,18 @@ const Sidebar = () => {
 
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>() ;
+  const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>({
+      _id: "",
+      name: "",
+      description:""
+  }) ;
+  const [modalClose, setModalClose] = useState(false);
+  // const [singleWorkSpace, setSingleWorkspace] = useState<Workspace>();
   const router = useRouter();
   const session = useSession();
-  useEffect(() => {
-    setIsDataLoading(true);
-    const token = localStorage.getItem("token");
+  
+  const fetchWorkspace = () =>{
+    const token = localStorage.getItem("token")
     const headers = {
       Authorization: `Bearer ${token}`,
     };
@@ -68,10 +77,15 @@ const Sidebar = () => {
         console.log(error);
         setIsDataLoading(false);
       });
+  }
+
+  useEffect(() => {
+    setIsDataLoading(true);
+    fetchWorkspace();
   }, []);
 
   const handleLogOut = () => {
-    signOut({ callbackUrl: "http://localhost:3000/" });
+    signOut({ callbackUrl: "https://snipsavvy.vercel.app/" });
   };
 
   const updateUrl = (name: string) => {
@@ -140,7 +154,8 @@ const Sidebar = () => {
     setSingleWorkspace(workspace);
     setDeleteWorkspaceId(workspace._id);
   };
-  
+  const [shareModalOpen, setShareModalOpen] = useState<boolean>(false) 
+  const [editModalOpen, setEditModalOpen] = useState<boolean>(false) 
   const handleOptionClick = (option: string) => {
     console.log("Option clicked:", option);
     setIsDropdownOpen(false);
@@ -148,28 +163,29 @@ const Sidebar = () => {
     switch (option) {
       case "edit":
         console.log("Edit clicked");
+        setEditModalOpen(true);
         break;
-        case "delete":
-          console.log("Delete clicked");
-          setDeleteModalOpen(true);
-          break;
-        
+      case "delete":
+        console.log("Delete clicked");
+        setDeleteModalOpen(true);
+        break;
+
       case "share":
         console.log("Share clicked");
+        setShareModalOpen(true);
         
         break;
       default:
         break;
     }
   };
-  
 
   const closeDropdown = () => {
     setIsDropdownOpen(false);
   };
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className=" w-[5vw] flex flex-col items-center bg-[#141415] rounded">
         <Image
           src="/logo.png"
@@ -232,7 +248,7 @@ const Sidebar = () => {
           )}
         </div>
         <div className="">
-          <Modal />
+          <Modal fetchWorkspace = {fetchWorkspace} />
         </div>
         <div className="fixed bottom-0 left-2 w-full p-4 text-center">
           <ul className="flex-col">
@@ -290,12 +306,11 @@ const Sidebar = () => {
           onBlur={() => closeDropdown()}
         >
           <ul className="w-20">
-          <li
+            <li
               className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
               onClick={() => handleOptionClick("share")}
             >
-              Share <FaShareAlt  className="mt-1"/>
-
+              Share <FaShareAlt className="mt-1" />
             </li>
             <li
               className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
@@ -309,7 +324,6 @@ const Sidebar = () => {
             >
               Delete <MdDelete className="mt-1" />
             </li>
-            
           </ul>
         </div>
       )}
@@ -317,9 +331,14 @@ const Sidebar = () => {
         open={isSettingsModalOpen}
         setOpen={setIsSettingsModalOpen}
       />
-      <DeleteModal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)} workspace_id = {deleteWorkspaceId || ""} />
-
-    </>
+      <DeleteModal
+        open={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        workspace_id={deleteWorkspaceId || ""}
+      />
+      <ShareModal open={shareModalOpen} onClose={() => setShareModalOpen(false)} workspace={singleWorkSpace} />
+      <EditModal open={editModalOpen} onClose={() => setEditModalOpen(false)} workspace={singleWorkSpace}/>
+    </Suspense>
   );
 };
 

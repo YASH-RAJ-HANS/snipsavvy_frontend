@@ -1,7 +1,6 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import "prismjs";
-import dummyCodeData from "@/dummydata";
 import "prismjs/themes/prism-twilight.css";
 import { LuCopyPlus } from "react-icons/lu";
 import { ToastContainer, toast } from "react-toastify";
@@ -14,17 +13,20 @@ import { TbPencilCancel } from "react-icons/tb";
 import { CiShare2 } from "react-icons/ci";
 import ShareSnippet from "./ShareSnippet";
 import axios from "axios";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "./Input";
 import { baseURL } from "@/config";
+import {addSnippetBody} from "@/inputValidation"
+
 
 interface props {
   isEditable: boolean;
   setIsEditable: any;
   shared: string;
+  setIsOpen: any
 }
-function CodeBlock({ isEditable, setIsEditable, shared }: props) {
+function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
   const [showBox, setShowBox] = useState(false);
   const [codeData, setCodeData] = useState<any>({});
   const searchParams = useSearchParams();
@@ -37,31 +39,33 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
   const workspace = searchParams.get("workspace")
     ? searchParams.get("workspace")
     : "";
-
-  useEffect(() => {
-    const fetchCode = async () => {
-      const token = localStorage.getItem("token");
-      const headers = {
-        Authorization: `Bearer ${token}`,
+  const edit = searchParams.get("edit")
+    ? searchParams.get("edit") 
+    : "";
+    useEffect(() => {
+      const fetchCode = async() => {
+        const token = localStorage.getItem("token");
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        await axios
+          .get(`${baseURL}/v1/api/snippet?snippet_id=` + `${snippet}`, {
+            headers,
+          })
+          .then((response) => {
+            console.log(response.data);
+            setCodeData(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       };
-      await axios
-        .get(`${baseURL}/v1/api/snippet?snippet_id=` + `${snippet}`, {
-          headers,
-        })
-        .then((response) => {
-          console.log(response.data);
-          setCodeData(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-    snippet && fetchCode();
-
-    window.Prism.highlightAll();
-
-    window.Prism.highlightAll();
-  }, [snippet]);
+      snippet && fetchCode();
+  
+      window.Prism.highlightAll();
+  
+      window.Prism.highlightAll();
+    }, [snippet]);
 
   const toggleEditable = () => {
     setIsEditable(!isEditable);
@@ -97,7 +101,6 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
     "bg-lime-700",
     "bg-fuchsia-700",
   ];
-  const [description, setDescription] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [data, setData] = React.useState({
@@ -109,47 +112,74 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
   });
 
   const handleAddTag = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && tagInput) {
+    if (e.key === "Enter"  && tagInput) {
       e.preventDefault();
       setTags([...tags, tagInput]);
       setTagInput("");
     }
   };
 
+  const description:string = data.description
+  const title:string = data.title
+  const code:string = data.code
+  const router = useRouter()
+  const pathname = usePathname()
   const handleCreateSnippet = async () => {
-    const body = {
-      title: data.title,
-      description: data.description,
-      code: data.code,
-      tags: tags,
-      category_id: `${collection}`,
-      workspace_id: `${workspace}`,
-    };
-    const token = localStorage.getItem("token");
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    {
-      collection &&
-        (await axios.post(`${baseURL}/v1/api/snippet`, body, { headers }).then(
-          (response) => {
-            console.log(response);
-          },
-          (error) => {
-            console.log(error);
-          }
-        ));
+    const validationResult = addSnippetBody.safeParse({tags, description, title, code})
+    if(validationResult.success){
+      try{
+        const body = {
+          title: data.title,
+          description: data.description,
+          code: data.code,
+          tags: tags,
+          category_id: `${collection}`,
+          workspace_id: `${workspace}`,
+        };
+        const token = localStorage.getItem("token");
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        {
+          collection &&
+            (await axios.post(`${baseURL}/v1/api/snippet`, body, { headers }).then((res: any) => {
+                console.log(res.data.data);
+                const id = res.data.data._id
+                const nextSearchParams = new URLSearchParams(searchParams.toString());
+                nextSearchParams.append("snippet", id);
+                setIsOpen(false)
+                router.push(`${pathname}?${nextSearchParams.toString()}`);
+              }).catch((error) => {
+                console.log(error);
+              })
+            );
+        }
+      }catch(error){
+        console.log('API call failed')
+      }
+    }else{
+      alert('Invalid Inputs')
     }
-    window.location.reload();
+    
   };
-
+  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.target && e.target.value) {
+      const selectedLanguage = e.target.value
+      setSelectedLanguage(selectedLanguage);
+      setTags([selectedLanguage]);
+    }
+  };
+  
   const languages = ["Python", "JavaScript", "Java", "TypeScript", "C++"];
-  const [selectedLanguage, setSelectedLanguage] = useState("");
+  const [selectedLanguage, setSelectedLanguage] = useState<any>();
 
   const handleClick = () => {};
-
+  if(edit === "true"){
+    setIsEditable(true)
+  }
   return (
-    <div className="overflow-hidden outline-none" id="editable-code">
+    <Suspense fallback={<div>Loading...</div>}>
+    <div className="outline-none " id="editable-code">
       <div>
         <h2 className="text-3xl text-white p-2 font-bold overflow-y-auto">
           {snippet && flag === true ? (
@@ -186,7 +216,7 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
             <select
               className="bg-zinc-900 shadow-zinc-950 shadow-xl text-white p-2"
               value={selectedLanguage}
-              onChange={(e) => setSelectedLanguage(e.target.value)}
+              onChange={(e) => handleSelect(e)}
             >
               {languages.map((language) => (
                 <option key={language} value={language}>
@@ -220,12 +250,6 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
                   setTagInput(e.target.value);
                 }}
               />{" "}
-              <Badge
-                variant="default"
-                className="px-2 py-1 rounded-xl bg-purple-700 hover:bg-purple-500 mx-1 mb-2"
-              >
-                {selectedLanguage}
-              </Badge>
               {tags.length > 0 &&
                 tags?.map((tag, index) => {
                   return (
@@ -241,30 +265,30 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
             </div>
           )}
 
-          <div className="">
-            {shared != "true" && snippet && (
-              <div className="relative mt-12">
-                <button
-                  onClick={toggleEditable}
-                  className="absolute -top-10 right-6 text-zinc-100 bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2 mx-2"
-                >
-                  {isEditable ? <MdEdit /> : <TbPencilCancel />}
-                </button>
-                <button
-                  className="absolute -top-10 right-0 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2"
-                  onClick={() => copyToClipboard(codeData[0].code)}
-                >
-                  <LuCopyPlus />
-                </button>
-                <ToastContainer />
-                <button
-                  className="absolute -top-10 right-16 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2"
-                  onClick={toggleBox}
-                >
-                  <CiShare2 />
-                </button>
-              </div>
-            )}
+            <div className="">
+              {shared != "true" && snippet && (
+                <div className="relative mt-12">
+                  <button
+                    onClick={toggleEditable}
+                    className="absolute -top-10 right-6 text-zinc-100 bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2 mx-2"
+                  >
+                    {isEditable ? <MdEdit /> : <TbPencilCancel />}
+                  </button>
+                  <button
+                    className="absolute -top-10 right-0 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2"
+                    onClick={() => copyToClipboard(codeData[0].code)}
+                  >
+                    <LuCopyPlus />
+                  </button>
+                  <ToastContainer />
+                  <button
+                    className="absolute -top-10 right-16 text-zinc-100 font-bold bg-zinc-900 hover:bg-zinc-700 border border-zinc-100 duration-300 rounded-sm p-2"
+                    onClick={toggleBox}
+                  >
+                    <CiShare2 />
+                  </button>
+                </div>
+              )}
 
             {showBox && snippet && <ShareSnippet snippet_id = {snippet} onClose={() => setShowBox(false)} />}
             <div className="min-h-[50vh] min-w-[40vw] w-[47vw] fixed py-2 rounded-b-md border-zinc-900 bg-zinc-900">
@@ -280,7 +304,7 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
                 </pre>
               ) : (
                 <div>
-                  <pre className="p-2 mt-6 min-h-[35vh] min-w-[40vw] w-[47vw] h-[40vh]">
+                  <pre className="p-2 mt-6 min-h-[35vh] min-w-[40vw] w-[47vw] h-[47vh]">
                     <code
                       id="editable-code"
                       className={`language-${selectedLanguage} ${isEditable ? "text-black" : "text-white"}  outline-none`}
@@ -311,6 +335,7 @@ function CodeBlock({ isEditable, setIsEditable, shared }: props) {
         </div>
       </div>
     </div>
+    </Suspense>
   );
 }
 export default CodeBlock;
