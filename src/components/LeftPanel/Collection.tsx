@@ -8,16 +8,13 @@ import { FiMinus } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
-import useFetch from "@/network/useFetch";
-import { FaShareAlt } from "react-icons/fa";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { baseURL } from "@/config";
-
+import EditCollection from "./EditCollection";
 const Collection = () => {
   const [showInput, setShowInput] = useState(false);
   const [collection, setCollection] = useState<any>([]);
   const [data, setData] = useState("");
-
   const searchParams = useSearchParams();
   const router = useRouter();
   const workspace = searchParams.get("workspace") || "";
@@ -33,13 +30,11 @@ const Collection = () => {
   const [singleCollection, setSingleCollection] = useState<collectionItem>({
     _id: "",
     name: "",
-    description:""
-}) ;
+    description: "",
+  });
   useEffect(() => {
-    // Add event listener for clicks on the document
     document.addEventListener("click", handleClickOutside);
     return () => {
-      // Cleanup: Remove event listener when component unmounts
       document.removeEventListener("click", handleClickOutside);
     };
   });
@@ -78,30 +73,22 @@ const Collection = () => {
     setIsDropdownOpen(true);
     setSingleCollection(collection);
   };
-
+  const [editCollectionOpenby, setEditCollectionOpenby] = useState<boolean>(false);
   const handleOptionClick = (option: string) => {
     console.log("Option clicked:", option);
     setIsDropdownOpen(false);
-
     switch (option) {
       case "edit":
+        setEditCollectionOpenby(true);
         console.log("Edit clicked");
-        // setEditModalOpen(true);
         break;
       case "delete":
         console.log("Delete clicked");
-        // setDeleteModalOpen(true);
-        break;
-
-      case "share":
-        console.log("Share clicked");
-        // setShareModalOpen(true);
-        
         break;
       default:
         break;
     }
-  };;
+  };
 
   const closeDropdown = () => {
     setIsDropdownOpen(false);
@@ -187,7 +174,7 @@ const Collection = () => {
   const updateUrl = (name: string) => {
     const query: Record<string, string> = { workspace };
     if (name) query.collection = name;
-    router.push( `?${new URLSearchParams(query).toString()}`);
+    router.push(`?${new URLSearchParams(query).toString()}`);
   };
 
   const colorOptions = [
@@ -322,7 +309,6 @@ const Collection = () => {
           onBlur={() => closeDropdown()}
         >
           <ul className="w-20">
-            
             <li
               className="cursor-pointer flex justify-between hover:bg-slate-300 hover:text-black p-1 rounded"
               onClick={() => handleOptionClick("edit")}
@@ -336,11 +322,17 @@ const Collection = () => {
               Delete <MdDelete className="mt-1" />
             </li>
           </ul>
+          
+          <EditCollection
+            open={editCollectionOpenby}
+            onClose={() => setEditCollectionOpenby(false)}
+            workspace={workspace}
+            collection={singleCollection}
+          />
         </div>
       )}
     </Suspense>
-
   );
 };
 
-export default Collection;
+export default Collection;
