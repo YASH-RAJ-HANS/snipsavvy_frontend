@@ -42,6 +42,9 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
   const edit = searchParams.get("edit")
     ? searchParams.get("edit") 
     : "";
+  const add = searchParams.get("add")
+    ? searchParams.get("add")
+    : ""
     useEffect(() => {
       const fetchCode = async() => {
         const token = localStorage.getItem("token");
@@ -64,7 +67,6 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
   
       window.Prism.highlightAll();
   
-      window.Prism.highlightAll();
     }, [snippet]);
 
   const toggleEditable = () => {
@@ -177,10 +179,11 @@ function CodeBlock({ isEditable, setIsEditable, shared, setIsOpen }: props) {
   if(edit === "true"){
     setIsEditable(true)
   }
+  
   return (
     <Suspense fallback={<div>Loading...</div>}>
-    <div className="outline-none " id="editable-code">
-      <div>
+    <div className="outline-none overflow-auto" contentEditable={isEditable}>
+      <div className=''>
         <h2 className="text-3xl text-white p-2 font-bold overflow-y-auto">
           {snippet && flag === true ? (
             codeData[0].title
