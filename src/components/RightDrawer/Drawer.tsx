@@ -12,7 +12,7 @@ interface Props {
   isEditable: boolean;
   setIsEditable: any;
   className: string;
-  shared: string
+  shared: any
 }
 const RightDrawer = ({isOpen, setIsOpen, isEditable, setIsEditable, className, shared }: Props) => {
   const searchParams = useSearchParams();
@@ -36,6 +36,9 @@ const RightDrawer = ({isOpen, setIsOpen, isEditable, setIsEditable, className, s
     nextSearchParams.delete("snippet");
     if(edit){
       nextSearchParams.delete("edit")
+    }
+    if(add){
+      nextSearchParams.delete("add")
     }
     router.push(`${pathName}?${nextSearchParams.toString()}`);
     setIsOpen(false)
