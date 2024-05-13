@@ -8,10 +8,10 @@ import Welcome from "./Welcome";
 import useFetch from "@/network/useFetch";
 import { baseURL } from "@/config";
 interface SnippetSectionProps {
-  isRefresh: any
+  isRefresh: any;
 }
 
-const SnippetSection: React.FC<SnippetSectionProps> = ({isRefresh}) => {
+const SnippetSection: React.FC<SnippetSectionProps> = ({ isRefresh }) => {
   const [openSnippet, setIsOpenSnippet] = useState<boolean>(false);
   const searchParams = useSearchParams();
 
@@ -84,7 +84,9 @@ const SnippetSection: React.FC<SnippetSectionProps> = ({isRefresh}) => {
             <Welcome />
           </div>
         ) : (
-          <div></div>
+          <div>
+            <div className="h-10 w-10">+</div>
+          </div>
         )}
       </div>
     </Suspense>

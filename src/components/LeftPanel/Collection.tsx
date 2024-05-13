@@ -111,6 +111,7 @@ const Collection = () => {
 
   console.log("w_id=>", workspace);
 
+  
   const fetchCategories = () => {
     const token = localStorage.getItem("token");
     const headers = {
@@ -128,26 +129,9 @@ const Collection = () => {
         console.log(error);
       });
   };
-
   useEffect(() => {
     setIsDataLoading(true);
-    const fetchCategories = () => {
-      const token = localStorage.getItem("token");
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      axios
-        .get(`${baseURL}/v1/api/category/${workspace}`, { headers })
-        .then((response) => {
-          setCollection(response.data);
-          console.log("collections=>", response.data.data);
-
-          setIsDataLoading(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
+    fetch
     workspace && fetchCategories();
   }, [workspace]);
 
@@ -343,6 +327,7 @@ const Collection = () => {
         open={deleteCollectionModalOpen}
         onClose={() => setDeleteCollectionModalOpen(false)}
         collection={singleCollection}
+        fetchCategories={fetchCategories}
       />
     </Suspense>
   );
