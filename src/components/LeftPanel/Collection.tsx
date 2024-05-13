@@ -10,6 +10,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { baseURL } from "@/config";
+import DeleteCollectionModal from "./DeleteCollectionModal";
 import EditCollection from "./EditCollection";
 const Collection = () => {
   const [showInput, setShowInput] = useState(false);
@@ -73,17 +74,28 @@ const Collection = () => {
     setIsDropdownOpen(true);
     setSingleCollection(collection);
   };
-  const [editCollectionOpenby, setEditCollectionOpenby] = useState<boolean>(false);
+  const [deleteCollectionModalOpen, setDeleteCollectionModalOpen] =
+    useState(false); 
+     const [editCollectionOpenby, setEditCollectionOpenby] = useState<boolean>(false);
   const handleOptionClick = (option: string) => {
     console.log("Option clicked:", option);
-    setIsDropdownOpen(false);
+    // setIsDropdownOpen(false);
     switch (option) {
       case "edit":
         setEditCollectionOpenby(true);
+        // setDeleteCollectionModalOpen(false);
         console.log("Edit clicked");
         break;
       case "delete":
         console.log("Delete clicked");
+        setDeleteCollectionModalOpen(true);
+        
+        break;
+
+      case "share":
+        console.log("Share clicked");
+        // setShareModalOpen(true);
+
         break;
       default:
         break;
@@ -102,7 +114,7 @@ const Collection = () => {
       Authorization: `Bearer ${token}`,
     };
     axios
-      .get(`${baseURL}/vi/api/category/${workspace}`, { headers })
+      .get(`${baseURL}/v1/api/category/${workspace}`, { headers })
       .then((response) => {
         setCollection(response.data);
         console.log("collections=>", response.data.data);
@@ -122,7 +134,7 @@ const Collection = () => {
         Authorization: `Bearer ${token}`,
       };
       axios
-        .get(`${baseURL}/vi/api/category/${workspace}`, { headers })
+        .get(`${baseURL}/v1/api/category/${workspace}`, { headers })
         .then((response) => {
           setCollection(response.data);
           console.log("collections=>", response.data.data);
@@ -152,7 +164,7 @@ const Collection = () => {
       Authorization: `Bearer ${token}`,
     };
     await axios
-      .post(`${baseURL}/vi/api/category`, body, { headers })
+      .post(`${baseURL}/v1/api/category`, body, { headers })
       .then((response) => {
         console.log(response);
         // [FIX ME] at a toast here, instead of alert
@@ -174,6 +186,7 @@ const Collection = () => {
   const updateUrl = (name: string) => {
     const query: Record<string, string> = { workspace };
     if (name) query.collection = name;
+    router.push(`?${new URLSearchParams(query).toString()}`);
     router.push(`?${new URLSearchParams(query).toString()}`);
   };
 
@@ -323,14 +336,20 @@ const Collection = () => {
             </li>
           </ul>
           
-          <EditCollection
+          
+        </div>
+      )}
+      <DeleteCollectionModal
+        open={deleteCollectionModalOpen}
+        onClose={() => setDeleteCollectionModalOpen(false)}
+        collection={singleCollection}
+      />
+      <EditCollection
             open={editCollectionOpenby}
             onClose={() => setEditCollectionOpenby(false)}
             workspace={workspace}
             collection={singleCollection}
           />
-        </div>
-      )}
     </Suspense>
   );
 };
