@@ -1,10 +1,10 @@
-## SnipSavvy
+## SnipSavvy 🚀
 
-SnipSavvy is a code snippet management platform built for developers by developers
+SnipSavvy is a code snippet management platform, coded by developers for developers
 
-Website Link: 
+Website Link: https://snipsavvy.vercel.app/
 
-## Features 
+## ⭐Features 
 
 * The Platform serves as a repository for storing, categorizing and sharing their code snippets 
 
@@ -16,7 +16,7 @@ Website Link:
 
 * Sharing is multi level, a user can share a whole workspace, a collection or a single snippet which can be restricted by the user.
 
-## Upcoming Features
+## ✨Upcoming Features
 
 * AI Support for code suggestion and completion upon prompt
 
@@ -24,7 +24,7 @@ Website Link:
 
 * Implementing History Tracking feature for code snippets, upto the last edition
 
-## Frontend Tech Stack 
+## Frontend Tech Stack 🚀
 
  * **Typescript**
  * **Next JS**
@@ -34,7 +34,7 @@ Website Link:
  * **Material UI**
 
 
-## Getting Started with Contributing
+## ⭐Getting Started with Contributing
 
 Thank you for considering contributing to our project. Your involvement is invaluable to us. To ensure a smooth and collaborative process, please follow these steps:
 
@@ -72,7 +72,9 @@ bun dev
 
 ``` bash
 git add .
-git commit -m "Briefly describe your changes"
+git commit -m "[Prefix]: Change"
+Prefix = [DOC,CHORE,FEATURE,BUGFIX,ORGNIZE]
+
 ``` 
 
 **Create a New Branch**: Before making any changes, create a new branch to isolate your work from the main codebase 
@@ -88,7 +90,7 @@ git push origin <branch-name>
 We greatly appreciate your contributions and look forward to reviewing your pull request.
 
 
-## Pull Request Template
+## ⭐Pull Request Template
 
 ### Description
 
