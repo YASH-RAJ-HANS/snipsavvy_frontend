@@ -15,7 +15,15 @@ interface SnippetCardProps {
   title: string;
   code: string;
   description: string;
-  tags: string[];
+  tags: (
+    | "C++"
+    | "Python"
+    | "JavaScript"
+    | "Java"
+    | "TypeScript"
+    | "React"
+    | "Node"
+  )[];
   _id: string;
 }
 
@@ -27,6 +35,17 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
 }) => {
   const languageIcon =
     "https://img.icons8.com/?size=50&id=22183&format=png&color=808080";
+
+  const languages = {
+    Python: "/icon_py.png",
+    JavaScript: "/icon_js.png",
+    Java: "/icon_java.png",
+    TypeScript: "/icon_ts.png",
+    "C++": "/icon_cpp.png",
+    React: "/icon_react.png",
+    Node: "/icon_node.png",
+  };
+
   const searchParams = useSearchParams();
   const snippet_id = searchParams.get("snippet") || "";
   console.log("snippet_id=>", snippet_id);
@@ -114,45 +133,51 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
     const [deleteSnippetOpen, setDeleteSnippetOpen] = useState(false);
     return (
       <Suspense fallback={<div>Loading...</div>}>
-      <div>
-        <Button aria-describedby={id} onClick={handleClick}>
-          <MoreVertIcon />
-        </Button>
-        <Popover
-          id={id}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-        >
-          <Typography sx={{ width: 75, height: 95 }} className="no-scrollbar">
-            <div className="z-200 flex flex-col bg-zinc-950 p-2 absolute w-[10-vw] text-white">
-              <button
-                className="bg-zinc-700 px-2 mb-1 hover:bg-zinc-800"
-                onClick={(e) => setDeleteSnippetOpen(true)}
-              >
-                Delete
-                {deleteSnippetOpen && <DeleteSnippet  open={deleteSnippetOpen}  onClose={() => setDeleteSnippetOpen(false)} snippet_id = {_id || ""} />}
-                {/* <DeleteSnippetonClose={() => setDeleteSnippetOpen(false)} snippet_id = {_id || ""} /> */}
-              </button>
-              <button
-                onClick={() => newUpdateUrl()}
-                className="bg-zinc-700 px-2 mb-1 hover:bg-zinc-800"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => setShareSnippet(true)}
-                className="bg-zinc-700 px-2 hover:bg-zinc-800"
-              >
-                share
-              </button>
-            </div>
-          </Typography>
-        </Popover>
+        <div>
+          <Button aria-describedby={id} onClick={handleClick}>
+            <MoreVertIcon />
+          </Button>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+          >
+            <Typography sx={{ width: 75, height: 95 }} className="no-scrollbar">
+              <div className="z-200 flex flex-col bg-zinc-950 p-2 absolute w-[10-vw] text-white">
+                <button
+                  className="bg-zinc-700 px-2 mb-1 hover:bg-zinc-800"
+                  onClick={(e) => setDeleteSnippetOpen(true)}
+                >
+                  Delete
+                  {deleteSnippetOpen && (
+                    <DeleteSnippet
+                      open={deleteSnippetOpen}
+                      onClose={() => setDeleteSnippetOpen(false)}
+                      snippet_id={_id || ""}
+                    />
+                  )}
+                  {/* <DeleteSnippetonClose={() => setDeleteSnippetOpen(false)} snippet_id = {_id || ""} /> */}
+                </button>
+                <button
+                  onClick={() => newUpdateUrl()}
+                  className="bg-zinc-700 px-2 mb-1 hover:bg-zinc-800"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => setShareSnippet(true)}
+                  className="bg-zinc-700 px-2 hover:bg-zinc-800"
+                >
+                  share
+                </button>
+              </div>
+            </Typography>
+          </Popover>
 
           {shareSnippet && <ShareSnippet onClose={() => handleClose()} />}
         </div>
@@ -160,6 +185,7 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
     );
   };
 
+  const lang_icon = tags[0];
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div
@@ -178,7 +204,7 @@ const SnippetCard: React.FC<SnippetCardProps> = ({
         >
           <div className="flex items-center mr-2 text-gray-200">
             <Image
-              src={languageIcon}
+              src={languages[lang_icon] || languageIcon}
               alt="Icon"
               className="mt-1"
               width={25}
