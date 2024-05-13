@@ -9,8 +9,10 @@ function Page() {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
   const searchParams = useSearchParams()
+  const token = localStorage.getItem("token") ? localStorage.getItem("token") : ""
   const snippet = searchParams.get("snippet") ? searchParams.get("snippet") : ""
-  const shared = searchParams.get("shared") ? searchParams.get("shared") : ""
+  const sharing = searchParams.get("sharing") ? searchParams.get("sharing") : ""
+  const email = searchParams.get("email") ? searchParams.get("email") : ""
   return (
     <Suspense fallback={<div>Loading...</div>}>
     <div className="">
@@ -21,7 +23,7 @@ function Page() {
           alt="logo"
           className="pt-6 pl-4 pb-4 opacity-80"
         />
-      {snippet && shared === "true" ? (
+       {token && snippet && (sharing === "true" || email) ? (
         <div className="">
           <RightDrawer
             className="fixed top-0"
@@ -29,7 +31,7 @@ function Page() {
             setIsOpen={setIsOpen}
             isEditable={isEditable}
             setIsEditable={setIsEditable}
-            shared={shared}
+            shared={sharing}
           />
         </div>
       ) : (
